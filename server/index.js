@@ -9,7 +9,11 @@ const { QueryTypes } = require("sequelize");
 
 const port = 3000
 app.get('/', async(req, res) => {
-    res.send('Hello World!!!')
+    // res.send('Hello World!!!')
+    const users = await sequelize.query("SELECT * FROM users;", {
+        type: QueryTypes.SELECT,
+      });
+    res.json(users)
 })
 
 const initializeDbWithRetry = async () => {
@@ -22,8 +26,6 @@ const initializeDbWithRetry = async () => {
             setTimeout(initializeDbWithRetry, 5000)
         });
 }
-
-
 
 initializeDbWithRetry()
 
