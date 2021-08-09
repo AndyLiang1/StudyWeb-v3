@@ -1,0 +1,32 @@
+version: "3"
+services: 
+  server: 
+    build: 
+      context: .
+      args: 
+        NODE_ENV: development
+    volumes: 
+      - ./:/app:ro 
+      - /app/node_modules
+    environment:
+      - PORT=3000
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=school
+    depends_on:
+      - mysql
+    command: npm run dev
+    networks:
+      - docker_net
+  mysql: 
+    image: mysql:5.7.24
+    environment:
+      - MYSQL_USER=roott
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=school
+    networks:
+      - docker_net
+networks:
+  docker_net: {}
