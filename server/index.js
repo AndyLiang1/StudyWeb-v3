@@ -5,17 +5,14 @@ app.use(cors());
 app.use(express.json());
 const { sequelize } = require("./models/index");
 const { QueryTypes } = require("sequelize");
-
+const testRouter = require("./routes/test")
+const userRouter = require("./routes/user")
 
 const port = 3000
-app.get('/', async(req, res) => {
-    // res.send('Hello World!!!')
-    const users = await sequelize.query("SELECT * FROM users;", {
-        type: QueryTypes.SELECT,
-      });
-    res.json(users)
-})
 
+// =============================================================================
+// Db Initialization
+// =============================================================================
 const initializeDbWithRetry = async () => {
     sequelize.sync()
         .then(result => {
@@ -28,6 +25,16 @@ const initializeDbWithRetry = async () => {
 }
 
 initializeDbWithRetry()
+
+app.get('/', async(req, res) => {
+    res.send('Hello World!!!')
+})
+// =============================================================================
+// Routes
+// =============================================================================
+app.use("/api/v1/test", testRouter)
+app.use("/api/v1/users", userRouter)
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)

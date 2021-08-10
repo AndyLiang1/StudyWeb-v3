@@ -2,8 +2,7 @@
 // const sequelize = new Sequelize('sqlite::memory:');
 module.exports = (sequelize, DataTypes) => {
 
-
-  const Users = sequelize.define('users',
+  const Users = sequelize.define('Users',
     {
       name: {
         type: DataTypes.STRING,
@@ -26,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
     , {
       // Other model options go here
     });
-
+    Users.associate = (models) => {
+      Users.hasMany(models.Quizzes, {
+        onDelete: "cascade",
+      });
+    };
   return Users
 }
