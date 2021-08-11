@@ -11,7 +11,7 @@ const { sequelize } = require("../models/index");
 // =============================================================================
 
 router.delete("/clearUsers", async (req, res) => {
-    await sequelize.query("DELETE FROM Users")
+    await sequelize.query("DELETE FROM users")
     .then((data) => {
         res.json({
             status: 'success',
@@ -27,7 +27,7 @@ router.delete("/clearUsers", async (req, res) => {
 });
 
 router.delete("/clearQuizzes", async (req, res) => {
-    await sequelize.query("DELETE FROM Quizzes")
+    await sequelize.query("DELETE FROM quizzes")
     .then((data) => {
         res.json({
             status: 'success',
@@ -42,7 +42,7 @@ router.delete("/clearQuizzes", async (req, res) => {
 });
 
 router.delete("/clearCuecards", async (req, res) => {
-    await sequelize.query("DELETE FROM Cuecards")
+    await sequelize.query("DELETE FROM cuecards")
     .then((data) => {
         res.json({
             status: 'success',

@@ -2,7 +2,7 @@
 // const sequelize = new Sequelize('sqlite::memory:');
 module.exports = (sequelize, DataTypes) => {
 
-    const Cuecards = sequelize.define('Cuecards',
+    const Cuecards = sequelize.define('cuecards',
       {
         question: {
           type: DataTypes.STRING,

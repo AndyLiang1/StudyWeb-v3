@@ -13,7 +13,7 @@ const { sequelize } = require("../models/index");
  */
 async function addUser(name, email, hashedPass) {
     const result = await sequelize
-        .query("INSERT INTO Users (name, email, password) VALUES (?, ?, ?)", {
+        .query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", {
             replacements: [name, email, hashedPass],
         })
         .catch((error) => {
@@ -29,7 +29,7 @@ async function addUser(name, email, hashedPass) {
  * @param {string} email the email that the database checks to see if it has it already
  */
 async function checkEmailExist(email) {
-    const users = await sequelize.query("SELECT * FROM Users WHERE email = ?", {
+    const users = await sequelize.query("SELECT * FROM users WHERE email = ?", {
         replacements: [email],
         type: QueryTypes.SELECT,
     });
@@ -53,10 +53,17 @@ router.post("/signup", async (req, res) => {
             password: hashedPass,
         };
         const result = await addUser(name, email, hashedPass);
+       
+        const accessToken = sign(
+            { name: name, id: result[0] },
+            process.env.JWT_SECRET
+        );
         res.json({ 
             status: "success",
             userWithHashedPass: userWithHashedPass, 
-            result: result });
+            token: accessToken,
+            result: result,
+         });
     } else {
         res.json({
             status: 'fail',
