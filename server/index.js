@@ -7,6 +7,11 @@ const { sequelize } = require("./models/index");
 const { QueryTypes } = require("sequelize");
 const testRouter = require("./routes/test")
 const userRouter = require("./routes/user")
+const folderRouter = require("./routes/folders")
+const setRouter = require("./routes/sets")
+const cardRouter = require("./routes/cards")
+const { validateToken } = require("./middlewares/authenticateUser")
+
 
 const port = 3000
 
@@ -14,7 +19,7 @@ const port = 3000
 // Db Initialization
 // =============================================================================
 const initializeDbWithRetry = async () => {
-    sequelize.sync()
+    sequelize.sync({ force: true })
         .then(result => {
             console.log(result)
         })
@@ -34,6 +39,9 @@ app.get('/', async(req, res) => {
 // =============================================================================
 app.use("/api/v1/test", testRouter)
 app.use("/api/v1/users", userRouter)
+app.use("/api/v1/folders", folderRouter)
+app.use("/api/v1/sets", setRouter)
+app.use("/api/v1/cards", cardRouter)
 
 
 app.listen(port, () => {

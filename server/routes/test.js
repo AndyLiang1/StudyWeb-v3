@@ -26,8 +26,8 @@ router.delete("/clearUsers", async (req, res) => {
 
 });
 
-router.delete("/clearQuizzes", async (req, res) => {
-    await sequelize.query("DELETE FROM quizzes")
+router.delete("/clearFolders", async (req, res) => {
+    await sequelize.query("DELETE FROM folders")
     .then((data) => {
         res.json({
             status: 'success',
@@ -41,8 +41,24 @@ router.delete("/clearQuizzes", async (req, res) => {
     });
 });
 
-router.delete("/clearCuecards", async (req, res) => {
-    await sequelize.query("DELETE FROM cuecards")
+router.delete("/clearSets", async (req, res) => {
+    await sequelize.query("DELETE FROM sets")
+    .then((data) => {
+        res.json({
+            status: 'success',
+            data
+        })
+    }).catch((error) => {
+        res.json({
+            status: 'fail', 
+            error
+        })
+    });
+});
+
+
+router.delete("/clearCards", async (req, res) => {
+    await sequelize.query("DELETE FROM cards")
     .then((data) => {
         res.json({
             status: 'success',

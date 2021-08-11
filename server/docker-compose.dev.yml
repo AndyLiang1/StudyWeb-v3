@@ -16,7 +16,7 @@ services:
       - DEV_DB_ROOT_PASSWORD=password
       - DEV_DB_DATABASE=studyweb_db
       - DEV_DB_HOST=mysql
-      - JWT_SECRET=secretjwt
+      - SECRET_JWT=secretjwt
     depends_on:
       - mysql
     command: npm run dev

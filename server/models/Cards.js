@@ -2,9 +2,13 @@
 // const sequelize = new Sequelize('sqlite::memory:');
 module.exports = (sequelize, DataTypes) => {
 
-    const Quizzes = sequelize.define('quizzes',
+    const Cuecard = sequelize.define('cards',
       {
-        name: {
+        question: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        answer: {
           type: DataTypes.STRING,
           allowNull: false,
         },
@@ -17,11 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       , {
         // Other model options go here
       });
-      Quizzes.associate = (models) => {
-        Quizzes.hasMany(models.cuecards, {
-          onDelete: "cascade",
-        });
-      };
-    return Quizzes
+      
+    return Cuecard
   }
   

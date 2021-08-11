@@ -56,7 +56,7 @@ router.post("/signup", async (req, res) => {
        
         const accessToken = sign(
             { name: name, id: result[0] },
-            process.env.JWT_SECRET
+            process.env.SECRET_JWT
         );
         res.json({ 
             status: "success",
@@ -95,7 +95,7 @@ router.post("/signin", async (req, res) => {
                 } else {
                     const accessToken = sign(
                         { name: users[0].name, id: users[0].id },
-                        process.env.JWT_SECRET
+                        process.env.SECRET_JWT
                     );
                     res.json({
                         status: 'success',
