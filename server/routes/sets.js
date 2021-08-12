@@ -6,12 +6,17 @@ const { sequelize } = require("../models/index")
 
 const { validateToken } = require("../middlewares/authenticateUser")
 
-router.get("/", validateToken, async (req, res) => {
+router.get("/:folderId", validateToken, async (req, res) => {
+    const {folderId} = req.params;
+
     await sequelize
-        .query("SELECT * FROM sets")
+        .query("SELECT * FROM sets where folderId = ?", {
+            replacements: [folderId],
+        })
         .then((data) => {
             res.json({
                 status: 'success',
+                length: data[0].length,
                 data
             })
         })
@@ -21,17 +26,18 @@ router.get("/", validateToken, async (req, res) => {
 })
 
 router.post("/", validateToken, async (req, res) => {
-    const { setName, userId } = req.body
+    const { setName, folderId } = req.body
     await sequelize
-        .query("INSERT INTO sets (name, userId) VALUES (?, ?)", {
-            replacements: [setName, userId],
+        .query("INSERT INTO sets (name, folderId) VALUES (?, ?)", {
+            replacements: [setName, folderId],
         })
         .then((data) => {
             res.json({
                 status: 'success',
+                data,
                 set: {
-                    setName,
-                    userId,
+                    name: setName,
+                    folderId,
                 }
             })
         })
@@ -41,10 +47,10 @@ router.post("/", validateToken, async (req, res) => {
 })
 
 router.put("/", validateToken, async (req, res) => {
-    const { newSetName, userId } = req.body
+    const { newSetName, id } = req.body
     await sequelize
         .query("UPDATE sets SET name = ? WHERE id = ?", {
-            replacements: [newSetName, userId],
+            replacements: [newSetName, id],
         })
         .then((data) => {
             res.json({
@@ -57,11 +63,11 @@ router.put("/", validateToken, async (req, res) => {
         });
 })
 
-router.delete("/", validateToken, async (req, res) => {
-    const { userId } = req.params
+router.delete("/:id", validateToken, async (req, res) => {
+    const { id } = req.params
     await sequelize
         .query("DELETE FROM sets WHERE id = ?", {
-            replacements: [userId],
+            replacements: [id],
         })
         .then((data) => {
             res.json({

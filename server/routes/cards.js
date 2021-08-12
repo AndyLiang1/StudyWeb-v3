@@ -6,12 +6,17 @@ const { sequelize } = require("../models/index")
 
 const { validateToken } = require("../middlewares/authenticateUser")
 
-router.get("/", validateToken, async (req, res) => {
+router.get("/:setId", validateToken, async (req, res) => {
+    const {setId} = req.params;
+
     await sequelize
-        .query("SELECT * FROM cards")
+        .query("SELECT * FROM cards WHERE setId = ?", {
+            replacements: [setId],
+        })
         .then((data) => {
             res.json({
                 status: 'success',
+                length: data[0].length,
                 data
             })
         })
@@ -21,10 +26,10 @@ router.get("/", validateToken, async (req, res) => {
 })
 
 router.post("/", validateToken, async (req, res) => {
-    const { question, answer, userId } = req.body
+    const { question, answer, setId } = req.body
     await sequelize
-        .query("INSERT INTO cards (question, answer, userId) VALUES (?, ?, ?)", {
-            replacements: [question, answer, userId],
+        .query("INSERT INTO cards (question, answer, setId) VALUES (?, ?, ?)", {
+            replacements: [question, answer, setId],
         })
         .then((data) => {
             res.json({
@@ -33,7 +38,7 @@ router.post("/", validateToken, async (req, res) => {
                 card: {
                     question,
                     answer,
-                    userId,
+                    setId,
                 }
 
             })
@@ -44,15 +49,15 @@ router.post("/", validateToken, async (req, res) => {
 })
 
 router.put("/", validateToken, async (req, res) => {
-    const { newCardName, userId } = req.body
+    const { new_question, new_answer, id } = req.body
     await sequelize
-        .query("UPDATE cards SET name = ? WHERE id = ?", {
-            replacements: [newCardName, userId],
+        .query("UPDATE cards SET question = ?, answer = ? WHERE id = ?", {
+            replacements: [new_question, new_answer, id],
         })
         .then((data) => {
             res.json({
                 status: 'success',
-                data
+                data,
             })
         })
         .catch((error) => {
@@ -60,11 +65,11 @@ router.put("/", validateToken, async (req, res) => {
         });
 })
 
-router.delete("/", validateToken, async (req, res) => {
-    const { userId } = req.params
+router.delete("/:id", validateToken, async (req, res) => {
+    const { id } = req.params
     await sequelize
         .query("DELETE FROM cards WHERE id = ?", {
-            replacements: [userId],
+            replacements: [id],
         })
         .then((data) => {
             res.json({

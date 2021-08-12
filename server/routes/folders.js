@@ -6,12 +6,16 @@ const { sequelize } = require("../models/index")
 
 const { validateToken } = require("../middlewares/authenticateUser")
 
-router.get("/", validateToken, async (req, res) => {
+router.get("/:userId", validateToken, async (req, res) => {
+    const {userId} = req.params;
     await sequelize
-        .query("SELECT * FROM folders")
+        .query("SELECT * FROM folders where userId = ?", {
+            replacements: [userId],
+        })
         .then((data) => {
             res.json({
                 status: 'success',
+                length: data[0].length,
                 data
             })
         })
