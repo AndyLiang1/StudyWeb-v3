@@ -1,0 +1,17 @@
+.nav_container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.rhs{
+    display:flex;
+}
+
+.rhs-btns {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
+
+.test{
+    display:flex;
+}

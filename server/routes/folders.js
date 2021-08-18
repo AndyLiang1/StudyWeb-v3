@@ -16,7 +16,7 @@ router.get("/:userId", validateToken, async (req, res) => {
             res.json({
                 status: 'success',
                 length: data[0].length,
-                data
+                data,
             })
         })
         .catch((error) => {

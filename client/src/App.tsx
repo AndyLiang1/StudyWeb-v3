@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import './App.css';
 import { AuthContext } from "./helpers/AuthContext"
+import {NavigationBar} from "./components/Navbar"
 import { AppContextInterface } from "./helpers/Interfaces"
-import {Container, Card, CardHeader, CardBody, CardFooter} from 'reactstrap'
-
 
 const App: FC = () => {
   const contextValue: AppContextInterface = {
@@ -14,28 +13,7 @@ const App: FC = () => {
   return (
     <AuthContext.Provider value={contextValue}>
       <div className="App">
-        {/* <header>
-          <h1 className="Title">STUDYWEB</h1>
-          {contextValue.logged_in ? (
-            <a className="logout" href="/">Log out</a>
-          ) : (
-            <a className="login" href="/">Log In</a>
-          )}
-        
-        </header> */}
-        <Container>
-          <Card>
-            <CardHeader>
-              Header
-            </CardHeader>
-            <CardBody>
-              Body
-            </CardBody>
-            <CardFooter>
-              Footer
-            </CardFooter>
-          </Card>
-        </Container>
+       <NavigationBar></NavigationBar>
       </div>
     </AuthContext.Provider>
   );
