@@ -22,6 +22,7 @@ export function NavigationBar(props: IAppProps) {
   const toggle = () => {
     setIsActive(!isActive)
   }
+  // const isActive = true
   return (
 
     // <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -55,29 +56,38 @@ export function NavigationBar(props: IAppProps) {
     //   </Container>
     // </Navbar>
     <nav className="navbar">
-      <div className="brad-title">STUDYWEB</div>
+      <div className="brand_title">
+        STUDYWEB
+      </div>
 
-      <a href="#" className="toggle-button" onClick={toggle}>
-        <span className="bar"></span>
-        <span className="bar"></span>
-        <span className="bar"></span>
-      </a>
-      {isActive ? (<div className="navbar-links_V">
+      <div className="navbar_links">
         <ul>
-          <li><a href="#">Folder</a></li>
-          <li><a href="#">Sets</a></li>
-          <li><a href="#">Logout</a></li>
-        </ul>
-      </div>) : null}
-      
-
-      <div className="navbar-links">
-        <ul>
-          <li><a href="#">Folder</a></li>
-          <li><a href="#">Sets</a></li>
-          <li><a href="#">Logout</a></li>
+          <div className="nav_folder_and_sets">
+            <li><a href="#" className="nav_folder">Folders</a></li>
+            <li><a href="#" className="nav_sets">Sets</a></li>
+          </div>
+          <div className = "nav_logout_container">
+            <li><a href="#" className="nav_logout">Logout</a></li>
+          </div>
         </ul>
       </div>
+
+      <div className="toggle_wrapper">
+        <a href="#" className="toggle_button" onClick={toggle}>
+          <span className="bar"></span>
+          <span className="bar"></span>
+          <span className="bar"></span>
+        </a>
+      </div>
+      {isActive ? (
+        <div className="navbar_links_V">
+          <ul>
+            <li><a href="#">Folders</a></li>
+            <li><a href="#">Sets</a></li>
+            <li><a href="#">Logout</a></li>
+          </ul>
+        </div>
+      ) : null}
 
     </nav>
 

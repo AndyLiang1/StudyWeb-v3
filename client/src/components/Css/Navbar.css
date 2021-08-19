@@ -10,132 +10,181 @@
       "Lucida Sans", Arial, sans-serif;
   }
 
-/* .nav_container {
-    height: 8vh;
-    padding-left: 2rem;
-    padding-right: 2rem;
-}
-
-.rhs{
-    display:flex;
-}
-
-.rhs-btns {
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
-}
-
-.test{
-    display:flex;
-} */
-
 .navbar {
     height: 10vh;
     width: 100vw;
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     align-items: center;
     background-color: #333;
     color: white;
-
-   
+    padding-right: 2rem;
 }
 
-.brand-title {
-    font-size:1.5rem;
-    margin: .5rem;
+.brand_title {
+    height: 100%;
+    width: 21rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
 }
 
-.navbar-links ul {
+.navbar_links {
+    height: 100%;
+    width: calc(100% - 21rem);
+    display: flex;
+    flex-direction: row;
+}
+
+.navbar_links ul {
+    height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
     display: flex;
 }
 
-.navbar-links li {
+.navbar_links li {
     list-style: none;
+    display: flex;
+    align-items: center;
+    text-align: center;
 }
 
-.navbar-links li a {
+.navbar_links li a {
+    height: 100%;
     text-decoration: none;
     color: white;
-    padding: 1rem;
-    display: block;
+    display: flex;
+    align-items: center;
+    text-align: center;
 }
 
-.navbar-links li:hover{
+.navbar_links li:hover, .nav_logout:hover{
     background-color: #555;
 }
-/* ========================================================================== */
-/* toggle button */
-/* ========================================================================== */
-.toggle-button {
-    position: absolute;
-    top: 0.75rem;
-    right: 1rem;
-    display:none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
 
+.nav_folder_and_sets {
+    height: 100%;
+    width: 11rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    margin-right: auto;
+}
+.nav_logout_container{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
 }
 
-.toggle-button .bar {
-    height: 0.3rem;
-    width: 100%;
-    background-color: white;
-    border-radius: 1rem;
+.nav_logout {
+    height: 100%;
+    margin-left: auto;
 }
+
+.navbar_links_V {
+    display: none;
+}
+
 /* ========================================================================== */
-/* Second nav bar */
+/* Common attributes like font size  */
 /* ========================================================================== */
+.brand_title {
+    font-size: 3rem;
+}
 
-/*  */
+.navbar_links li a {
+    font-size: 1.5rem;
+    padding: 1rem;
+}
 
-
+.navbar_links_V li a {
+    font-size: 1.3rem;
+    padding: 1rem 0.5rem;
+}
 @media(max-width: 600px){
-    .toggle-button{
+
+    /* ========================================================================== */
+    /* toggle button */
+    /* ========================================================================== */
+    .toggle_wrapper{
+        height: 100%;
+        width: calc(100% - 21rem);
         display: flex;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center; 
+        padding-right: 2rem;
     }
+    .toggle_button {
+        display: flex;
 
-    .navbar{
         flex-direction: column;
-        align-items: flex-start;
+        justify-content: space-between;
+        width: 30px;
+        height: 21px;
+        
+        margin-left: auto;
     }
 
-    .navbar-links {
+    .toggle_button .bar {
+        height: 0.3rem;
+        width: 100%;
+        background-color: white;
+        border-radius: 1rem;
+    }
+
+    .brand_title {
+        height: 100%;
+        width: 21rem;
+        margin-left: 0;   
+    }
+
+    .navbar {
+        padding-right: 0rem;
+    }
+    
+    .navbar_links {
         display: none;
     }
-    .navbar-links_V {
+
+    .navbar_links_V {
+        display: flex;
+        justify-content: space-around;
         width: 100%;
+        background-color: #333;
     }
-    .navbar-links_V ul {
+
+    .navbar_links_V ul {
+        width: 100%;
+
         margin: 0;
         padding: 0;
         display: flex;
         flex-direction: column;
     }
 
-    .navbar-links_V li {
+    .navbar_links_V li {
+        width: 100%;
+
         list-style: none;
         text-align: center;
+
     }
 
-    .navbar-links_V li a {
+    .navbar_links_V li a {
         text-decoration: none;
         color: white;
         padding: 0.5rem 1rem;
         display: block;
     }
 
-    .navbar-links_V li:hover{
+    .navbar_links_V li:hover{
         background-color: #555;
-    }
-
-    
-    /* ====================================================================== */
-    /*  */
-    /* ====================================================================== */
-    
+    }    
 }
