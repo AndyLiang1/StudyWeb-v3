@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 62.5%;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+  }
+
+
+.home_container {
+    width: 100vw;
+    height: 90vh;
+
+    display: flex;
+    background: yellow;
+    
+}
+
+
+
+
+.get_started{
+    height: 100%;
+    width: calc(50% - 50px);
+    background: blue;
+    
+
+}
+
+.image_box{
+    height: 100%;
+    width: calc(50% + 50px);
+    background: red;
+   
+}

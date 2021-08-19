@@ -4,8 +4,8 @@ import { useContext, useState } from 'react';
 
 import { AuthContext } from "../helpers/AuthContext"
 import "./Css/Navbar.css"
-import {LoginPopUp} from "./LoginPopUp"
-import {RegistrationPopUp} from "./RegistrationPopUp"
+import { LoginPopUp } from "./LoginPopUp"
+import { RegistrationPopUp } from "./RegistrationPopUp"
 
 
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap"
@@ -17,7 +17,11 @@ export function NavigationBar(props: IAppProps) {
   console.log(authContext.logged_in)
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
+  const toggle = () => {
+    setIsActive(!isActive)
+  }
   return (
 
     // <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -43,16 +47,41 @@ export function NavigationBar(props: IAppProps) {
     //           <Nav.Link className = "rhs-btns" href="#memes">Sign up</Nav.Link>
     //           <Nav.Link className = "rhs-btns" href="#memes">Login</Nav.Link>
     //           </div>
-              
+
     //         </Nav>
     //       )}
 
 
     //   </Container>
     // </Navbar>
-    <div className = "test"><LoginPopUp></LoginPopUp>
-    <RegistrationPopUp></RegistrationPopUp></div>
-                        
+    <nav className="navbar">
+      <div className="brad-title">STUDYWEB</div>
+
+      <a href="#" className="toggle-button" onClick={toggle}>
+        <span className="bar"></span>
+        <span className="bar"></span>
+        <span className="bar"></span>
+      </a>
+      {isActive ? (<div className="navbar-links_V">
+        <ul>
+          <li><a href="#">Folder</a></li>
+          <li><a href="#">Sets</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>) : null}
+      
+
+      <div className="navbar-links">
+        <ul>
+          <li><a href="#">Folder</a></li>
+          <li><a href="#">Sets</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>
+
+    </nav>
+
+
 
   );
 }

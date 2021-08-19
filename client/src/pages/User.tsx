@@ -1,10 +1,9 @@
 import * as React from 'react';
 
-export interface Props {
-
+export interface IAppProps {
 }
 
-export const Home = (props: Props) => {
+export function User (props: IAppProps) {
   return (
     <div>
       

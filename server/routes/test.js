@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+
+const { QueryTypes } = require("sequelize")
 const { sequelize } = require("../models/index");
 
 /*
@@ -71,5 +73,23 @@ router.delete("/clearCards", async (req, res) => {
         })
     });
 });
+
+router.get("/users/:email",  async (req, res) => {
+    const {email} = req.params;
+    await sequelize
+        .query("SELECT * FROM users WHERE email = ? ", {
+            replacements: [email],
+        })
+        .then((data) => {
+            res.json({
+                status: 'success',
+                length: data[0].length,
+                data,
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+})
 
 module.exports = router

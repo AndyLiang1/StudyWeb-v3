@@ -22,8 +22,7 @@ const transporter = nodemailer.createTransport({
  * @param {string} email email of the user
  * @param {string} hashedPass hashed password
  */
-async function addUser(name, email, hashedPass) {
-    const confirmed = false
+async function addUser(name, email, hashedPass, confirmed) {
     const result = await sequelize
         .query("INSERT INTO users (name, email, password, confirmed) VALUES (?, ?, ?, ?)", {
             replacements: [name, email, hashedPass, confirmed],
@@ -45,13 +44,12 @@ async function addUser(name, email, hashedPass) {
  * @param {string} email the email that the database checks to see if it has it already
  */
 async function checkEmailExist(email) {
-    const users = await sequelize.query("SELECT * FROM users WHERE email = ?", {
+    const users = await sequelize.query("SELECT * FROM users WHERE (email = ? AND confirmed = 1)", {
         replacements: [email],
         type: QueryTypes.SELECT,
     });
     return users;
 }
-
 
 async function editUser(id) {
     const result = await sequelize
@@ -65,74 +63,60 @@ async function editUser(id) {
 }
 
 router.get('/confirmation/:token', async (req, res) => {
-        let {token} = req.params;
-        token = token.substring(0, token.length - 1);
+    console.log('confirming token')
+    let { token } = req.params;
+    token = token.substring(0, token.length - 1);
 
-        await jwt.verify(token, process.env.SECRET_EMAIL, function(err, decoded) {
-           if(err){
-               console.log(`Problem with link in email: ${err}`)
-           } else {
-               editUser(decoded.id)
-               res.redirect('http://localhost:3000/api/v1/users/signin')
-           }
-          });
+    await jwt.verify(token, process.env.SECRET_EMAIL, function (err, decoded) {
+        if (err) {
+            console.log(`Problem with link in email: ${err}`)
+        } else {
+            editUser(decoded.id)
+            res.send('good')
+        }
+    });
 })
 
-async function sendEmail(user, email) {
-    jwt.sign(
-        {
-            name: user.name,
-            id: user.id,
-        },
-        process.env.SECRET_EMAIL,
-        {
-            expiresIn: '6000',
-        },
-        async (err, token) => {
-            if (err) {
-                console.log("Error with sending email")
-                console.log(err)
-            } else {
-                console.log('token created is')
-                console.log(token)
-                const url = `http://localhost:3000/api/v1/users/confirmation/${token}`;
-                await transporter.sendMail({
-                    from: transporter.options.auth.user,
-                    to: email,
-                    subject: 'Confirm StudyWeb Email',
-                    html: `Please click this to confirm email: <a href=${url}">${url}</a>`
-                }, (err, info) => {
-                    if (err) {
-                        console.log(err)
-                        return
-                    }
-                })
-            }
-
-        },
-
-    )
-}
-router.post("/google_auth", async (req, res) => {
-    const { name, email, password } = req.body;
-    console.log(name, email, password)
-    let users = await checkEmailExist(email);
-    if (users.length === 0) {
-        let hashedPass = await bcrypt.hash(password, 10);
-        await addUser(name, email, hashedPass)
+async function sendEmail(email, token) {
+    try {
+        console.log('token created in send email is')
+        console.log(token)
+        const url = `http://localhost:3000/api/v1/users/confirmation/${token}`;
+        await transporter.sendMail({
+            from: transporter.options.auth.user,
+            to: email,
+            subject: 'Confirm StudyWeb Email',
+            html: `Please click this to confirm email: <a href=${url}">${url}</a>`
+        }, (info, error) => {
+            if(error) console.log(error)
+            else console.log(info)
+        })
+    } catch (error) {
+        console.log('Error with seding email')
+        console.log(error)
     }
-    users = await checkEmailExist(email);
-    const accessToken = jwt.sign(
-        { name: users[0].name, id: users[0].id },
-        process.env.SECRET_JWT
-    );
-    res.json({
-        status: 'success',
-        name: users[0].name,
-        id: users[0].id,
-        token: accessToken,
-    });
-});
+}
+
+async function createToken(user, email)  {
+    try {
+        const token = jwt.sign(
+            {
+                name: user.name,
+                id: user.id,
+            },
+            process.env.SECRET_EMAIL,
+            {
+                expiresIn: '1d',
+            }
+        )
+        return token
+
+    } catch (error) {
+        console.log('Error with creating token')
+        console.log(error)
+    }
+}
+
 
 
 /**
@@ -141,39 +125,52 @@ router.post("/google_auth", async (req, res) => {
  * @body email: email of the user
  * @body password: password of the user (will be encrypted)
  */
+
+
+/**
+ * Signing up 
+ * First check, is the email already there, if yes, is it confirmed. 
+ * If both true, account is already used. 
+ * Else account is unused. And we wanna put the account in. 
+ */
 router.post("/signup", async (req, res) => {
     const { name, email, password } = req.body;
-    const users = await checkEmailExist(email);
-    if (users.length === 0) {
+    let users = await checkEmailExist(email);
+    if (users.length != 0 && users[0].confirmed) {
+        res.json({
+            status: 'fail',
+            error: "Email already used!"
+        });
+    } else {
         let hashedPass = await bcrypt.hash(password, 10);
-        const userWithHashedPass = {
-            name: name,
-            email: email,
-            password: hashedPass,
-        };
-        const result = await addUser(name, email, hashedPass);
-
+        const result = await addUser(name, email, hashedPass, false);
         const accessToken = jwt.sign(
             { name: name, id: result[0] },
             process.env.SECRET_JWT
         );
         const user = {
-            name: userWithHashedPass.name,
+            name,
             id: result[0]
         }
-        await sendEmail(user, email,);
+        const confirmToken = await createToken(user, email);
+        await sendEmail(email, confirmToken)
+        console.log("in here, confirm token is")
+        console.log(confirmToken)
+        if (process.env.NODE_ENV == 'development') {
+            res.json({
+                status: "success",
+                user,
+                confirmToken,
+                result,
+            });
+        } else {
+            res.json({
+                status: "success",
+                user,
+                result,
+            });
+        }
 
-        res.json({
-            status: "success",
-            user,
-            token: accessToken,
-            result: result,
-        });
-    } else if (users[0].confirmed) {
-        res.json({
-            status: 'fail',
-            error: "Email already used!"
-        });
     }
 });
 
@@ -219,6 +216,55 @@ router.post("/signin", async (req, res) => {
             })
             .catch((error) => console.log(error));
     }
+});
+
+router.post("/google_auth", async (req, res) => {
+    const { name, email, password } = req.body;
+    let users = await checkEmailExist(email);
+    let accountUsed = users.length;
+    let result;
+
+    if (!accountUsed) {
+        let hashedPass = await bcrypt.hash(password, 10);
+        result = await addUser(name, email, hashedPass, true)
+        const accessToken = jwt.sign(
+            { name, id: result[0] },
+            process.env.SECRET_JWT
+        );
+        res.json({
+            status: 'success',
+            name,
+            id: result[0],
+            token: accessToken,
+        });
+    } else {
+        // this means there exists a confirmed account with that email. 
+        // user could actually be trying to log in
+        try {
+            const match = await bcrypt.compare(password, users[0].password)
+            if (!match) {
+                res.json({
+                    status: 'fail',
+                    error: "The email you are signing into already has an account"
+                });
+            } else {
+                const accessToken = jwt.sign(
+                    { name: users[0].name, id: users[0].id },
+                    process.env.SECRET_JWT
+                );
+                res.json({
+                    status: 'success',
+                    name: users[0].name,
+                    id: users[0].id,
+                    token: accessToken,
+                });
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
 });
 
 

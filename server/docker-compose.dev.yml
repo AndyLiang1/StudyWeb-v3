@@ -9,6 +9,7 @@ services:
       - ./:/app:ro 
       - /app/node_modules
     environment:
+      - NODE_ENV=development
       - PORT=3000
       - DEV_DB_ROOT_USER=root
       - DEV_DB_USERNAME=user
