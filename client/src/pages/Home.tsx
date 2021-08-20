@@ -11,22 +11,24 @@ export interface Props {
 
 export const Home = () => {
   return (
-    <div>
+    <div className = "home">
       <NavigationBar></NavigationBar>
-      <div className="home_container">
-        {/* <div className="image_box">
+      {/* <div className = "boo"></div> */}
+      {/* <div className="home_container">
+        <div className="image_box">
           <h1>hi</h1>
         </div>
         <div className="get_started">
           
         </div>
-        */}
+       
+      </div> */}
+      <div className = "login_pop_up">
+      {/* <LoginPopUp ></LoginPopUp> */}
+
       </div>
-       {/* <div className="test">
-          <LoginPopUp></LoginPopUp>
-  <RegistrationPopUp></RegistrationPopUp>
-        </div> */}
-        {/* <button>Register</button>
+  {/* <RegistrationPopUp></RegistrationPopUp> */}
+         {/* <button>Register</button>
           <button>Login</button> */}
     </div>
   );

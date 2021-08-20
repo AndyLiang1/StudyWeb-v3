@@ -10,8 +10,21 @@
       "Lucida Sans", Arial, sans-serif;
   }
 
+.home {
+    position: relative;
+}
 
-.home_container {
+.login_pop_up {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: red;
+
+}
+
+/* .home_container {
     width: 100vw;
     height: 90vh;
 
@@ -19,10 +32,6 @@
     background: yellow;
     
 }
-
-
-
-
 .get_started{
     height: 100%;
     width: calc(50% - 50px);
@@ -36,4 +45,5 @@
     width: calc(50% + 50px);
     background: red;
    
-}
+} */
+

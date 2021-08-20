@@ -51,58 +51,67 @@ async function checkEmailExist(email) {
     return users;
 }
 
-async function editUser(id) {
-    const result = await sequelize
+async function confirmUserAndDeleteUnconfirmedUsers(id, email) {
+    await sequelize
         .query("UPDATE users SET confirmed = 1 WHERE id = ?", {
             replacements: [id],
+            returning: true,
         })
         .catch((error) => {
             console.log(error);
         });
-    return result;
+    await sequelize
+        .query("DELETE FROM users WHERE (email = ? AND confirmed = 0)", {
+            replacements: [email],
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 router.get('/confirmation/:token', async (req, res) => {
-    console.log('confirming token')
     let { token } = req.params;
-    token = token.substring(0, token.length - 1);
 
-    await jwt.verify(token, process.env.SECRET_EMAIL, function (err, decoded) {
+    await jwt.verify(token, process.env.SECRET_EMAIL, async function (err, decoded) {
         if (err) {
             console.log(`Problem with link in email: ${err}`)
+            res.json({
+                message: err
+            })
         } else {
-            editUser(decoded.id)
-            res.send('good')
+            const result = await confirmUserAndDeleteUnconfirmedUsers(decoded.id, decoded.email)
+            res.json({
+                message: 'Email successfully confirmed. You may log into your account now!'
+            })
+            // res.redirect('http://localhost:3001/')
         }
     });
 })
 
 async function sendEmail(email, token) {
     try {
-        console.log('token created in send email is')
-        console.log(token)
         const url = `http://localhost:3000/api/v1/users/confirmation/${token}`;
         await transporter.sendMail({
             from: transporter.options.auth.user,
             to: email,
             subject: 'Confirm StudyWeb Email',
-            html: `Please click this to confirm email: <a href=${url}">${url}</a>`
+            html: `Please click this to confirm email: <a href=${url}>${url}</a>`
         }, (info, error) => {
-            if(error) console.log(error)
-            else console.log(info)
+            if (error) console.log(error)
         })
     } catch (error) {
-        console.log('Error with seding email')
+        console.log('Error with sending email')
         console.log(error)
     }
 }
 
-async function createToken(user, email)  {
+async function createConfirmToken(user) {
     try {
         const token = jwt.sign(
             {
                 name: user.name,
                 id: user.id,
+                email: user.email,
             },
             process.env.SECRET_EMAIL,
             {
@@ -136,6 +145,7 @@ async function createToken(user, email)  {
 router.post("/signup", async (req, res) => {
     const { name, email, password } = req.body;
     let users = await checkEmailExist(email);
+    console.log(users)
     if (users.length != 0 && users[0].confirmed) {
         res.json({
             status: 'fail',
@@ -144,18 +154,14 @@ router.post("/signup", async (req, res) => {
     } else {
         let hashedPass = await bcrypt.hash(password, 10);
         const result = await addUser(name, email, hashedPass, false);
-        const accessToken = jwt.sign(
-            { name: name, id: result[0] },
-            process.env.SECRET_JWT
-        );
+
         const user = {
             name,
-            id: result[0]
+            id: result[0],
+            email,
         }
-        const confirmToken = await createToken(user, email);
+        const confirmToken = await createConfirmToken(user);
         await sendEmail(email, confirmToken)
-        console.log("in here, confirm token is")
-        console.log(confirmToken)
         if (process.env.NODE_ENV == 'development') {
             res.json({
                 status: "success",
@@ -183,15 +189,9 @@ router.post("/signin", async (req, res) => {
     if (users.length === 0) {
         res.json({
             status: 'fail',
-            error: "User does not exist!"
+            error: "There are no users with this email who have confirmed their account yet!"
         });
-
-        if (!users[0].confirmed) {
-            res.json({
-                status: 'fail',
-                error: "User has not confirmed their email yet!"
-            })
-        }
+        
     } else {
         bcrypt
             .compare(password, users[0].password)

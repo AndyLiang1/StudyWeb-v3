@@ -65,19 +65,7 @@ export function LoginPopUp() {
 
             </div> */}
             <div className="sign_in_side">
-                {/* <GoogleLogin
-            clientId = "817144640879-lu721n4hbhffop5e60iqdk31f3f1e4d4.apps.googleusercontent.com"
-            buttonText = "Login"
-            onSuccess= {responseGoogle}
-            onFailure= {responseGoogle}
-            cookiePolicy = {'single_host_origin'}
-          ></GoogleLogin> */}
-                {/* <Formik>
-              {formik => {
-                  console.log(formik)
-              }}
-          </Formik> */}
-
+                <button className = "sign_in_exit_btn">Exit</button>
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
