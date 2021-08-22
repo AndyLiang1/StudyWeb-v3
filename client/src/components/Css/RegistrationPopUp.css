@@ -11,8 +11,8 @@
   }
 
 .sign_up_page {
-    height: 100vh;
-    width:100vw;
+    height: 100%;
+    width:100%;
     display: flex;
 }
 .image_side {
@@ -21,14 +21,25 @@
     background-color: red;
 }
 
+.sign_up_close_btn {
+    position: absolute;
+    right: 5rem;
+    top: 5rem;
+    transform: scale(4);
+}
+.sign_up_close_btn:hover {
+    cursor: pointer;
+    transform: scale(4.5);
+
+}
+
 /* ========================================================================== */
 /* RHS */
 /* ========================================================================== */
 .sign_up_side {
     height: 100%;
     width:60%;
-    /* background-color: rgb(206, 206, 206); */
-
+    background-color: white;
     padding: 2.5rem 3rem;
     
 
@@ -71,7 +82,6 @@
     padding-bottom: 0.5rem;
 }
 .sign_up_field{
-    font-size: 2rem;
     width: 100%;
     margin-bottom: 1rem;
 
@@ -166,5 +176,6 @@
 }
 
 .sign_up_field {
+    font-size: 2rem;
     height: 3.5rem;
 }

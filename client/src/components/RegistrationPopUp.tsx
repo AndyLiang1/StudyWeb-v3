@@ -4,9 +4,17 @@ import GoogleLogin from 'react-google-login';
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import "./Css/RegistrationPopUp.css"
+import { AiOutlineCloseCircle } from "react-icons/ai";
+
 
 import { IRegistrationForm } from '../helpers/Interfaces'
-export function RegistrationPopUp() {
+import { Dispatch, SetStateAction } from 'react';
+
+interface Props{
+    regPopUpOpen: boolean;
+    setRegPopUpOpen: Dispatch<SetStateAction<boolean>>;
+}
+export function RegistrationPopUp({regPopUpOpen, setRegPopUpOpen}: Props) {
     const [badLogin, setBadLogin] = useState<boolean>(false)
     const initialValues: IRegistrationForm = {
         name: "",
@@ -28,7 +36,6 @@ export function RegistrationPopUp() {
      */
     const signUp = (submittedData: IRegistrationForm) => {
         const { name, email, password, passwordConfirmation } = submittedData
-        console.log(name, email, password, passwordConfirmation)
         const emailLowerCase = email.toLowerCase()
         fetch("http://localhost:3000/api/v1/users/signup", {
             mode: 'cors',
@@ -89,25 +96,17 @@ export function RegistrationPopUp() {
         console.log(error)
         console.log('Google success failed.')
     }
+
+    const closeRegPopUp = ():void => {
+        setRegPopUpOpen(false)
+    }
     return (
         <div className="sign_up_page">
-            {/* <div className="image_side">
+            <div className="image_side">
 
-            </div> */}
+            </div>
             <div className="sign_up_side">
-                {/* <GoogleLogin
-            clientId = "817144640879-lu721n4hbhffop5e60iqdk31f3f1e4d4.apps.googleusercontent.com"
-            buttonText = "Login"
-            onSuccess= {responseGoogle}
-            onFailure= {responseGoogle}
-            cookiePolicy = {'single_host_origin'}
-          ></GoogleLogin> */}
-                {/* <Formik>
-              {formik => {
-                  console.log(formik)
-              }}
-          </Formik> */}
-
+                <AiOutlineCloseCircle className = "sign_up_close_btn" onClick = {closeRegPopUp}></AiOutlineCloseCircle>
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}

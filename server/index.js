@@ -19,7 +19,7 @@ const port = 3000
 // Db Initialization
 // =============================================================================
 const initializeDbWithRetry = async () => {
-    sequelize.sync({ force: true })
+    sequelize.sync()
         .then(result => {
             console.log(result)
         })

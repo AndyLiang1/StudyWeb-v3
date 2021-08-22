@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 62.5%;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+  }
+
+.add_folder_container {
+    height: 100%;
+    width:100%;
+    display: flex;
+    background: red;
+    position: relative;
+}
+
+
+.add_folder_close_btn {
+    position: absolute;
+    right: 3rem;
+    top: 3rem;
+    transform: scale(4);
+}
+.add_folder_close_btn:hover {
+    cursor: pointer;
+    transform: scale(4.5);
+}
+
+/* ========================================================================== */
+/* RHS */
+/* ========================================================================== */
+
+
+
+.add_folder_title_container {
+    height: 15%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    padding-bottom: 0.6rem;
+    font-weight: 500;
+    font-size: 3rem;
+    background: var(--grey);
+    color: white;
+}
+
+.add_folder_content_container{
+    margin-top: 0;
+    height: 85%;
+    width: 100%;
+    background: blue;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+/* ========================================================================== */
+/* Form contents */
+/* ========================================================================== */
+.add_folder_details {
+    width: 100%;
+}
+.add_folder_form{
+    background-color:red;
+    position: relative;
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);     */
+    height: 100%;
+    width: 100%;
+    padding: 1rem;
+}
+
+.add_folder_label {
+    font-weight: 400;
+    padding-bottom: 1rem;
+}
+.add_folder_field{
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.add_folder_button {
+    /* to get rid of the default button look */
+    padding: 0;
+    border: none;
+    background: none;
+
+    margin-top: 1rem;
+    height: 4rem;
+    width: 100%;
+
+    background-color: lightblue;
+}
+
+
+
+
+/* ========================================================================== */
+/* Common attributes like font-size */
+/* ========================================================================== */
+.add_folder_label, .add_folder_button  {
+    font-size: 1.5rem;
+}
+
+
+.add_folder_button {
+    border-radius: 0.1rem;
+}
+
+.add_folder_field {
+    font-size: 2rem;
+    height: 3.5rem;
+}

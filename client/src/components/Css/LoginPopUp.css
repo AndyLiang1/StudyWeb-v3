@@ -14,6 +14,7 @@
     height: 100%;
     width:100%;
     display: flex;
+    background: white;
 }
 .image_side {
     height: 100%;
@@ -21,15 +22,22 @@
     background-color: red;
 }
 
+.sign_in_close_btn {
+    position: absolute;
+    right: 5rem;
+    top: 5rem;
+    transform: scale(4);
+}
+.sign_in_close_btn:hover {
+    cursor: pointer;
+    transform: scale(4.5);
+
+}
+
 /* ========================================================================== */
 /* RHS */
 /* ========================================================================== */
 
-.sign_in_exit_btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
 .sign_in_side {
     height: 100%;
     width:60%;
@@ -78,7 +86,6 @@
 .sign_in_field{
     width: 100%;
     margin-bottom: 1rem;
-
 }
 
 .sign_in_button {
@@ -166,5 +173,6 @@
 
 
 .sign_in_field {
+    font-size: 2rem;
     height: 3.5rem;
 }

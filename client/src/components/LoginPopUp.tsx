@@ -6,9 +6,17 @@ import * as Yup from 'yup'
 import "./Css/LoginPopUp.css"
 
 import { ILoginForm } from "../helpers/Interfaces"
+import { AiOutlineCloseCircle } from 'react-icons/ai';
+import { useHistory} from "react-router-dom"
 
-export function LoginPopUp() {
+
+interface Props{
+    loginPopUpOpen: boolean;
+    setLoginPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
+} 
+export function LoginPopUp({loginPopUpOpen, setLoginPopUpOpen}: Props) {
     const [badLogin, setBadLogin] = useState<boolean>(false)
+    let history = useHistory()
     const initialValues = {
         email: "",
         password: "",
@@ -19,11 +27,40 @@ export function LoginPopUp() {
         password: Yup.string().max(50).required(),
     })
 
-    const onSubmit = (data: any) => {
-        console.log(data)
+    const signIn = (submittedData: ILoginForm) => {
+        const { email, password  } = submittedData
+        console.log(email, password)
+        fetch("http://localhost:3000/api/v1/users/signin", {
+            mode: 'cors',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({
+                email,
+                password
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.log('Error with loggin in.')
+                    console.log(data.error)
+                } else {
+                    
+                    console.log(`Success! Data is: `, data)
+                    localStorage.setItem("accessToken", data.token)
+                    localStorage.setItem("name", data.name)
+                    localStorage.setItem("id", data.id)
+                    localStorage.setItem("loggedIn", "true")
+                    history.push("./user")
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+            
     }
-
-
 
     const googleSuccess = async (res: any) => {
         const result = res?.profileObj; // if DNE, no error, result just  
@@ -47,7 +84,9 @@ export function LoginPopUp() {
                 if (data.error) {
                     console.log(data.error)
                 } else {
-                    console.log('success!', data)
+                    console.log(`Success! data: ${data}`)
+                    history.push("../user")
+
                 }
             })
             .catch((error) => {
@@ -59,17 +98,22 @@ export function LoginPopUp() {
         console.log(error)
         console.log('Google success failed.')
     }
+
+    const closeLoginPopUp = ():void => {
+        setLoginPopUpOpen(false)
+    }
+
     return (
         <div className="sign_in_page">
-            {/* <div className="image_side">
+            <div className="image_side">
 
-            </div> */}
+            </div>
             <div className="sign_in_side">
-                <button className = "sign_in_exit_btn">Exit</button>
-                <Formik
+            <AiOutlineCloseCircle className = "sign_in_close_btn" onClick = {closeLoginPopUp}></AiOutlineCloseCircle>
+                        <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={onSubmit}
+                    onSubmit={signIn}
                 >
                     {({ errors, touched }) => (
                         <Form className="sign_in_form">
@@ -82,7 +126,7 @@ export function LoginPopUp() {
 
                             <div className="sign_in_details">
                                 <label className="sign_in_label required" htmlFor="">Password </label>
-                                <Field className="sign_in_field" name="password1" type="password" />
+                                <Field className="sign_in_field" name="password" type="password" />
                                 {errors.password && touched.password ? (
                                     <div className="sign_in_field_errors">{errors.password}</div>
                                 ) : null}

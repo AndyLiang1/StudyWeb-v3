@@ -1,9 +1,15 @@
 import { createContext } from 'react'
-import {AppContextInterface} from './Interfaces'
+import { AppContextInterface, AppContextPropsInterface } from './Interfaces'
 
-export const AuthContext = createContext<AppContextInterface>(
-    {
-        logged_in: false,
+
+export const AuthContext = createContext<AppContextPropsInterface>({
+    authState: {
         name: "",
-        id: 0
-    })
+        id: 0,
+        loggedIn: false
+    },
+    setAuthState : (auth: AppContextInterface) => {
+        console.log('Set auth state has not been set up yet.')
+    }
+
+})

@@ -14,36 +14,83 @@
     position: relative;
 }
 
-.login_pop_up {
+.reg_pop_up {
     height: 100vh;
     width: 100vw;
     position: absolute;
     top: 0;
     left: 0;
-    background: red;
+}
+
+.login_pop_up {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+      left: 0;
 
 }
 
-/* .home_container {
+.home_container {
     width: 100vw;
     height: 90vh;
 
     display: flex;
-    background: yellow;
-    
+    background-image: url('../../img/flat-lay-minimal-work-space-top-view-office-desk-with-computer-keyboard-clipboard-and-coffee-cup-on-blue-color-background-with-copy-space-illustration-free-vector.jpg');
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
 }
-.get_started{
+.get_started_container{
     height: 100%;
-    width: calc(50% - 50px);
-    background: blue;
-    
+    width: 60%;
+    margin-left: auto;
 
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
-.image_box{
-    height: 100%;
-    width: calc(50% + 50px);
-    background: red;
-   
-} */
+.get_started_container h1 {
+    width: 80%;
+}
+.get_started_container h3 {
+    width: 70%;
+}
 
+.sign_up_btn, .sign_in_btn {
+	color:black;
+	transition: 0.25s;
+	background: none;
+	border: 0.2rem solid;
+	margin: 0.5rem;
+    padding: 0.5rem 2.2rem;
+
+    text-align: center;
+    align-items: center;
+}
+
+.sign_up_btn:hover, .sign_in_btn:hover {
+    box-shadow: inset 0 0 0 5rem rgb(255, 255, 255);
+}
+
+/* ========================================================================== */
+/* Common attributes like font-size and padding */
+/* ========================================================================== */
+
+.get_started_container h1 {
+    margin-bottom: 2rem;
+    font-size: 4rem;
+}
+.get_started_container h3 {
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+}
+
+.sign_up_btn, .sign_in_btn {
+    font-size: 2.2rem;
+    width: 15rem;
+}
