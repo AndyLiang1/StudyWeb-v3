@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 62.5%;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+  }
+.list_sets_page {
+    height: 90vh;
+    width: 100vw;
+    position: relative;
+}
+.profile_section_container {
+    height: 22%;
+    width: 100%;
+}
+/* ========================================================================== */
+/* List of sets  */
+/* ========================================================================== */
+.list_sets_page_list_of_sets {
+    height: 78%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;    
+}
+
+.list_sets_page_one_set{
+    height: 8rem;
+    width: 60%;
+    background: white;
+    margin-left: 3rem;
+    margin-top: 1.5rem;
+
+    flex-direction: column;
+    display: flex;
+    justify-self: start;
+
+    padding-left: 3rem;
+
+    border: 0.2rem solid black;
+    position: relative;
+}
+
+.list_sets_page_one_set:hover {
+    background: var(--lightgrey)
+}
+.list_sets_page_one_set_title_container {
+    height: 60%;
+    width: 100%;
+    display: flex;
+    justify-content: left;
+}
+
+.list_sets_page_one_set_folderImg_container {
+    /* height: 100%;
+    width: 5%;;  */
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+
+.list_sets_page_one_set_folderIcon {
+    height: 4rem;
+    width: 4rem;
+}
+
+.list_sets_page_one_set_title {
+    font-size: 3rem;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    padding-left: 1rem;
+}
+
+.list_sets_page_one_set_cardNum {
+    height: 40%;
+    width: 100%;
+    font-size: 1.5rem;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+
+.list_sets_page_one_set_btn_container {
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+
+    position: absolute;
+    right: 2rem;
+}
+
+.list_sets_page_one_set_edit_btn, .list_sets_page_one_set_delete_btn {
+    height: 2rem;
+    width: 2rem;
+    margin-left: 1rem;
+}

@@ -9,6 +9,8 @@ import { Home } from "./pages/Home"
 import { User } from "./pages/User"
 // import { authState, setAuthState } from "./helpers/AuthContext"
 import { AuthContext } from "./helpers/AuthContext"
+import { ListFolders } from './pages/ListFolders';
+import { ListSets } from './pages/ListSets';
 
 
 
@@ -29,6 +31,8 @@ const App: FC = () => {
           <Switch>
             <Route path="/" exact component={Home}></Route>
             <Route path="/user" exact component={User}></Route>
+            <Route path="/listFolders" exact component = {ListFolders}></Route>
+            <Route path="/listSets" exact component = {ListSets}></Route>
           </Switch>
         </Router>
       </div>

@@ -8,6 +8,11 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING,
           allowNull: false,
         },
+        numSets: {
+          type: DataTypes.INTEGER,
+
+          allowNull: false
+        }
       },
       {
         timestamps: false,

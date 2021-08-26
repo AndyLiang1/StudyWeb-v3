@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING,
           allowNull: false,
         },
+        numCards: {
+          type: DataTypes.INTEGER,
+          allowNull: false
+        }
       },
       {
         timestamps: false,

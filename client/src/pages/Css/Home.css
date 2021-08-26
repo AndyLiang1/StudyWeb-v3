@@ -54,10 +54,10 @@
     text-align: center;
 }
 
-.get_started_container h1 {
+.get_started_container_title {
     width: 80%;
 }
-.get_started_container h3 {
+.get_started_container_subtitle {
     width: 70%;
 }
 
@@ -81,11 +81,11 @@
 /* Common attributes like font-size and padding */
 /* ========================================================================== */
 
-.get_started_container h1 {
+.get_started_container_title {
     margin-bottom: 2rem;
     font-size: 4rem;
 }
-.get_started_container h3 {
+.get_started_container_subtitle {
     margin-bottom: 2rem;
     font-size: 2.2rem;
 }

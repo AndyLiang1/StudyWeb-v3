@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 62.5%;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+  }
+
+.profile_container {
+    height: 100%;
+    width: 100%;
+    background: grey;
+    padding-left: 5rem;
+    position: relative;
+}
+
+.profile_pic_and_info {
+    display: flex;
+    justify-content: left;
+    padding-top: 1rem;
+}
+
+.profile_icon {
+    display: flex;
+    flex-direction: column
+}
+
+.profile_name {
+    font-size: 3.5rem;
+}
+.profile_pic{
+    height: 9rem;
+    width: 9rem;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    padding-right: 3rem;
+  }
+
+.profile_info {
+    padding-left: 3rem;
+}
+.count {
+    font-size: 1.5rem;
+}
+
+.folder_sets_options_container {
+    position: absolute;
+    bottom: 0;
+}
+
+.folders_link, .sets_link{
+    padding-right: 5rem;
+    text-decoration: none;
+    font-size: 2rem;
+    color: white;
+}

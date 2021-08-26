@@ -12,12 +12,14 @@ router.get("/:setId", validateToken, async (req, res) => {
     await sequelize
         .query("SELECT * FROM cards WHERE setId = ?", {
             replacements: [setId],
+            type: QueryTypes.SELECT,
         })
         .then((data) => {
+            console.log(data)
             res.json({
                 status: 'success',
-                length: data[0].length,
-                data
+                length: data.length,
+                cardsList: data
             })
         })
         .catch((error) => {

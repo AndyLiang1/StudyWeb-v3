@@ -9,10 +9,178 @@
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
       "Lucida Sans", Arial, sans-serif;
   }
-
-
-  .add_folder_pop_up {
-    height: 50vh;
-    width: 50vw;
-    background: blue;
+.user_container{
+  height: 100vh;
+  width: 100vw;
+  position: relative;
 }
+.user_content_container {
+  height: 90%;
+  width: 100%;
+  position: relative;
+  background-color: lightskyblue;
+}
+
+.create_container {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+
+}
+
+.create_folder {
+  width: 18rem;
+  height: 70%;
+  position: relative;
+}
+
+.create_folder img {
+  width: 20rem;
+  height: 16rem;
+}
+
+.create_set {
+  width: 14rem;
+  height: 80%;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; 
+  position: relative;
+}
+
+.create_set img {
+  width: 20rem;
+  height: 20rem;
+}
+
+
+.timer {
+  width: 14rem;
+  height: 80%;
+}
+
+.timer img {
+  width: 20rem;
+  height: 20rem;
+}
+
+.plus_btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ========================================================================== */
+/* Folder List */
+/* ========================================================================== */
+
+.folders_container {
+  height: 30%;
+  width: 100%;
+
+  flex-direction: column;
+  display: flex;
+}
+
+.folders_title_viewAll {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.viewAll {
+  font-size: 2rem;
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+}
+
+
+.list_of_folders {
+  height: 90%;
+  width: 100%;
+  padding-bottom: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.one_folder {
+  height: 100%;
+  width: 20%;
+  padding-left: 3rem;
+}
+
+/* ========================================================================== */
+/* Set List */
+/* ========================================================================== */
+.sets_container {
+  height: 30%;
+  width: 100%;
+
+  flex-direction: column;
+  display: flex;
+}
+.sets_title_viewAll {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.viewAll {
+  font-size: 2rem;
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+}
+
+.list_of_sets {
+  height: 90%;
+  width: 100%;
+  padding-bottom: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.one_set {
+  height: 100%;
+  width: 20%;
+  padding-left: 3rem;
+}
+
+
+/* ========================================================================== */
+/* Popups */
+/* ========================================================================== */
+.add_folder_pop_up {
+  height: 25rem;
+  width: 50rem;
+  position: absolute;
+  margin-top: 5%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.add_set_pop_up {
+  height: 25rem;
+  width: 50rem;
+  position: absolute;
+  margin-top: 5%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+

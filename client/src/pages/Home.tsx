@@ -34,8 +34,8 @@ export const Home = () => {
       <div className="home_container">
 
         <div className="get_started_container">
-          <h1>All the study tools you need in one place!</h1>
-          <h3>Create your own cue cards and use a pomodoro timer for effective studying</h3>
+          <h1 className = "get_started_container_title">All the study tools you need in one place!</h1>
+          <h3 className = "get_started_container_subtitle">Create your own cue cards and use a pomodoro timer for effective studying</h3>
           <div className="get_started_button_container">
             <button onClick={showRegPopUp} className="sign_up_btn">Register</button>
             <button onClick={showLoginPopUp} className="sign_in_btn">Login</button>

@@ -8,6 +8,7 @@ import "./Css/LoginPopUp.css"
 import { ILoginForm } from "../helpers/Interfaces"
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useHistory} from "react-router-dom"
+import { AuthContext } from '../helpers/AuthContext';
 
 
 interface Props{
@@ -15,6 +16,7 @@ interface Props{
     setLoginPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
 } 
 export function LoginPopUp({loginPopUpOpen, setLoginPopUpOpen}: Props) {
+    const { authState, setAuthState } = React.useContext(AuthContext);
     const [badLogin, setBadLogin] = useState<boolean>(false)
     let history = useHistory()
     const initialValues = {
@@ -26,10 +28,9 @@ export function LoginPopUp({loginPopUpOpen, setLoginPopUpOpen}: Props) {
         email: Yup.string().email('Invalid email').required(),
         password: Yup.string().max(50).required(),
     })
-
+    
     const signIn = (submittedData: ILoginForm) => {
         const { email, password  } = submittedData
-        console.log(email, password)
         fetch("http://localhost:3000/api/v1/users/signin", {
             mode: 'cors',
             headers: {
@@ -48,12 +49,15 @@ export function LoginPopUp({loginPopUpOpen, setLoginPopUpOpen}: Props) {
                     console.log(data.error)
                 } else {
                     
-                    console.log(`Success! Data is: `, data)
+                    // console.log(`Success! Data is: `, data)
                     localStorage.setItem("accessToken", data.token)
                     localStorage.setItem("name", data.name)
                     localStorage.setItem("id", data.id)
                     localStorage.setItem("loggedIn", "true")
                     history.push("./user")
+           
+                    
+                    
                 }
             })
             .catch((error) => {

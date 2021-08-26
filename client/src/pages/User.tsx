@@ -1,11 +1,19 @@
 import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { NavigationBar } from "../components/Navbar"
-import { AddFolder } from "../components/AddFolder"
+import { AddFolderPopUp } from "../components/CRUD_folder/AddFolderPopUp"
+import { AddSetPopUp } from "../components/CRUD_set/AddSetPopUp"
 import { AuthContext } from '../helpers/AuthContext';
 import { IFolder, ISet } from "../helpers/Interfaces"
+import { Folder } from "../components/Folder"
+import { Set } from "../components/Set"
+import folderImg from "../img/greyfolder.png"
+import flashcardImg from "../img/flashcards.png"
+import timerImg from "../img/timer.png"
 
 import "./Css/User.css"
+import { AppContextInterface } from '../helpers/Interfaces';
+import { useHistory } from 'react-router-dom';
 
 export interface IAppProps {
 }
@@ -15,54 +23,147 @@ export function User(props: IAppProps) {
   const [folders, setFolders] = useState<IFolder[]>([])
   const [sets, setSets] = useState<ISet[]>([])
   const [addFolderPopUpOpen, setAddFolderPopUpOpen] = useState<boolean>(false)
+  const [addSetPopUpOpen, setAddSetPopUpOpen] = useState<boolean>(false)
+  let history = useHistory()
 
-  const setAuth = async (id: string) => {
-    await setAuthState({
-      name: localStorage.getItem("name"),
-      id: parseInt(id),
-      loggedIn: true
-    })
-  }
-
-  const addFolder = (folderName: string) => {
-    fetch(`http://localhost:3000/folders`, {
-      method: "POST",
+  const getFolderList = async () => {
+    fetch(`http://localhost:3000/api/v1/folders/${authState.id}`, {
       headers: {
-        "Content-type": "application/json",
-        accessToken: localStorage.getItem("accessToken")!
+        accessToken: localStorage.getItem("accessToken")!,
       },
-      body: JSON.stringify({
-        folderName,
-        userId: authState.id
-      }),
     })
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        setFolders(responseJSON.foldersList)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
+
+  const getSetList = async () => {
+    fetch(`http://localhost:3000/api/v1/sets/all/${authState.id}`, {
+      headers: {
+        accessToken: localStorage.getItem("accessToken")!,
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        console.log('sets list', responseJSON.foldersList)
+        setSets(responseJSON.setsList)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const openAddFolderPopUp = () => {
+    setAddFolderPopUpOpen(true)
+    if (addSetPopUpOpen) {
+      setAddSetPopUpOpen(false)
+    }
+  }
+
+  const openAddSetPopUp = () => {
+    setAddSetPopUpOpen(true)
+    if (addFolderPopUpOpen) {
+      setAddFolderPopUpOpen(false)
+    }
+  }
+
+  const fakeSet = {
+    id: 100,
+    name: "set1",
+    numCards: 1,
+    folderId: 1,
+    userId: 1
+  }
+
 
   useEffect(() => {
-    setAuth(localStorage.getItem("id")!)
+    setAuthState(
+      {
+        name: localStorage.getItem("name")!,
+        id: parseInt(localStorage.getItem("id")!),
+        loggedIn: true
+      }
+    )
   }, [])
 
-  return (
-    <div>
-      <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
-      <div className="user_container">
-        <div className="create_container">
-          <div className="create_folder">
-            <button>+</button>
-            <div className="add_folder_pop_up">
-            <AddFolder
-              addFolderPopUpOpen = {addFolderPopUpOpen}
-            ></AddFolder>
-            </div>
-            
-          </div>
-          <div className="create_set">
+  useEffect(() => {
+    getFolderList()
+    getSetList()
+  }, [authState])
 
+
+  return (
+    <div className="user_container">
+      <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
+      {addFolderPopUpOpen ? (
+        <div className="add_folder_pop_up">
+          <AddFolderPopUp
+            setAddFolderPopUpOpen={setAddFolderPopUpOpen}
+          ></AddFolderPopUp>
+        </div>
+      ) : null}
+      {addSetPopUpOpen ? (
+        <div className="add_set_pop_up">
+          <AddSetPopUp
+            setAddSetPopUpOpen={setAddSetPopUpOpen}
+          ></AddSetPopUp>
+        </div>
+      ) : null}
+      <div className="user_content_container">
+        <div className="create_container">
+          <div onClick={openAddFolderPopUp} className="create_folder">
+            <h1 className="plus_btn">+</h1>
+
+            <img src={folderImg}></img>
+          </div>
+
+          <div onClick={openAddSetPopUp} className="create_set">
+            <h1 className="plus_btn">+</h1>
+            <img src={flashcardImg}></img>
+          </div>
+
+          <div className="timer">
+            <img src={timerImg}></img>
           </div>
         </div>
 
-        <div className="list_of_folders"></div>
-        <div className="list_of_sets"></div>
+        <div className="folders_container">
+          <div className="folders_title_viewAll">
+            <h1 className="folders_container_title">Your folders</h1>
+            <a className = "viewAll" onClick = {() => {history.push("./listFolders")}}>View All &gt; </a>
+          </div>
+
+          <div className="list_of_folders">
+            {folders.map((oneFolder) => {
+              return (
+                <div className="one_folder">
+                  <Folder folder={oneFolder}></Folder>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        <div className="sets_container">
+          <div className="sets_title_viewAll">
+          <h1 className="sets_container_title">Your sets</h1>
+            <a className = "viewAll" onClick = {() => {history.push("./listSets")}}>View All &gt; </a>
+          </div>
+          <div className="list_of_sets">
+            {sets.map((oneSet) => {
+              return (
+                <div className="one_set">
+                  <Set set={oneSet}></Set>
+                </div>
+              )
+            })}
+          </div>
+
+        </div>
       </div>
     </div>
   );

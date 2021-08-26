@@ -6,18 +6,40 @@ const { sequelize } = require("../models/index")
 
 const { validateToken } = require("../middlewares/authenticateUser")
 
+router.get("/all/:userId", validateToken, async (req, res) => {
+    const { userId } = req.params;
+
+    await sequelize
+        .query("SELECT * FROM sets where userId = ?", {
+            replacements: [userId],
+            type: QueryTypes.SELECT,
+        })
+        .then((data) => {
+            console.log(`sending back`, data)
+            res.json({
+                status: 'success',
+                length: data.length,
+                setsList: data
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+})
 router.get("/:folderId", validateToken, async (req, res) => {
-    const {folderId} = req.params;
+    const { folderId } = req.params;
 
     await sequelize
         .query("SELECT * FROM sets where folderId = ?", {
             replacements: [folderId],
+            type: QueryTypes.SELECT,
+
         })
         .then((data) => {
             res.json({
                 status: 'success',
-                length: data[0].length,
-                data
+                length: data.length,
+                setsList: data
             })
         })
         .catch((error) => {
@@ -26,10 +48,10 @@ router.get("/:folderId", validateToken, async (req, res) => {
 })
 
 router.post("/", validateToken, async (req, res) => {
-    const { setName, folderId } = req.body
+    const { setName, folderId, userId } = req.body
     await sequelize
-        .query("INSERT INTO sets (name, folderId) VALUES (?, ?)", {
-            replacements: [setName, folderId],
+        .query("INSERT INTO sets (name, folderId, numCards, userId) VALUES (?, ?, ?, ?)", {
+            replacements: [setName, folderId, 0, userId],
         })
         .then((data) => {
             res.json({
@@ -38,7 +60,20 @@ router.post("/", validateToken, async (req, res) => {
                 set: {
                     name: setName,
                     folderId,
+                    numCards: 0,
                 }
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+    await sequelize
+        .query("UPDATE folders SET numSets = numSets + 1 WHERE id = ?;")
+        .then((data) => {
+            res.json({
+                status: 'success',
+                data,
             })
         })
         .catch((error) => {

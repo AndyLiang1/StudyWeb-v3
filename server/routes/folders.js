@@ -7,16 +7,20 @@ const { sequelize } = require("../models/index")
 const { validateToken } = require("../middlewares/authenticateUser")
 
 router.get("/:userId", validateToken, async (req, res) => {
+    console.log('in here')
     const {userId} = req.params;
     await sequelize
         .query("SELECT * FROM folders where userId = ?", {
             replacements: [userId],
+            type: QueryTypes.SELECT,
+
         })
         .then((data) => {
+            console.log(data)
             res.json({
                 status: 'success',
-                length: data[0].length,
-                data,
+                length: data.length,
+                foldersList: data,
             })
         })
         .catch((error) => {
@@ -27,8 +31,8 @@ router.get("/:userId", validateToken, async (req, res) => {
 router.post("/", validateToken, async (req, res) => {
     const { folderName, userId } = req.body
     await sequelize
-        .query("INSERT INTO folders (name, userId) VALUES (?, ?)", {
-            replacements: [folderName, userId],
+        .query("INSERT INTO folders (name, userId, numSets) VALUES (?, ?, ?)", {
+            replacements: [folderName, userId, 0],
         })
         .then((data) => {
             res.json({
@@ -37,6 +41,7 @@ router.post("/", validateToken, async (req, res) => {
                 folder: {
                     name: folderName,
                     userId,
+                    numSets: 0
                 }
             })
         })
