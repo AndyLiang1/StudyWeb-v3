@@ -1,6 +1,7 @@
 
 import * as React from 'react';
 import { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import "./Css/Navbar.css"
 
@@ -10,6 +11,8 @@ export interface IAppProps {
 
 export function NavigationBar({loggedIn}:IAppProps) {
   const [isActive, setIsActive] = useState(false);
+  let history = useHistory()
+
 
   const toggle = () => {
     setIsActive(!isActive)
@@ -20,6 +23,16 @@ export function NavigationBar({loggedIn}:IAppProps) {
     localStorage.removeItem("name");
     localStorage.removeItem("id");
     localStorage.removeItem("loggedIn");
+  }
+
+  const goToDiffPage = (nameOfPage: string) => {
+    if(nameOfPage === 'home') {
+      history.push('./')
+    } else if (nameOfPage === 'folder') {
+      history.push('./listFolders')
+    } else {
+      history.push('./listSets')
+    }
   }
 
   return (
@@ -52,6 +65,7 @@ export function NavigationBar({loggedIn}:IAppProps) {
           {isActive ? (
             <div className="navbar_links_V">
               <ul>
+                <li><a onClick = {() => {goToDiffPage('home')}}>Home</a></li>
                 <li><a href="#">Folders</a></li>
                 <li><a href="#">Sets</a></li>
                 <li><a href="#">Logout</a></li>

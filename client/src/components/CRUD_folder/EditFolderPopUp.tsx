@@ -2,7 +2,7 @@ import { Formik, Form, Field } from 'formik';
 import * as React from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import * as Yup from 'yup'
-import "./Css/EditFolderPopUp.css"
+import "../Css/AddEditFolderPopUp.css"
 import { IFolderForm } from "../../helpers/Interfaces"
 import { AuthContext } from '../../helpers/AuthContext';
 

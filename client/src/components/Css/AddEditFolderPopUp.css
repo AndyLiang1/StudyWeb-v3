@@ -10,7 +10,7 @@
       "Lucida Sans", Arial, sans-serif;
   }
 
-.add_folder_container {
+.add_folder_container, .edit_folder_container {
     height: 100%; 
     width: 100%;
     background: white;
@@ -19,14 +19,14 @@
     /* border: 0.1rem solid black; */
 }
 
-.add_folder_form {
+.add_folder_form, .edit_folder_form {
     height: 100%;
     width: 100%;
 }
 /* ========================================================================== */
 /* Title bar */
 /* ========================================================================== */
-.add_folder_title_container {
+.add_folder_title_container, .edit_folder_title_container {
     height: 30%;
     width: 100%;
     background: var(--grey);
@@ -40,19 +40,19 @@
     border-radius: 0.5rem 0.5rem 0rem 0rem;
 
 }
-.add_folder_close_btn {
+.add_folder_close_btn, .edit_folder_close_btn {
     transform: scale(3);
     color: white;
 }
 
-.add_folder_close_btn:hover{
+.add_folder_close_btn:hover, .edit_folder_close_btn:hover {
     transform: scale(3.5);
 }
 
 /* ========================================================================== */
 /* Content part */
 /* ========================================================================== */
-.add_folder_content_container {
+.add_folder_content_container, .edit_folder_content_container{
     height: 70%;
     width: 100%;
     padding: 1rem;
@@ -62,22 +62,22 @@
     align-items: center;
 }
 
-.add_folder_details {
+.add_folder_details, .edit_folder_details {
     width: 100%;
 }
 
-.add_folder_label {
+.add_folder_label, .edit_folder_label {
     font-weight: 400;
     padding-bottom: 1rem;
 }
 
-.add_folder_field {
+.add_folder_field, .edit_folder_field {
     width: 100%;
     margin-bottom: 1rem;
     border: 0.1rem black solid;
 }
 
-.add_folder_button {
+.add_folder_button, .edit_folder_button {
     /* to get rid of the default button look */
     padding: 0;
     border: none;
@@ -94,17 +94,15 @@
 /* ========================================================================== */
 /* Common attributes like font-size */
 /* ========================================================================== */
-.add_folder_label, .add_folder_button  {
+.add_folder_label, .add_folder_button, .edit_folder_label, .edit_folder_button {
     font-size: 1.5rem;
 }
 
-
-.add_folder_button{
+.add_folder_button, .edit_folder_button {
     border-radius: 0.1rem;
 }
 
-
-.add_folder_field {
+.add_folder_field, .edit_folder_field {
     font-size: 2rem;
     height: 3.5rem;
 }

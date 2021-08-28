@@ -7,7 +7,7 @@ const { sequelize } = require("../models/index")
 const { validateToken } = require("../middlewares/authenticateUser")
 
 router.get("/:setId", validateToken, async (req, res) => {
-    const {setId} = req.params;
+    const { setId } = req.params;
 
     await sequelize
         .query("SELECT * FROM cards WHERE setId = ?", {
@@ -48,6 +48,20 @@ router.post("/", validateToken, async (req, res) => {
         .catch((error) => {
             console.log(error);
         });
+
+    await sequelize
+        .query("UPDATE sets SET numCards = numCards + 1 WHERE id = ?;", {
+            replacements: [setId]
+        })
+        .then((data) => {
+            res.json({
+                status: 'success',
+                data,
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 })
 
 router.put("/", validateToken, async (req, res) => {
@@ -82,7 +96,22 @@ router.delete("/:id", validateToken, async (req, res) => {
         .catch((error) => {
             console.log(error);
         });
+
+    await sequelize
+        .query("UPDATE sets SET numCards = numCards - 1 WHERE id = ?;", {
+            replacements: [setId]
+        })
+        .then((data) => {
+            res.json({
+                status: 'success',
+                data,
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 })
+
 
 module.exports = router
 

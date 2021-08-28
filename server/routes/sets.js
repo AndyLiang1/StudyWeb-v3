@@ -69,7 +69,9 @@ router.post("/", validateToken, async (req, res) => {
         });
 
     await sequelize
-        .query("UPDATE folders SET numSets = numSets + 1 WHERE id = ?;")
+        .query("UPDATE folders SET numSets = numSets + 1 WHERE id = ?;", {
+            replacements: [folderId],
+        })
         .then((data) => {
             res.json({
                 status: 'success',
@@ -83,6 +85,7 @@ router.post("/", validateToken, async (req, res) => {
 
 router.put("/", validateToken, async (req, res) => {
     const { newSetName, id } = req.body
+    console.log('in backend')
     await sequelize
         .query("UPDATE sets SET name = ? WHERE id = ?", {
             replacements: [newSetName, id],
@@ -98,8 +101,8 @@ router.put("/", validateToken, async (req, res) => {
         });
 })
 
-router.delete("/:id", validateToken, async (req, res) => {
-    const { id } = req.params
+router.delete("/:id/:folderId", validateToken, async (req, res) => {
+    const { id, folderId } = req.params
     await sequelize
         .query("DELETE FROM sets WHERE id = ?", {
             replacements: [id],
@@ -108,6 +111,20 @@ router.delete("/:id", validateToken, async (req, res) => {
             res.json({
                 status: 'success',
                 data
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+    await sequelize
+        .query("UPDATE folders SET numSets = numSets - 1 WHERE id = ?;", {
+            replacements: [folderId],
+        })
+        .then((data) => {
+            res.json({
+                status: 'success',
+                data,
             })
         })
         .catch((error) => {

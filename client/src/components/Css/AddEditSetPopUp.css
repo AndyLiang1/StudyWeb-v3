@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 62.5%;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+  }
+
+.add_set_container, .edit_set_container {
+    height: 100%; 
+    width: 100%;
+    background: white;
+    border-radius: 0.5rem;
+
+    /* border: 0.1rem solid black; */
+}
+
+.add_set_form, .edit_set_form {
+    height: 100%;
+    width: 100%;
+}
+/* ========================================================================== */
+/* Title bar */
+/* ========================================================================== */
+.add_set_title_container, .edit_set_title_container {
+    height: 30%;
+    width: 100%;
+    background: var(--grey);
+    color: white;
+    padding: 1rem;
+    padding-right: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    border-radius: 0.5rem 0.5rem 0rem 0rem;
+
+}
+.add_set_close_btn, .edit_set_close_btn {
+    transform: scale(3);
+    color: white;
+}
+
+.add_set_close_btn:hover, .edit_set_close_btn:hover {
+    transform: scale(3.5);
+}
+
+/* ========================================================================== */
+/* Content part */
+/* ========================================================================== */
+.add_set_content_container, .edit_set_content_container {
+    height: 70%;
+    width: 100%;
+    padding: 1rem;
+    flex-direction: column;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.add_set_details, .edit_set_details {
+    width: 100%;
+}
+
+.add_set_label, .edit_set_label {
+    font-weight: 400;
+    padding-bottom: 1rem;
+}
+
+.add_set_field, .edit_set_field {
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 0.1rem black solid;
+}
+
+.add_set_button, .edit_set_button {
+    /* to get rid of the default button look */
+    padding: 0;
+    border: none;
+    background: none;
+
+    margin-top: 1rem;
+    height: 4rem;
+    width: 100%;
+
+    background-color: lightblue;
+}
+
+
+/* ========================================================================== */
+/* Common attributes like font-size */
+/* ========================================================================== */
+.add_set_label, .add_set_button, .edit_set_label, .edit_set_button  {
+    font-size: 1.5rem;
+}
+
+
+.add_set_button, .edit_set_button {
+    border-radius: 0.1rem;
+}
+
+
+.add_set_field, .edit_set_field {
+    font-size: 2rem;
+    height: 3.5rem;
+}
