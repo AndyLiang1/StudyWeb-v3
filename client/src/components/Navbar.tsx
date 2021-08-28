@@ -9,12 +9,13 @@ export interface IAppProps {
   loggedIn: boolean;
 }
 
-export function NavigationBar({loggedIn}:IAppProps) {
+export function NavigationBar({ loggedIn }: IAppProps) {
   const [isActive, setIsActive] = useState(false);
   let history = useHistory()
 
 
   const toggle = () => {
+    console.log('isactive', isActive)
     setIsActive(!isActive)
   }
 
@@ -25,15 +26,6 @@ export function NavigationBar({loggedIn}:IAppProps) {
     localStorage.removeItem("loggedIn");
   }
 
-  const goToDiffPage = (nameOfPage: string) => {
-    if(nameOfPage === 'home') {
-      history.push('./')
-    } else if (nameOfPage === 'folder') {
-      history.push('./listFolders')
-    } else {
-      history.push('./listSets')
-    }
-  }
 
   return (
     <nav className="navbar">
@@ -46,8 +38,9 @@ export function NavigationBar({loggedIn}:IAppProps) {
           <div className="navbar_links">
             <ul>
               <div className="nav_folder_and_sets">
-                <li><a href="#" className="nav_folder">Folders</a></li>
-                <li><a href="#" className="nav_sets">Sets</a></li>
+                <li><a href="/user">Home</a></li>
+                <li><a href="/listFolders" className="nav_folder">Folders</a></li>
+                <li><a href="/listSets" className="nav_sets">Sets</a></li>
               </div>
               <div className="nav_logout_container">
                 <li><a href="/" className="nav_logout" onClick={logout}>Logout</a></li>
@@ -65,10 +58,10 @@ export function NavigationBar({loggedIn}:IAppProps) {
           {isActive ? (
             <div className="navbar_links_V">
               <ul>
-                <li><a onClick = {() => {goToDiffPage('home')}}>Home</a></li>
-                <li><a href="#">Folders</a></li>
-                <li><a href="#">Sets</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="/user">Home</a></li>
+                <li><a href="/listFolders">Folders</a></li>
+                <li><a href="/listSets">Sets</a></li>
+                <li><a href="/">Logout</a></li>
               </ul>
             </div>
           ) : null}

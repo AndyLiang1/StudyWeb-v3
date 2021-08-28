@@ -68,7 +68,7 @@
 
 .nav_folder_and_sets {
     height: 100%;
-    width: 11rem;
+    width: 20rem;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -89,6 +89,7 @@
 
 .navbar_links_V {
     display: none;
+    z-index: 2;
 }
 
 /* ========================================================================== */
