@@ -45,15 +45,19 @@ export interface ISet {
     userId: number;
 }
 
-export interface IFolderForm {
-    folderName: string;
-}
-
-export interface ISetForm {
-    setName: string;
-}
-
-export interface ICardForm {
+export interface ICard {
+    id: number;
     question: string;
     answer: string;
+    setId: number;
 }
+
+export interface IAddForm {
+    name: string;
+    folderToAddTo?: string;
+}
+
+export interface IEditForm {
+    newName: string;
+}
+

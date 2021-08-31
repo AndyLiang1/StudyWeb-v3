@@ -6,35 +6,32 @@ import { NavigationBar } from "../components/Navbar"
 import { EditPopUp } from "../components/CRUD/EditPopUp"
 import { Profile } from '../components/Profile';
 import { AuthContext } from '../helpers/AuthContext';
-import { IFolder, ISet } from '../helpers/Interfaces';
+import { ISet } from '../helpers/Interfaces';
 import "./Css/ListPage.css"
-import { DeletePopUp } from '../components/CRUD/DeletePopUp';
-import { useLocation } from 'react-router-dom';
-import { BsPlusSquare } from 'react-icons/bs';
+import { DeletePopUp } from '../components/CRUD/DeletePopUp'
+import { useLocation } from "react-router-dom";
 import { AiOutlinePlus } from 'react-icons/ai';
 import { AddPopUp } from '../components/CRUD/AddPopUp';
-import { useHistory } from 'react-router-dom';
 
 
-export interface IListSetProps {
+export interface IListOneFolderProps {
 
 }
 
-export function ListSets({ }: IListSetProps) {
+export function ListOneFolder(props: IListOneFolderProps) {
     const { authState, setAuthState } = useContext(AuthContext);
-    const [numFolders, setNumFolders] = useState<number>(0)
     const [numSets, setNumSets] = useState<number>(0)
     const [addSetPopUpOpen, setAddSetPopUpOpen] = useState<boolean>(false)
     const [editSetPopUpOpen, setEditSetPopUpOpen] = useState<boolean>(false)
     const [deleteSetPopUpOpen, setDeleteSetPopUpOpen] = useState<boolean>(false)
     const [setId, setSetId] = useState<number>(0)
     const [folderId, setFolderId] = useState<number>(0)
-    const [folders, setFolders] = useState<IFolder[]>([])
     const [sets, setSets] = useState<ISet[]>([])
-    const history = useHistory()
+    const location = useLocation<{ folderIdFromURL: number, numFolders: number, folderName: string }>()
+    const { folderIdFromURL, numFolders, folderName } = location.state
+
 
     const getSetList = async () => {
-        console.log(authState.id)
         fetch(`http://localhost:3000/api/v1/sets/all/${authState.id}`, {
             headers: {
                 accessToken: localStorage.getItem("accessToken")!,
@@ -42,26 +39,18 @@ export function ListSets({ }: IListSetProps) {
         })
             .then((response) => response.json())
             .then((responseJSON) => {
-                setSets(responseJSON.setsList)
                 setNumSets(responseJSON.length)
+                const setsInFolder: ISet[] = responseJSON.setsList.filter((oneSet: ISet) => {
+                    if (oneSet.folderId === folderIdFromURL) {
+                        return oneSet
+                    }
+                })
+                console.log(setsInFolder)
+                setSets(setsInFolder)
             })
             .catch((error) => {
                 console.log(error);
             })
-        fetch(`http://localhost:3000/api/v1/folders/${authState.id}`, {
-            headers: {
-                accessToken: localStorage.getItem("accessToken")!,
-            },
-        })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                setFolders(responseJSON.foldersList)
-                setNumFolders(responseJSON.length)
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
 
     }
 
@@ -100,24 +89,9 @@ export function ListSets({ }: IListSetProps) {
         setDeleteSetPopUpOpen(true)
     }
 
-
     const addSet = () => {
         setAddSetPopUpOpen(true)
     }
-
-    const getCards = ((event: React.MouseEvent<HTMLElement>) => {
-        const setId: number = parseInt(event.currentTarget.getAttribute("data-setid")!)
-        const setName: string = event.currentTarget.getAttribute("data-setname")!
-        history.push({
-            pathname: "/listCards",
-            state: {
-                setId,
-                setName,
-                numFolders,
-                numSets,
-            }
-        })
-    })
 
     return (
         <div className="list_page">
@@ -129,7 +103,7 @@ export function ListSets({ }: IListSetProps) {
                     numSets={numSets}
                 />
             </div>
-            <h1 className="description">Your sets</h1>
+            <h1 className="description">{folderName}'s sets</h1>
             <div
                 onClick={addSet}
                 className="add_item"
@@ -139,13 +113,7 @@ export function ListSets({ }: IListSetProps) {
             <div className="list_page_content">
                 {sets.map((oneSet) => {
                     return (
-                        <div
-                            onClick={getCards}
-                            className="one_item"
-                            key={oneSet.id}
-                            data-setid={oneSet.id}
-                            data-setname={oneSet.name}
-                        >
+                        <div className="one_item" key={oneSet.id}>
                             <div className="one_item_title_container">
                                 <div className="one_item_folderImg_container">
                                     <RiStackFill className="one_item_folderIcon"></RiStackFill>
@@ -178,10 +146,8 @@ export function ListSets({ }: IListSetProps) {
                     <AddPopUp
                         setAddPopUpOpen={setAddSetPopUpOpen}
                         getFolderOrSetOrCardList={getSetList}
-                        folderId={folderId}
+                        folderId={folderIdFromURL}
                         itemToAdd="set"
-                        listFolders={folders}
-                        showSecondBox={true}
                     ></AddPopUp>
                 </div>
             ) : null}
@@ -206,8 +172,6 @@ export function ListSets({ }: IListSetProps) {
                     ></DeletePopUp>
                 </div>
             ) : null}
-
-
         </div >
     );
 }

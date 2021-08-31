@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { NavigationBar } from "../components/Navbar"
-import { AddFolderPopUp } from "../components/CRUD_folder/AddFolderPopUp"
-import { AddSetPopUp } from "../components/CRUD_set/AddSetPopUp"
+import { AddPopUp } from "../components/CRUD/AddPopUp"
 import { AuthContext } from '../helpers/AuthContext';
 import { IFolder, ISet } from "../helpers/Interfaces"
 import { Folder } from "../components/Folder"
@@ -101,16 +100,18 @@ export function User(props: IAppProps) {
       <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
       {addFolderPopUpOpen ? (
         <div className="add_folder_pop_up">
-          <AddFolderPopUp
-            setAddFolderPopUpOpen={setAddFolderPopUpOpen}
-          ></AddFolderPopUp>
+          <AddPopUp
+            setAddPopUpOpen={setAddFolderPopUpOpen}
+            itemToAdd = "folder"
+          ></AddPopUp>
         </div>
       ) : null}
       {addSetPopUpOpen ? (
         <div className="add_set_pop_up">
-          <AddSetPopUp
-            setAddSetPopUpOpen={setAddSetPopUpOpen}
-          ></AddSetPopUp>
+          <AddPopUp
+            setAddPopUpOpen={setAddSetPopUpOpen}
+            itemToAdd = "set"
+          ></AddPopUp>
         </div>
       ) : null}
       <div className="user_content_container">

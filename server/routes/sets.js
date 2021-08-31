@@ -49,6 +49,7 @@ router.get("/:folderId", validateToken, async (req, res) => {
 
 router.post("/", validateToken, async (req, res) => {
     const { setName, folderId, userId } = req.body
+    console.log(setName, folderId, userId)
     await sequelize
         .query("INSERT INTO sets (name, folderId, numCards, userId) VALUES (?, ?, ?, ?)", {
             replacements: [setName, folderId, 0, userId],
@@ -67,20 +68,22 @@ router.post("/", validateToken, async (req, res) => {
         .catch((error) => {
             console.log(error);
         });
-
-    await sequelize
-        .query("UPDATE folders SET numSets = numSets + 1 WHERE id = ?;", {
-            replacements: [folderId],
-        })
-        .then((data) => {
-            res.json({
-                status: 'success',
-                data,
+    if (folderId) {
+        await sequelize
+            .query("UPDATE folders SET numSets = numSets + 1 WHERE id = ?;", {
+                replacements: [folderId],
             })
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            .then((data) => {
+                res.json({
+                    status: 'success',
+                    data,
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
 })
 
 router.put("/", validateToken, async (req, res) => {

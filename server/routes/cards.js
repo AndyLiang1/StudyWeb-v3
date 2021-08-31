@@ -65,10 +65,10 @@ router.post("/", validateToken, async (req, res) => {
 })
 
 router.put("/", validateToken, async (req, res) => {
-    const { new_question, new_answer, id } = req.body
+    const { newQuestion, newAnswer, id } = req.body
     await sequelize
         .query("UPDATE cards SET question = ?, answer = ? WHERE id = ?", {
-            replacements: [new_question, new_answer, id],
+            replacements: [newQuestion, newAnswer, id],
         })
         .then((data) => {
             res.json({
