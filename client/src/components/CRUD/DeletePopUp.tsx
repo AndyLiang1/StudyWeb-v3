@@ -9,18 +9,22 @@ export interface IDeletePopUpProps {
     folderId?: number;
     cardId?:number;
     itemToDelete: string;
+    displayedIndex?: number;
+    setDisplayedIndex?: React.Dispatch<React.SetStateAction<number>>
 }
 
 
 
-export function DeletePopUp({ setDeletePopUpOpen, getFolderOrSetOrCardList, setId, folderId, itemToDelete }: IDeletePopUpProps) {
+export function DeletePopUp({ setDeletePopUpOpen, getFolderOrSetOrCardList, setId, folderId, cardId, itemToDelete, displayedIndex, setDisplayedIndex }: IDeletePopUpProps) {
 
     const deleteOnClick = () => {
         let url
-        if (itemToDelete === 'set') {
+        if (itemToDelete === 'folder') {
+            url = `http://localhost:3000/api/v1/folders/${folderId}`
+        } else if(itemToDelete === 'set'){
             url = `http://localhost:3000/api/v1/sets/${setId}/${folderId}`
         } else {
-            url = `http://localhost:3000/api/v1/folders/${folderId}`
+            url = `http://localhost:3000/api/v1/cards/${cardId}/${setId}`
         }
 
         fetch(url, {
@@ -34,6 +38,10 @@ export function DeletePopUp({ setDeletePopUpOpen, getFolderOrSetOrCardList, setI
                 console.log(data)
                 setDeletePopUpOpen(false)
                 getFolderOrSetOrCardList()
+                if(displayedIndex && setDisplayedIndex) {
+                    setDisplayedIndex(displayedIndex-1)
+                   
+                }
             })
             .catch((error) => console.log(error));
     }

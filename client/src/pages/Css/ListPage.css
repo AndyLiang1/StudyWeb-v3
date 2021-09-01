@@ -159,3 +159,16 @@ html {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.list_page_edit_CARD_container {
+  height: 35rem;
+  width: 50rem;
+  position: absolute;
+  /* margin-top: 5%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  z-index: 3; */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

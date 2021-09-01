@@ -8,7 +8,7 @@ import "./Css/LoginPopUp.css"
 import { ILoginForm } from "../helpers/Interfaces"
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useHistory} from "react-router-dom"
-import { AuthContext } from '../helpers/AuthContext';
+import { AuthContext } from '../helpers/Contexts';
 
 
 interface Props{

@@ -5,7 +5,7 @@ import { FaEdit, FaTrashAlt } from 'react-icons/fa'
 import { NavigationBar } from "../components/Navbar"
 import { EditPopUp } from "../components/CRUD/EditPopUp"
 import { Profile } from '../components/Profile';
-import { AuthContext } from '../helpers/AuthContext';
+import { AuthContext } from '../helpers/Contexts';
 import { IFolder, ISet } from '../helpers/Interfaces';
 import "./Css/ListPage.css"
 import { DeletePopUp } from '../components/CRUD/DeletePopUp';
@@ -105,7 +105,7 @@ export function ListSets({ }: IListSetProps) {
         setAddSetPopUpOpen(true)
     }
 
-    const getCards = ((event: React.MouseEvent<HTMLElement>) => {
+    const goToCardsPage = ((event: React.MouseEvent<HTMLElement>) => {
         const setId: number = parseInt(event.currentTarget.getAttribute("data-setid")!)
         const setName: string = event.currentTarget.getAttribute("data-setname")!
         history.push({
@@ -140,21 +140,27 @@ export function ListSets({ }: IListSetProps) {
                 {sets.map((oneSet) => {
                     return (
                         <div
-                            onClick={getCards}
                             className="one_item"
                             key={oneSet.id}
-                            data-setid={oneSet.id}
-                            data-setname={oneSet.name}
-                        >
-                            <div className="one_item_title_container">
-                                <div className="one_item_folderImg_container">
-                                    <RiStackFill className="one_item_folderIcon"></RiStackFill>
-                                </div>
-                                <div className="one_item_name">{oneSet.name}</div>
 
+                        >
+                            <div
+                                onClick={goToCardsPage}
+                                data-setid={oneSet.id}
+                                data-setname={oneSet.name}
+                                className="one_item_not_btn_wrapper"
+                            >
+                                <div className="one_item_title_container">
+                                    <div className="one_item_folderImg_container">
+                                        <RiStackFill className="one_item_folderIcon"></RiStackFill>
+                                    </div>
+                                    <div className="one_item_name">{oneSet.name}</div>
+
+                                </div>
+
+                                <div className="one_item_numChild">Cards: {oneSet.numCards}</div>
                             </div>
 
-                            <div className="one_item_numChild">Cards: {oneSet.numCards}</div>
                             <div
                                 className="one_item_btn_container">
                                 <FaEdit
@@ -181,7 +187,7 @@ export function ListSets({ }: IListSetProps) {
                         folderId={folderId}
                         itemToAdd="set"
                         listFolders={folders}
-                        showSecondBox={true}
+                        addingLoneSet={true}
                     ></AddPopUp>
                 </div>
             ) : null}

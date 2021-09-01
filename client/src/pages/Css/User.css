@@ -31,41 +31,15 @@
 
 }
 
-.create_folder {
-  width: 18rem;
+.create_folder, .create_set, .timer {
   height: 70%;
+  width: 30%;
   position: relative;
 }
 
-.create_folder img {
-  width: 20rem;
-  height: 16rem;
-}
-
-.create_set {
-  width: 14rem;
-  height: 80%;
-
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover; 
-  position: relative;
-}
-
-.create_set img {
-  width: 20rem;
-  height: 20rem;
-}
-
-
-.timer {
-  width: 14rem;
-  height: 80%;
-}
-
-.timer img {
-  width: 20rem;
-  height: 20rem;
+.create_folder:hover, .create_set:hover, .timer:hover {
+  transform: scale(1.2);
+  cursor: pointer;
 }
 
 .plus_btn {
@@ -73,7 +47,21 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-size: 5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
 }
+
+.icons {
+  height: 100%;
+  width: 100%;
+  color: grey;
+}
+
 
 /* ========================================================================== */
 /* Folder List */
@@ -102,21 +90,76 @@
   font-weight: 600;
 }
 
-
-.list_of_folders {
-  height: 90%;
-  width: 100%;
-  padding-bottom: 0.5rem;
-
-  display: flex;
-  align-items: center;
-  text-align: center;
+.viewAll:hover {
+  cursor: pointer;
 }
 
-.one_folder {
-  height: 100%;
+.user_list_of_folders, .user_list_of_sets {
+  height: 78%;
+  width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.user_one_item {
+  height: 7rem;
+  min-height: 7rem;
   width: 20%;
-  padding-left: 3rem;
+  background: white;
+  margin-left: 3rem;
+  margin-bottom: 1.5rem;
+
+  flex-direction: column;
+  display: flex;
+  justify-self: center;
+  align-items: center;
+
+  padding-left: 1rem;
+
+  border: 0.2rem solid black;
+  position: relative;
+}
+
+.user_one_item:hover {
+  background: var(--lightgrey);
+  cursor: pointer;
+}
+.user_one_item_title_container {
+  height: 60%;
+  width: 100%;
+  display: flex;
+  justify-content: left;
+}
+
+.user_one_item_folderImg_container {
+  /* height: 100%;
+  width: 5%;;  */
+  display: flex;
+  text-align: center;
+  align-items: center;
+}
+
+.user_one_item_folderIcon {
+  height: 3rem;
+  width: 3rem;
+}
+
+.user_one_item_name {
+  font-size: 1.5rem;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  padding-left: 1rem;
+}
+
+.user_one_item_numChild {
+  height: 40%;
+  width: 100%;
+  font-size: 1.5rem;
+  display: flex;
+  text-align: center;
+  align-items: center;
 }
 
 /* ========================================================================== */
@@ -144,22 +187,14 @@
   font-weight: 600;
 }
 
-.list_of_sets {
-  height: 90%;
-  width: 100%;
-  padding-bottom: 0.5rem;
+.viewAll:hover {
+  cursor: pointer;
+}
 
+.user_list_of_sets {
+  /* in above section*/
   display: flex;
-  align-items: center;
-  text-align: center;
 }
-
-.one_set {
-  height: 100%;
-  width: 20%;
-  padding-left: 3rem;
-}
-
 
 /* ========================================================================== */
 /* Popups */

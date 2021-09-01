@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
-import { AuthContext } from '../helpers/AuthContext';
+import { AuthContext } from '../helpers/Contexts';
 import { ICard, ISet } from '../helpers/Interfaces';
 import "./Css/ListCards.css"
 import ReactCardFlip from 'react-card-flip';
@@ -13,6 +13,7 @@ import { FiPlusSquare, FiEdit, FiTrash2 } from 'react-icons/fi'
 import { AddPopUp } from '../components/CRUD/AddPopUp';
 import { DeletePopUp } from '../components/CRUD/DeletePopUp';
 import { EditPopUp } from '../components/CRUD/EditPopUp';
+import { setNestedObjectValues } from 'formik';
 export interface IListCardsProps {
 }
 
@@ -25,6 +26,7 @@ export function ListCards(props: IListCardsProps) {
     const [deletePopUpOpen, setDeletePopUpOpen] = useState<boolean>(false)
     const [sets, setSets] = useState<ISet[]>([])
     const [cards, setCards] = useState<ICard[]>([])
+    const [cardId, setCardId] = useState<number>(0)
     const [displayedIndex, setDisplayedIndex] = useState<number>(1) // this is one higher than array index
     const [isFlipped, setIsFlipped] = React.useState<boolean>(false);
 
@@ -81,6 +83,15 @@ export function ListCards(props: IListCardsProps) {
         }
     }
 
+    const addBtnOnClick = () => {
+        setAddPopUpOpen(true)
+    }
+    const editBtnOnClick = () => {
+        setEditPopUpOpen(true)
+    }
+    const deleteBtnOnClick = () => {
+        setDeletePopUpOpen(true)
+    }
     return (
         <div className="list_cards_page">
             <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
@@ -117,9 +128,15 @@ export function ListCards(props: IListCardsProps) {
                 </div>
 
                 <div className="list_cards_card_CRUD">
-                    <FiPlusSquare className="list_cards_add_btn"></FiPlusSquare>
-                    <FiEdit className="list_cards_edit_btn"></FiEdit>
-                    <FiTrash2 className="list_cards_delete_btn"></FiTrash2>
+                    <FiPlusSquare 
+                    onClick = {addBtnOnClick}
+                    className="list_cards_add_btn"></FiPlusSquare>
+                    <FiEdit 
+                    onClick = {editBtnOnClick}
+                    className="list_cards_edit_btn"></FiEdit>
+                    <FiTrash2 
+                    onClick = {deleteBtnOnClick}
+                    className="list_cards_delete_btn"></FiTrash2>
                 </div>
 
 
@@ -134,16 +151,18 @@ export function ListCards(props: IListCardsProps) {
                         getFolderOrSetOrCardList={getCardList}
                         setId={setId}
                         itemToAdd="card"
+                        addingCard = {true}
                     ></AddPopUp>
                 </div>
             ) : null}
             {editPopUpOpen ? (
-                <div className="list_page_edit_container">
+                <div className="list_page_edit_CARD_container">
                     <EditPopUp
                         setEditPopUpOpen={setEditPopUpOpen}
                         getFolderOrSetOrCardList={getCardList}
                         cardId={cards[displayedIndex-1].id}
                         itemToEdit="card"
+                        editCard = {true}
                     ></EditPopUp>
                 </div>
             ) : null}
@@ -155,6 +174,8 @@ export function ListCards(props: IListCardsProps) {
                         setId={setId}
                         cardId={cards[displayedIndex-1].id}
                         itemToDelete="card"
+                        displayedIndex = {displayedIndex}
+                        setDisplayedIndex = {setDisplayedIndex}
                     ></DeletePopUp>
                 </div>
             ) : null}

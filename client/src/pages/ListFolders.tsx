@@ -8,7 +8,7 @@ import { DeletePopUp } from '../components/CRUD/DeletePopUp';
 import { EditPopUp } from '../components/CRUD/EditPopUp';
 import { NavigationBar } from '../components/Navbar';
 import { Profile } from '../components/Profile';
-import { AuthContext } from '../helpers/AuthContext';
+import { AuthContext } from '../helpers/Contexts';
 import { IFolder } from '../helpers/Interfaces';
 import "./Css/ListPage.css"
 import { AddPopUp } from '../components/CRUD/AddPopUp';
@@ -56,7 +56,7 @@ export function ListFolders(props: IListFoldersProps) {
             });
     }
 
-    const getSets = async (event: React.MouseEvent<HTMLElement>) => {
+    const goToSetsPage = async (event: React.MouseEvent<HTMLElement>) => {
         const folderId: number = parseInt(event.currentTarget.getAttribute("data-folderid")!)
         const folderName: string = event.currentTarget.getAttribute("data-foldername")!
         history.push({
@@ -128,19 +128,25 @@ export function ListFolders(props: IListFoldersProps) {
                             className="one_item"
                             key={oneFolder.id}
                         >
-                            <div onClick={getSets}
-                                className="one_item_title_container"
+                            <div
+                                onClick={goToSetsPage}
                                 data-folderid={oneFolder.id}
                                 data-foldername={oneFolder.name}
+                                className="one_item_not_btn_wrapper"
                             >
-                                <div className="one_item_folderImg_container">
-                                    <AiOutlineFolder className="one_item_folderIcon"></AiOutlineFolder>
-                                </div>
-                                <div className="one_item_name" >{oneFolder.name}</div>
+                                <div
+                                    className="one_item_title_container"
+                                >
+                                    <div className="one_item_folderImg_container">
+                                        <AiOutlineFolder className="one_item_folderIcon"></AiOutlineFolder>
+                                    </div>
+                                    <div className="one_item_name" >{oneFolder.name}</div>
 
+                                </div>
+
+                                <div className="one_item_numChild">Sets: {oneFolder.numSets}</div>
                             </div>
 
-                            <div className="one_item_numChild">Sets: {oneFolder.numSets}</div>
                             <div
                                 className="one_item_btn_container">
                                 <FaEdit

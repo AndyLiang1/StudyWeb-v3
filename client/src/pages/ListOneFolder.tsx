@@ -5,11 +5,11 @@ import { FaEdit, FaTrashAlt } from 'react-icons/fa'
 import { NavigationBar } from "../components/Navbar"
 import { EditPopUp } from "../components/CRUD/EditPopUp"
 import { Profile } from '../components/Profile';
-import { AuthContext } from '../helpers/AuthContext';
+import { AuthContext } from '../helpers/Contexts';
 import { ISet } from '../helpers/Interfaces';
 import "./Css/ListPage.css"
 import { DeletePopUp } from '../components/CRUD/DeletePopUp'
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { AiOutlinePlus } from 'react-icons/ai';
 import { AddPopUp } from '../components/CRUD/AddPopUp';
 
@@ -27,6 +27,7 @@ export function ListOneFolder(props: IListOneFolderProps) {
     const [setId, setSetId] = useState<number>(0)
     const [folderId, setFolderId] = useState<number>(0)
     const [sets, setSets] = useState<ISet[]>([])
+    const history = useHistory()
     const location = useLocation<{ folderIdFromURL: number, numFolders: number, folderName: string }>()
     const { folderIdFromURL, numFolders, folderName } = location.state
 
@@ -93,6 +94,20 @@ export function ListOneFolder(props: IListOneFolderProps) {
         setAddSetPopUpOpen(true)
     }
 
+    const goToCardsPage = ((event: React.MouseEvent<HTMLElement>) => {
+        const setId: number = parseInt(event.currentTarget.getAttribute("data-setid")!)
+        const setName: string = event.currentTarget.getAttribute("data-setname")!
+        history.push({
+            pathname: "/listCards",
+            state: {
+                setId,
+                setName,
+                numFolders,
+                numSets,
+            }
+        })
+    })
+
     return (
         <div className="list_page">
             <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
@@ -113,16 +128,26 @@ export function ListOneFolder(props: IListOneFolderProps) {
             <div className="list_page_content">
                 {sets.map((oneSet) => {
                     return (
-                        <div className="one_item" key={oneSet.id}>
-                            <div className="one_item_title_container">
-                                <div className="one_item_folderImg_container">
-                                    <RiStackFill className="one_item_folderIcon"></RiStackFill>
-                                </div>
-                                <div className="one_item_name">{oneSet.name}</div>
+                        <div
+                            className="one_item"
+                            key={oneSet.id}
+                        >
+                            <div
+                                onClick={goToCardsPage}
+                                data-setid={oneSet.id}
+                                data-setname={oneSet.name}
+                                className="one_item_not_btn_wrapper"
+                            >
+                                <div className="one_item_title_container">
+                                    <div className="one_item_folderImg_container">
+                                        <RiStackFill className="one_item_folderIcon"></RiStackFill>
+                                    </div>
+                                    <div className="one_item_name">{oneSet.name}</div>
 
+                                </div>
+                                <div className="one_item_numChild">Cards: {oneSet.numCards}</div>
                             </div>
 
-                            <div className="one_item_numChild">Cards: {oneSet.numCards}</div>
                             <div
                                 className="one_item_btn_container">
                                 <FaEdit
@@ -141,37 +166,43 @@ export function ListOneFolder(props: IListOneFolderProps) {
                     )
                 })}
             </div>
-            {addSetPopUpOpen ? (
-                <div className="list_page_add_container">
-                    <AddPopUp
-                        setAddPopUpOpen={setAddSetPopUpOpen}
-                        getFolderOrSetOrCardList={getSetList}
-                        folderId={folderIdFromURL}
-                        itemToAdd="set"
-                    ></AddPopUp>
-                </div>
-            ) : null}
-            {editSetPopUpOpen ? (
-                <div className="list_page_edit_container">
-                    <EditPopUp
-                        setEditPopUpOpen={setEditSetPopUpOpen}
-                        getFolderOrSetOrCardList={getSetList}
-                        setId={setId}
-                        itemToEdit="set"
-                    ></EditPopUp>
-                </div>
-            ) : null}
-            {deleteSetPopUpOpen ? (
-                <div className="list_page_delete_container">
-                    <DeletePopUp
-                        setDeletePopUpOpen={setDeleteSetPopUpOpen}
-                        getFolderOrSetOrCardList={getSetList}
-                        setId={setId}
-                        folderId={folderId}
-                        itemToDelete="set"
-                    ></DeletePopUp>
-                </div>
-            ) : null}
+            {
+                addSetPopUpOpen ? (
+                    <div className="list_page_add_container">
+                        <AddPopUp
+                            setAddPopUpOpen={setAddSetPopUpOpen}
+                            getFolderOrSetOrCardList={getSetList}
+                            folderId={folderIdFromURL}
+                            itemToAdd="set"
+                        ></AddPopUp>
+                    </div>
+                ) : null
+            }
+            {
+                editSetPopUpOpen ? (
+                    <div className="list_page_edit_container">
+                        <EditPopUp
+                            setEditPopUpOpen={setEditSetPopUpOpen}
+                            getFolderOrSetOrCardList={getSetList}
+                            setId={setId}
+                            itemToEdit="set"
+                        ></EditPopUp>
+                    </div>
+                ) : null
+            }
+            {
+                deleteSetPopUpOpen ? (
+                    <div className="list_page_delete_container">
+                        <DeletePopUp
+                            setDeletePopUpOpen={setDeleteSetPopUpOpen}
+                            getFolderOrSetOrCardList={getSetList}
+                            setId={setId}
+                            folderId={folderId}
+                            itemToDelete="set"
+                        ></DeletePopUp>
+                    </div>
+                ) : null
+            }
         </div >
     );
 }

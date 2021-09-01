@@ -11,6 +11,8 @@ export interface AppContextPropsInterface {
     authState: AppContextInterface;
     setAuthState: (auth: AppContextInterface) => void
 }
+
+
 // =============================================================================
 // Other interfaces 
 // =============================================================================
@@ -52,12 +54,31 @@ export interface ICard {
     setId: number;
 }
 
+export interface IAddFormFolder {
+    name: string;
+}
+
+export interface IAddFormSet {
+    name: string;
+    folderToAddToId?: string;
+}
+
+export interface IAddFormCard {
+    question: string;
+    answer: string;
+}
+
 export interface IAddForm {
     name: string;
-    folderToAddTo?: string;
+    folderToAddToId: number;
+    question: string;
+    answer: string;
 }
 
 export interface IEditForm {
     newName: string;
+    newQuestion: string;
+    newAnswer: string;
 }
+
 

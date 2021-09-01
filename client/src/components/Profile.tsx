@@ -20,8 +20,8 @@ export function Profile({ name, numFolders, numSets }: IProfileProps) {
                 <div className="profile_info">
                     <h1 className="profile_name">{name}</h1>
                     <div className="num_folders_and_num_sets">
-                        <h3 className="count">Folder count: {numFolders}</h3>
-                        <h3 className="count">Set count: {numSets}</h3>
+                        <h3 className="count">Folder count: {numFolders} | Set count: {numSets}</h3>
+                        <h3 className="count">Time remaining: {numSets}</h3>
                     </div>
                 </div>
             </div>

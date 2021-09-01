@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Home } from "./pages/Home"
 import { User } from "./pages/User"
 // import { authState, setAuthState } from "./helpers/AuthContext"
-import { AuthContext } from "./helpers/AuthContext"
+import { AuthContext } from "./helpers/Contexts"
 import { ListFolders } from './pages/ListFolders';
 import { ListSets } from './pages/ListSets';
 import { ListOneFolder } from './pages/ListOneFolder';

@@ -10,23 +10,28 @@ export interface IAppProps {
     getFolderOrSetOrCardList: () => Promise<void>;
     setId?: number;
     folderId?: number;
-    cardId?:number;
+    cardId?: number;
     itemToEdit: string;
+    editCard?: boolean;
 }
 
-export function EditPopUp({ setEditPopUpOpen, getFolderOrSetOrCardList, setId, folderId, itemToEdit }: IAppProps) {
+export function EditPopUp({ setEditPopUpOpen, getFolderOrSetOrCardList, setId, folderId, cardId, itemToEdit, editCard }: IAppProps) {
 
     const initialValues = {
         newName: "",
+        newQuestion: "",
+        newAnswer: "",
 
     }
 
     const validationSchema = Yup.object().shape({
-        newName: Yup.string().max(50).required(),
+        newName: Yup.string().max(50),
+        newQuestion: Yup.string().max(50),
+        newAnswer: Yup.string().max(50),
     })
 
     const submit = (submittedData: IEditForm) => {
-        console.log('submittedData')
+        console.log('submittedData', submittedData)
         let url;
         let body;
         if (itemToEdit === 'folder') {
@@ -35,11 +40,18 @@ export function EditPopUp({ setEditPopUpOpen, getFolderOrSetOrCardList, setId, f
                 newFolderName: submittedData.newName,
                 id: folderId
             })
-        } else {
+        } else if (itemToEdit === 'set') {
             url = `http://localhost:3000/api/v1/sets`
             body = JSON.stringify({
                 newSetName: submittedData.newName,
                 id: setId
+            })
+        } else {
+            url = `http://localhost:3000/api/v1/cards`
+            body = JSON.stringify({
+                newQuestion: submittedData.newQuestion,
+                newAnswer: submittedData.newAnswer,
+                id: cardId
             })
         }
         fetch(url, {
@@ -78,11 +90,31 @@ export function EditPopUp({ setEditPopUpOpen, getFolderOrSetOrCardList, setId, f
                         </div>
 
                         <div className="edit_content_container">
-                            <div className="edit_details">
-                                <label className="edit_label required" htmlFor="">New {itemToEdit} name</label>
-                                <Field className="edit_field" name="newName" type="text" />
-                                {errors.newName && touched.newName ? <div className="edit_field_errors">{errors.newName}</div> : null}
-                            </div>
+                            {editCard ? (
+                                <>
+                                    <div className="add_details">
+                                        <label className="add_label required" htmlFor="">Question</label>
+                                        <Field className="add_field" name="newQuestion" type="text" />
+                                        {errors.newQuestion && touched.newQuestion ? <div className="add_field_errors">{errors.newQuestion}</div> : null}
+                                    </div>
+                                    <div className="add_details">
+                                        <label className="add_label required" htmlFor="">Answer</label>
+                                        <Field className="add_field" name="newAnswer" type="text" />
+                                        {errors.newAnswer && touched.newAnswer ? <div className="add_field_errors">{errors.newAnswer}</div> : null}
+                                    </div>
+                                </>
+
+                            ) : (
+                                    <div className="edit_details">
+                                        <label className="edit_label required" htmlFor="">New {itemToEdit} name</label>
+                                        <Field className="edit_field" name="newName" type="text" />
+                                        {errors.newName && touched.newName ? <div className="edit_field_errors">{errors.newName}</div> : null}
+                                    </div>
+                                )}
+
+
+
+
                             <button className="edit_button" type="submit">Edit</button>
                         </div>
                     </Form>

@@ -3,9 +3,9 @@ import * as React from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import * as Yup from 'yup'
 import "../Css/AddEditPopUp.css"
-import { IAddForm, IFolder } from "../../helpers/Interfaces"
+import { IAddForm, IAddFormCard, IAddFormFolder, IAddFormSet, IFolder } from "../../helpers/Interfaces"
 import { useContext } from 'react';
-import { AuthContext } from '../../helpers/AuthContext';
+import { AuthContext } from '../../helpers/Contexts';
 
 export interface IAppProps {
     setAddPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,22 +14,27 @@ export interface IAppProps {
     setId?: number; // for adding a card to a set
     getFolderOrSetOrCardList?: () => Promise<void>;
     listFolders?: IFolder[];
-    showSecondBox?: boolean;
+    addingLoneSet?: boolean;
+    addingCard?: boolean;
 }
 
-export function AddPopUp({ setAddPopUpOpen, getFolderOrSetOrCardList, itemToAdd, folderId, listFolders, showSecondBox }: IAppProps) {
+export function AddPopUp({ setAddPopUpOpen, getFolderOrSetOrCardList, itemToAdd, folderId, listFolders, addingLoneSet, addingCard, setId }: IAppProps) {
     const { authState } = useContext(AuthContext)
     const initialValues = {
         name: "",
-        folderToAddToId: 0
+        folderToAddToId: 0,
+        question: "",
+        answer: "",
     }
 
     const validationSchema = Yup.object().shape({
-        name: Yup.string().max(50).required(),
+        name: Yup.string().max(50),
         folderToAddToId: Yup.number(),
+        question: Yup.string().max(50),
+        answer: Yup.string().max(50),
     })
 
-    const submit = (submittedData: any) => {
+    const submit = (submittedData: IAddForm) => {
         let url
         let body
         console.log(`data`, submittedData)
@@ -39,9 +44,8 @@ export function AddPopUp({ setAddPopUpOpen, getFolderOrSetOrCardList, itemToAdd,
                 folderName: submittedData.name,
                 userId: authState.id
             })
-        } else {
-            console.log(`sub`, submittedData.folderToAddToId)
-            let folderToAddToId: number | null = parseInt(submittedData.folderToAddToId)
+        } else if (itemToAdd === 'set') {
+            let folderToAddToId:any = submittedData.folderToAddToId
             if (folderToAddToId === 0) {
                 folderToAddToId = null
             }
@@ -55,6 +59,15 @@ export function AddPopUp({ setAddPopUpOpen, getFolderOrSetOrCardList, itemToAdd,
                 folderId: folderToAddToId,
                 userId: authState.id,
             })
+        } else {
+            url = `http://localhost:3000/api/v1/cards`
+            body = JSON.stringify({
+                question: submittedData.question,
+                answer: submittedData.answer,
+                setId,
+            })
+
+
         }
         fetch(url, {
             method: "POST",
@@ -66,10 +79,8 @@ export function AddPopUp({ setAddPopUpOpen, getFolderOrSetOrCardList, itemToAdd,
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(`data is: `, data)
                 setAddPopUpOpen(false)
                 if (getFolderOrSetOrCardList != undefined) {
-                    console.log('indeed')
                     getFolderOrSetOrCardList()
                 }
             })
@@ -92,12 +103,38 @@ export function AddPopUp({ setAddPopUpOpen, getFolderOrSetOrCardList, itemToAdd,
                         </div>
 
                         <div className="add_content_container">
-                            <div className="add_details">
-                                <label className="add_label required" htmlFor="">New {itemToAdd} name</label>
-                                <Field className="add_field" name="name" type="text" />
-                                {errors.name && touched.name ? <div className="add_field_errors">{errors.name}</div> : null}
-                            </div>
-                            {showSecondBox ? (
+                            {/* 
+                           This for adding cards 
+                           */}
+                            {addingCard ? (
+                                <>
+                                    <div className="add_details">
+                                        <label className="add_label required" htmlFor="">Question</label>
+                                        <Field className="add_field" name="question" type="text" />
+                                        {errors.question && touched.question ? <div className="add_field_errors">{errors.question}</div> : null}
+                                    </div>
+                                    <div className="add_details">
+                                        <label className="add_label required" htmlFor="">Answer</label>
+                                        <Field className="add_field" name="answer" type="text" />
+                                        {errors.answer && touched.answer ? <div className="add_field_errors">{errors.answer}</div> : null}
+                                    </div>
+                                </>
+
+                            ) : null}
+                            {/* 
+                            This is for both, adding set (known folder OR unknown), and adding folder
+                            */}
+                            {!addingCard ? (
+                                <div className="add_details">
+                                    <label className="add_label required" htmlFor="">New {itemToAdd} name</label>
+                                    <Field className="add_field" name="name" type="text" />
+                                    {errors.name && touched.name ? <div className="add_field_errors">{errors.name}</div> : null}
+                                </div>
+                            ) : null}
+                            {/*
+                            This is for adding set (unknown folder)
+                            */}
+                            {addingLoneSet && !addingCard ? (
                                 <div className="add_details">
                                     <label className="add_label">Add set to a folder? </label>
                                     <Field className="add_field" name="folderToAddToId" as="select">
@@ -106,7 +143,6 @@ export function AddPopUp({ setAddPopUpOpen, getFolderOrSetOrCardList, itemToAdd,
                                             None
                                         </option>
                                         {
-
                                             listFolders?.map((oneFolder) => {
                                                 return (
                                                     <option
@@ -117,7 +153,6 @@ export function AddPopUp({ setAddPopUpOpen, getFolderOrSetOrCardList, itemToAdd,
                                                     </option>
                                                 )
                                             })
-
                                         }
                                     </Field>
                                     {errors.folderToAddToId &&
@@ -127,7 +162,6 @@ export function AddPopUp({ setAddPopUpOpen, getFolderOrSetOrCardList, itemToAdd,
                                         </div>}
                                 </div>
                             ) : null}
-
                             <button className="add_button" type="submit">Add</button>
                         </div>
                     </Form>

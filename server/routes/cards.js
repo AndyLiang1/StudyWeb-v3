@@ -81,8 +81,8 @@ router.put("/", validateToken, async (req, res) => {
         });
 })
 
-router.delete("/:id", validateToken, async (req, res) => {
-    const { id } = req.params
+router.delete("/:id/:setId", validateToken, async (req, res) => {
+    const { id, setId } = req.params
     await sequelize
         .query("DELETE FROM cards WHERE id = ?", {
             replacements: [id],
