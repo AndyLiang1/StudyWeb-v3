@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { TimerContext } from '../helpers/Contexts';
 import "./Css/Profile.css"
 
 export interface IProfileProps {
@@ -10,7 +11,8 @@ export interface IProfileProps {
 }
 
 export function Profile({ name, numFolders, numSets }: IProfileProps) {
-
+    const { timeInSeconds, timeString, timerOn, setTimeInSeconds,
+        setTimeString, setTimerOn } = useContext(TimerContext)
     let history = useHistory()
     return (
         <div className="profile_container">
@@ -21,7 +23,7 @@ export function Profile({ name, numFolders, numSets }: IProfileProps) {
                     <h1 className="profile_name">{name}</h1>
                     <div className="num_folders_and_num_sets">
                         <h3 className="count">Folder count: {numFolders} | Set count: {numSets}</h3>
-                        <h3 className="count">Time remaining: {numSets}</h3>
+                        <h3 className="count">Time remaining: {timeString}</h3>
                     </div>
                 </div>
             </div>

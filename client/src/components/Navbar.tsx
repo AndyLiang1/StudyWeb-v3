@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { TimerContext } from '../helpers/Contexts';
 
 import "./Css/Navbar.css"
 
@@ -12,6 +13,8 @@ export interface IAppProps {
 export function NavigationBar({ loggedIn }: IAppProps) {
   const [isActive, setIsActive] = useState(false);
   let history = useHistory()
+  const { timeInSeconds, timeString, timerOn, setTimeInSeconds,
+    setTimeString, setTimerOn } = useContext(TimerContext)
 
 
   const toggle = () => {
@@ -24,6 +27,7 @@ export function NavigationBar({ loggedIn }: IAppProps) {
     localStorage.removeItem("name");
     localStorage.removeItem("id");
     localStorage.removeItem("loggedIn");
+    history.push("./")
   }
 
 
@@ -38,12 +42,12 @@ export function NavigationBar({ loggedIn }: IAppProps) {
           <div className="navbar_links">
             <ul>
               <div className="nav_folder_and_sets">
-                <li><a href="/user">Home</a></li>
-                <li><a href="/listFolders" className="nav_folder">Folders</a></li>
-                <li><a href="/listSets" className="nav_sets">Sets</a></li>
+                <li><a onClick={() => { history.push("./user") }}>Home</a></li>
+                <li><a onClick={() => { history.push("./listFolders") }} className="nav_folder">Folders</a></li>
+                <li><a onClick={() => { history.push("./listSets") }} className="nav_sets">Sets</a></li>
               </div>
               <div className="nav_logout_container">
-                <li><a href="/" className="nav_logout" onClick={logout}>Logout</a></li>
+                <li><a className="nav_logout" onClick={logout}>Logout</a></li>
               </div>
             </ul>
           </div>
@@ -59,9 +63,9 @@ export function NavigationBar({ loggedIn }: IAppProps) {
             <div className="navbar_links_V">
               <ul>
                 <li><a href="/user">Home</a></li>
-                <li><a href="/listFolders">Folders</a></li>
-                <li><a href="/listSets">Sets</a></li>
-                <li><a href="/">Logout</a></li>
+                <li><a onClick={() => { history.push("./listFolders") }}>Folders</a></li>
+                <li><a onClick={() => { history.push("./listSets") }}>Sets</a></li>
+                <li><a onClick={() => { history.push("./") }}>Logout</a></li>
               </ul>
             </div>
           ) : null}

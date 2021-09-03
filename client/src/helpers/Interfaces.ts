@@ -12,7 +12,20 @@ export interface AppContextPropsInterface {
     setAuthState: (auth: AppContextInterface) => void
 }
 
+export interface TimeContextInterface {
+    timeInSeconds: number;
+    timeString: string;
+    timerOn: boolean;
+}
 
+export interface TimeContextPropsInterface {
+    timeInSeconds: number;
+    timeString: string;
+    timerOn: boolean;
+    setTimeInSeconds: (time: number) => void;
+    setTimeString: (time: string) => void;
+    setTimerOn: (isOn: boolean) => void;
+}
 // =============================================================================
 // Other interfaces 
 // =============================================================================

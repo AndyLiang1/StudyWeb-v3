@@ -14,4 +14,11 @@ export const AuthContext = createContext<AppContextPropsInterface>({
 
 })
 
-
+export const TimerContext = createContext<any>({
+    timeInSeconds: 0,
+    timeString: "0:00",
+    timerOn: false,
+    setTimeInSeconds: (time: number) => {},
+    setTimeString: (time: string) => {},
+    setTimerOn: (isOn: boolean) => {},
+})

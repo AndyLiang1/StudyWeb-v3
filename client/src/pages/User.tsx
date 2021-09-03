@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { NavigationBar } from "../components/Navbar"
 import { AddPopUp } from "../components/CRUD/AddPopUp"
-import { AuthContext } from '../helpers/Contexts';
+import { AuthContext, TimerContext } from '../helpers/Contexts';
 import { IFolder, ISet } from "../helpers/Interfaces"
 import { Folder } from "../components/Folder"
 import { Set } from "../components/Set"
@@ -10,23 +10,29 @@ import folderImg from "../img/greyfolder.png"
 import flashcardImg from "../img/flashcards.png"
 import timerImg from "../img/timer.png"
 import { IoIosTimer } from "react-icons/io"
+import { IoRefreshOutline } from "react-icons/io5"
 
 import "./Css/User.css"
 import { AppContextInterface } from '../helpers/Interfaces';
 import { useHistory } from 'react-router-dom';
 import { RiStackFill } from 'react-icons/ri';
-import { AiOutlineFolder } from 'react-icons/ai';
+import { AiOutlineFolder, AiOutlinePauseCircle } from 'react-icons/ai';
+import { time } from 'console';
+import { TimerPopUp } from '../components/Timer';
 
 export interface IAppProps {
 }
 
 export function User(props: IAppProps) {
   const { authState, setAuthState } = useContext(AuthContext);
+  const { timeInSeconds, timeString, timerOn, setTimeInSeconds,
+    setTimeString, setTimerOn } = useContext(TimerContext)
   const [folders, setFolders] = useState<IFolder[]>([])
   const [sets, setSets] = useState<ISet[]>([])
   const [addFolderPopUpOpen, setAddFolderPopUpOpen] = useState<boolean>(false)
   const [addSetPopUpOpen, setAddSetPopUpOpen] = useState<boolean>(false)
-  const [timerPopUpOpen, setTimerPopUpOpen] = useState<boolean>(true)
+  const [timerPopUpOpen, setTimerPopUpOpen] = useState<boolean>(false)
+
   let history = useHistory()
 
   const getFolderList = async () => {
@@ -62,15 +68,25 @@ export function User(props: IAppProps) {
 
   const openAddFolderPopUp = () => {
     setAddFolderPopUpOpen(true)
-    if (addSetPopUpOpen) {
+    if (addSetPopUpOpen || timerPopUpOpen) {
       setAddSetPopUpOpen(false)
+      setTimerPopUpOpen(false)
     }
   }
 
   const openAddSetPopUp = () => {
     setAddSetPopUpOpen(true)
-    if (addFolderPopUpOpen) {
+    if (addFolderPopUpOpen || timerPopUpOpen) {
       setAddFolderPopUpOpen(false)
+      setTimerPopUpOpen(false)
+    }
+  }
+
+  const openTimerPopUp = () => {
+    setTimerPopUpOpen(true)
+    if (addFolderPopUpOpen || addSetPopUpOpen) {
+      setAddFolderPopUpOpen(false)
+      setAddSetPopUpOpen(false)
     }
   }
 
@@ -116,9 +132,64 @@ export function User(props: IAppProps) {
     })
   })
 
+  // const setTimer = () => {
+  //   console.log('here');
+  //   setTimeInSeconds(30)
+  // }
+  // useEffect(() => {
+  //   if (timeInSeconds != 0) {
+  //     return;
+  //   } else {
+  //     console.log(timeInSeconds);
+  //     console.log('herex');
+  //     setTimerOn(true)
+  //   }
+    
+  // }, [timeInSeconds])
+
+  
+
+  
+
+  
+
 
   return (
     <div className="user_container">
+
+      {addFolderPopUpOpen ? (
+        <div className="add_folder_pop_up">
+          <AddPopUp
+            setAddPopUpOpen={setAddFolderPopUpOpen}
+            itemToAdd="folder"
+          ></AddPopUp>
+        </div>
+      ) : null}
+      {addSetPopUpOpen ? (
+        <div className="add_set_pop_up">
+          <AddPopUp
+            setAddPopUpOpen={setAddSetPopUpOpen}
+            itemToAdd="set"
+          ></AddPopUp>
+        </div>
+      ) : null}
+      {timerPopUpOpen ? (
+        // <div className="timer_pop_up">
+        //   <h1>Time remaining: {timeString}</h1>
+        //   <button onClick={setTimer}> Start </button>
+        // </div>
+        <div className="timer_pop_up">
+          <TimerPopUp
+            setTimerPopUpOpen={setTimerPopUpOpen}
+            setTimeInSeconds={setTimeInSeconds}
+            setTimerOn={setTimerOn}
+            timerOn = {timerOn}
+            timeInSeconds = {timeInSeconds}
+            setTimeString = {setTimeString}
+          ></TimerPopUp>
+        </div>
+
+      ) : null}
       <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
 
       <div className="user_content_container">
@@ -134,10 +205,17 @@ export function User(props: IAppProps) {
           </div>
 
           <div className="timer">
-            <IoIosTimer className="icons"></IoIosTimer>
+            <IoIosTimer onClick={openTimerPopUp} className="icons"></IoIosTimer>
           </div>
         </div>
 
+        {timerOn ? (
+          <div className="time_remaining_container">
+            <div className="time_remaining_text">Time remaining: {timeString}</div>
+            <AiOutlinePauseCircle className="pauseplay_refresh_btn"></AiOutlinePauseCircle>
+            <IoRefreshOutline className="pauseplay_refresh_btn"></IoRefreshOutline>
+          </div>
+        ) : null}
         <div className="folders_container">
           <div className="folders_title_viewAll">
             <h1 className="folders_container_title">Your folders</h1>
@@ -199,27 +277,7 @@ export function User(props: IAppProps) {
         </div>
       </div>
 
-      {addFolderPopUpOpen ? (
-        <div className="add_folder_pop_up">
-          <AddPopUp
-            setAddPopUpOpen={setAddFolderPopUpOpen}
-            itemToAdd="folder"
-          ></AddPopUp>
-        </div>
-      ) : null}
-      {addSetPopUpOpen ? (
-        <div className="add_set_pop_up">
-          <AddPopUp
-            setAddPopUpOpen={setAddSetPopUpOpen}
-            itemToAdd="set"
-          ></AddPopUp>
-        </div>
-      ) : null}
-      {timerPopUpOpen? (
-        <div className="timer_pop_up">
-          <h1>Time remaining: </h1>
-        </div>
-      ) : null}
+
     </div>
   );
 }

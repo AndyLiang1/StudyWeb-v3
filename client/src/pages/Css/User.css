@@ -9,6 +9,7 @@
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
       "Lucida Sans", Arial, sans-serif;
   }
+
 .user_container{
   height: 100vh;
   width: 100vw;
@@ -17,7 +18,7 @@
 .user_content_container {
   height: 90%;
   width: 100%;
-  position: relative;
+  /* position: relative; */
   background-color: lightskyblue;
 }
 
@@ -62,7 +63,29 @@
   color: grey;
 }
 
+.time_remaining_container {
+  height: 5%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 
+.time_remaining_text {
+  font-size: 2.1rem;
+}
+
+.pauseplay_refresh_btn {
+  height: 2rem;
+  width: 2rem;
+  margin-left: 2rem;
+}
+
+.pauseplay_refresh_btn:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+}
 /* ========================================================================== */
 /* Folder List */
 /* ========================================================================== */
@@ -203,9 +226,12 @@
   height: 25rem;
   width: 50rem;
   position: absolute;
-  margin-top: 5%;
-  margin-left: 50%;
-  transform: translateX(-50%);
+  /* margin-top: 5%;
+  margin-left: 50%; */
+
+  top: 50%;
+  left:50%;
+  transform: translate(-50%, -50%);
   z-index: 3;
 }
 
@@ -213,9 +239,25 @@
   height: 25rem;
   width: 50rem;
   position: absolute;
-  margin-top: 5%;
-  margin-left: 50%;
-  transform: translateX(-50%);
+  /* margin-top: 5%;
+  margin-left: 50%; */
+
+  top: 50%;
+  left:50%;
+  transform: translate(-50%, -50%);
   z-index: 3;
 }
 
+
+.timer_pop_up {
+  height: 50rem;
+  width: 50rem;
+  position: absolute;
+  /* margin-top: 5%;
+  margin-left: 50%; */
+
+  top: 50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}

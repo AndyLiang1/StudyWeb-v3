@@ -8,7 +8,7 @@ import { DeletePopUp } from '../components/CRUD/DeletePopUp';
 import { EditPopUp } from '../components/CRUD/EditPopUp';
 import { NavigationBar } from '../components/Navbar';
 import { Profile } from '../components/Profile';
-import { AuthContext } from '../helpers/Contexts';
+import { AuthContext, TimerContext } from '../helpers/Contexts';
 import { IFolder } from '../helpers/Interfaces';
 import "./Css/ListPage.css"
 import { AddPopUp } from '../components/CRUD/AddPopUp';
@@ -18,6 +18,8 @@ export interface IListFoldersProps {
 
 export function ListFolders(props: IListFoldersProps) {
     const { authState, setAuthState } = useContext(AuthContext);
+    const { timeInSeconds, timeString, timerOn, setTimeInSeconds, 
+        setTimeString, setTimerOn} = useContext(TimerContext)
     const [numFolders, setNumFolders] = useState<number>(0)
     const [numSets, setNumSets] = useState<number>(0)
     const [addFolderPopUpOpen, setAddFolderPopUpOpen] = useState<boolean>(false)
