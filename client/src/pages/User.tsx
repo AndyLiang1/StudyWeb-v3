@@ -105,6 +105,64 @@ export function User(props: IAppProps) {
     getSetList()
   }, [authState])
 
+  useEffect(() => {
+    
+    if (timeInSeconds == 0) {
+      console.log('here3');
+      return;
+    // } else if (timeInSeconds != 0 && timerOn) {
+    //   return;
+    } else {
+      console.log('here2');
+      setTimerOn(true)
+    }
+
+  }, [timeInSeconds])
+
+  useEffect(() => {
+    if (timerOn) {
+      beginCountDown(timeInSeconds)
+    }
+    // console.log(`timer on being set `);
+
+  }, [timerOn])
+
+  const beginCountDown = (timeInSec: number) => {
+    let durationInSec = timeInSec
+    console.log(durationInSec);
+    const setIntervalId = setInterval(async () => {
+      if (durationInSec != -1) {
+        console.log('executing');
+        setTimeString(convertTimeToString(durationInSec))
+        durationInSec = durationInSec - 1
+        setTimeInSeconds(durationInSec)
+      } else {
+        console.log('done');
+        clearInterval(setIntervalId)
+        setTimerOn(false)
+        setTimeInSeconds(0)
+      }
+    }, 1000)
+  }
+
+  const convertTimeToString = (timeInSec: number): string => {
+    // Hours, minutes and seconds
+    let hrs = Math.floor(timeInSec / 3600);
+    let mins = Math.floor((timeInSec % 3600) / 60);
+    let secs = Math.floor(timeInSec % 60);
+
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    let ret = "";
+
+    if (hrs > 0) {
+      ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    }
+
+    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+    ret += "" + secs;
+    return ret;
+  }
+
   const goToSetsPage = async (event: React.MouseEvent<HTMLElement>) => {
     const folderId: number = parseInt(event.currentTarget.getAttribute("data-folderid")!)
     const folderName: string = event.currentTarget.getAttribute("data-foldername")!
@@ -144,14 +202,14 @@ export function User(props: IAppProps) {
   //     console.log('herex');
   //     setTimerOn(true)
   //   }
-    
+
   // }, [timeInSeconds])
 
-  
 
-  
 
-  
+
+
+
 
 
   return (
@@ -183,9 +241,9 @@ export function User(props: IAppProps) {
             setTimerPopUpOpen={setTimerPopUpOpen}
             setTimeInSeconds={setTimeInSeconds}
             setTimerOn={setTimerOn}
-            timerOn = {timerOn}
-            timeInSeconds = {timeInSeconds}
-            setTimeString = {setTimeString}
+            timerOn={timerOn}
+            timeInSeconds={timeInSeconds}
+            setTimeString={setTimeString}
           ></TimerPopUp>
         </div>
 

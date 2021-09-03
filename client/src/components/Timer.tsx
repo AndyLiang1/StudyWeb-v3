@@ -21,65 +21,15 @@ export function TimerPopUp({ setTimerPopUpOpen, setTimeInSeconds, setTimerOn, ti
     // let studyLength = 0;
 
     const setTimer = (studyLength: number, breakLength: number) => {
-        // setTimeInSeconds(studyLength);
-        // console.log(studyLength);
-        // console.log('in setTimer of timer.tsx')
+        // start here, setting timeInSeconds, triggering the useEffect 1
+        setTimeInSeconds(studyLength);
+        setTimerPopUpOpen(false)
+        console.log('here');
     }
 
+   
 
-
-
-    useEffect(() => {
-        if(timerOn) {
-            if (timeInSeconds != 0) {
-                console.log(`timeInSeconds alreay set`)
-                return;
-            } else {
-                console.log(timeInSeconds);
-                console.log('setting timerOn to be true');
-                setTimerOn(true)
-            }
-        }
-    }, [timeInSeconds])
-
-    useEffect(() => {
-        // beginCountDown(timeInSeconds)
-        console.log(`timer on being set `);
-    }, [timerOn])
-
-    const beginCountDown = (timeInSec: number) => {
-        let durationInSec = timeInSec
-        const setIntervalId = setInterval(async () => {
-            if (durationInSec != 0) {
-                console.log('executing');
-                await setTimeString(convertTimeToString(durationInSec))
-                durationInSec = durationInSec - 1
-                await setTimeInSeconds(durationInSec)
-            } else {
-                console.log('done');
-                clearInterval(setIntervalId)
-                setTimerOn(false)
-            }
-        }, 1000)
-    }
-
-    const convertTimeToString = (timeInSec: number): string => {
-        // Hours, minutes and seconds
-        let hrs = Math.floor(timeInSec / 3600);
-        let mins = Math.floor((timeInSec % 3600) / 60);
-        let secs = Math.floor(timeInSec % 60);
     
-        // Output like "1:01" or "4:03:59" or "123:03:59"
-        let ret = "";
-    
-        if (hrs > 0) {
-          ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
-        }
-    
-        ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-        ret += "" + secs;
-        return ret;
-      }
     return (
         <div className="timer_container">
             <div className="timer_title_container">
@@ -96,7 +46,7 @@ export function TimerPopUp({ setTimerPopUpOpen, setTimeInSeconds, setTimerOn, ti
 
 
             <div className="options_container">
-                <div onClick={() => setTimer(45, 15)} className="option1_container">
+                <div onClick={() => setTimer(5, 15)} className="option1_container">
                     <div className="option1_study">
                         <h1 className="option_desc">45 minutes</h1>
                         <img className="option_img" src={studyImg}></img>

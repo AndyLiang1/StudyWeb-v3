@@ -23,14 +23,14 @@ const App: FC = () => {
     loggedIn: false,
   })
   const [timeInSeconds, setTimeInSeconds] = useState<number>(0)
-  const [timeString, setTimeString] = useState<string>("00:00")
+  const [timeString, setTimeString] = useState<string>("0:00")
   const [timerOn, setTimerOn] = useState<boolean>(false)
   
   return (
     <TimerContext.Provider value={{
-      timeInSeconds: 0,
+      timeInSeconds: timeInSeconds,
       timeString: timeString,
-      timerOn: false,
+      timerOn: timerOn,
       setTimeInSeconds: setTimeInSeconds,
       setTimeString: setTimeString,
       setTimerOn: setTimerOn,
