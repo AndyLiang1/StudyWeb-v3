@@ -18,8 +18,8 @@ export interface IListFoldersProps {
 
 export function ListFolders(props: IListFoldersProps) {
     const { authState, setAuthState } = useContext(AuthContext);
-    const { timeInSeconds, timeString, timerOn, setTimeInSeconds, 
-        setTimeString, setTimerOn} = useContext(TimerContext)
+    const { timeInSeconds, timeString, triggerCountDown, setTimeInSeconds,
+        setTimeString, setTriggerCountDown } = useContext(TimerContext)
     const [numFolders, setNumFolders] = useState<number>(0)
     const [numSets, setNumSets] = useState<number>(0)
     const [addFolderPopUpOpen, setAddFolderPopUpOpen] = useState<boolean>(false)

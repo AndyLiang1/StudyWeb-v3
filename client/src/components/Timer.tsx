@@ -9,27 +9,39 @@ import { FaLessThan } from 'react-icons/fa';
 export interface ITimerPopUpProps {
     setTimerPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setTimeInSeconds: React.Dispatch<React.SetStateAction<number>>
-    setTimerOn: React.Dispatch<React.SetStateAction<boolean>>;
-    timerOn: boolean;
+    setTriggerCountDown: React.Dispatch<React.SetStateAction<boolean>>;
     timeInSeconds: number;
-    setTimeString: React.Dispatch<React.SetStateAction<string>>
-
+    setMultOptionErr: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function TimerPopUp({ setTimerPopUpOpen, setTimeInSeconds, setTimerOn, timerOn, timeInSeconds, setTimeString }: ITimerPopUpProps) {
+export function TimerPopUp({
+    setTimerPopUpOpen,
+    setTimeInSeconds,
+    setTriggerCountDown,
+    timeInSeconds, 
+    setMultOptionErr
+}: ITimerPopUpProps) {
     const [customTimerPopUpOpen, setCustomTimerPopUpOpen] = useState<boolean>(false)
     // let studyLength = 0;
 
     const setTimer = (studyLength: number, breakLength: number) => {
-        // start here, setting timeInSeconds, triggering the useEffect 1
-        setTimeInSeconds(studyLength);
+        if(!timeInSeconds) {
+            setTimeInSeconds(studyLength);
+            localStorage.setItem("timeInSeconds", studyLength.toString())
+            setTriggerCountDown(true)    
+        } else {
+            console.log('rej');
+            setMultOptionErr(true)
+            setTimeout(() => {
+                setMultOptionErr(false)
+            }, 5000)
+        }
         setTimerPopUpOpen(false)
-        console.log('here');
     }
 
-   
 
-    
+
+
     return (
         <div className="timer_container">
             <div className="timer_title_container">
@@ -46,7 +58,7 @@ export function TimerPopUp({ setTimerPopUpOpen, setTimeInSeconds, setTimerOn, ti
 
 
             <div className="options_container">
-                <div onClick={() => setTimer(5, 15)} className="option1_container">
+                <div onClick={() => setTimer(10, 15)} className="option1_container">
                     <div className="option1_study">
                         <h1 className="option_desc">45 minutes</h1>
                         <img className="option_img" src={studyImg}></img>

@@ -11,8 +11,8 @@ export interface IProfileProps {
 }
 
 export function Profile({ name, numFolders, numSets }: IProfileProps) {
-    const { timeInSeconds, timeString, timerOn, setTimeInSeconds,
-        setTimeString, setTimerOn } = useContext(TimerContext)
+    const { timeInSeconds, timeString, triggerCountDown, setTimeInSeconds,
+        setTimeString, setTriggerCountDown } = useContext(TimerContext)
     let history = useHistory()
     return (
         <div className="profile_container">

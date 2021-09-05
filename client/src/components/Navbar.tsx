@@ -13,8 +13,8 @@ export interface IAppProps {
 export function NavigationBar({ loggedIn }: IAppProps) {
   const [isActive, setIsActive] = useState(false);
   let history = useHistory()
-  const { timeInSeconds, timeString, timerOn, setTimeInSeconds,
-    setTimeString, setTimerOn } = useContext(TimerContext)
+  const { timeInSeconds, timeString, triggerCountDown, setTimeInSeconds,
+    setTimeString, setTriggerCountDown } = useContext(TimerContext)
 
 
   const toggle = () => {
@@ -62,7 +62,7 @@ export function NavigationBar({ loggedIn }: IAppProps) {
           {isActive ? (
             <div className="navbar_links_V">
               <ul>
-                <li><a href="/user">Home</a></li>
+                <li><a onClick={() => { history.push("./user") }}>Home</a></li>
                 <li><a onClick={() => { history.push("./listFolders") }}>Folders</a></li>
                 <li><a onClick={() => { history.push("./listSets") }}>Sets</a></li>
                 <li><a onClick={() => { history.push("./") }}>Logout</a></li>

@@ -17,7 +17,7 @@ import { AppContextInterface } from '../helpers/Interfaces';
 import { useHistory } from 'react-router-dom';
 import { RiStackFill } from 'react-icons/ri';
 import { AiOutlineFolder, AiOutlinePauseCircle } from 'react-icons/ai';
-import { time } from 'console';
+import { clear, time } from 'console';
 import { TimerPopUp } from '../components/Timer';
 
 export interface IAppProps {
@@ -25,14 +25,14 @@ export interface IAppProps {
 
 export function User(props: IAppProps) {
   const { authState, setAuthState } = useContext(AuthContext);
-  const { timeInSeconds, timeString, timerOn, setTimeInSeconds,
-    setTimeString, setTimerOn } = useContext(TimerContext)
+  const { timeInSeconds, timeString, triggerCountDown, setTimeInSeconds,
+    setTimeString, setTriggerCountDown,  } = useContext(TimerContext)
   const [folders, setFolders] = useState<IFolder[]>([])
   const [sets, setSets] = useState<ISet[]>([])
   const [addFolderPopUpOpen, setAddFolderPopUpOpen] = useState<boolean>(false)
   const [addSetPopUpOpen, setAddSetPopUpOpen] = useState<boolean>(false)
   const [timerPopUpOpen, setTimerPopUpOpen] = useState<boolean>(false)
-
+  const [multOptionErr, setMultOptionErr] = useState<boolean>(false)
   let history = useHistory()
 
   const getFolderList = async () => {
@@ -105,64 +105,6 @@ export function User(props: IAppProps) {
     getSetList()
   }, [authState])
 
-  useEffect(() => {
-    
-    if (timeInSeconds == 0) {
-      console.log('here3');
-      return;
-    // } else if (timeInSeconds != 0 && timerOn) {
-    //   return;
-    } else {
-      console.log('here2');
-      setTimerOn(true)
-    }
-
-  }, [timeInSeconds])
-
-  useEffect(() => {
-    if (timerOn) {
-      beginCountDown(timeInSeconds)
-    }
-    // console.log(`timer on being set `);
-
-  }, [timerOn])
-
-  const beginCountDown = (timeInSec: number) => {
-    let durationInSec = timeInSec
-    console.log(durationInSec);
-    const setIntervalId = setInterval(async () => {
-      if (durationInSec != -1) {
-        console.log('executing');
-        setTimeString(convertTimeToString(durationInSec))
-        durationInSec = durationInSec - 1
-        setTimeInSeconds(durationInSec)
-      } else {
-        console.log('done');
-        clearInterval(setIntervalId)
-        setTimerOn(false)
-        setTimeInSeconds(0)
-      }
-    }, 1000)
-  }
-
-  const convertTimeToString = (timeInSec: number): string => {
-    // Hours, minutes and seconds
-    let hrs = Math.floor(timeInSec / 3600);
-    let mins = Math.floor((timeInSec % 3600) / 60);
-    let secs = Math.floor(timeInSec % 60);
-
-    // Output like "1:01" or "4:03:59" or "123:03:59"
-    let ret = "";
-
-    if (hrs > 0) {
-      ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
-    }
-
-    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-    ret += "" + secs;
-    return ret;
-  }
-
   const goToSetsPage = async (event: React.MouseEvent<HTMLElement>) => {
     const folderId: number = parseInt(event.currentTarget.getAttribute("data-folderid")!)
     const folderName: string = event.currentTarget.getAttribute("data-foldername")!
@@ -190,27 +132,63 @@ export function User(props: IAppProps) {
     })
   })
 
-  // const setTimer = () => {
-  //   console.log('here');
-  //   setTimeInSeconds(30)
-  // }
-  // useEffect(() => {
-  //   if (timeInSeconds != 0) {
-  //     return;
-  //   } else {
-  //     console.log(timeInSeconds);
-  //     console.log('herex');
-  //     setTimerOn(true)
-  //   }
+  // ===========================================================================
+  // Timer
+  // ===========================================================================
 
-  // }, [timeInSeconds])
+  useEffect(() => {
+    console.log('calling');
+    if(timeInSeconds != 0) {
+      beginCountDown()
+    }
+  }, [timeInSeconds])
 
+  
 
+  const beginCountDown = () => {
+    console.log(timeInSeconds);
+    let storageNum: string | null = localStorage.getItem("timeInSeconds")
+    if (storageNum === 'null') {
+      return
+    }
+    let storageNumInSec: number = parseInt(storageNum!)
 
+    const setIntervalId = setInterval(async () => {
+      // if(timerOptionChanged) {
+      //   clearInterval(setIntervalId)
+      // }
+      if (storageNumInSec === -1) {
+        console.log('hereInReset');
+        setTriggerCountDown(false)
+        setTimeInSeconds(0)
+        clearInterval(setIntervalId)
+        localStorage.removeItem("timeInSeconds");
+      } else {
+        console.log('executing');
+        setTimeString(convertTimeToString(storageNumInSec))
+        storageNumInSec = storageNumInSec -1
+        localStorage.setItem("timeInSeconds", (storageNumInSec).toString())
+      }
+    }, 1000)
+  }
 
+  const convertTimeToString = (timeInSec: number): string => {
+    // Hours, minutes and seconds
+    let hrs = Math.floor(timeInSec / 3600);
+    let mins = Math.floor((timeInSec % 3600) / 60);
+    let secs = Math.floor(timeInSec % 60);
 
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    let ret = "";
 
+    if (hrs > 0) {
+      ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    }
 
+    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+    ret += "" + secs;
+    return ret;
+  }
 
   return (
     <div className="user_container">
@@ -240,10 +218,9 @@ export function User(props: IAppProps) {
           <TimerPopUp
             setTimerPopUpOpen={setTimerPopUpOpen}
             setTimeInSeconds={setTimeInSeconds}
-            setTimerOn={setTimerOn}
-            timerOn={timerOn}
+            setTriggerCountDown={setTriggerCountDown}
             timeInSeconds={timeInSeconds}
-            setTimeString={setTimeString}
+            setMultOptionErr = {setMultOptionErr}
           ></TimerPopUp>
         </div>
 
@@ -267,13 +244,18 @@ export function User(props: IAppProps) {
           </div>
         </div>
 
-        {timerOn ? (
+        {triggerCountDown ? (
           <div className="time_remaining_container">
             <div className="time_remaining_text">Time remaining: {timeString}</div>
             <AiOutlinePauseCircle className="pauseplay_refresh_btn"></AiOutlinePauseCircle>
             <IoRefreshOutline className="pauseplay_refresh_btn"></IoRefreshOutline>
           </div>
         ) : null}
+        {
+          multOptionErr ? (
+            <div className = "timer_option_err">Already have a timer, please stop this timer first!</div>
+          ) : null
+        }
         <div className="folders_container">
           <div className="folders_title_viewAll">
             <h1 className="folders_container_title">Your folders</h1>

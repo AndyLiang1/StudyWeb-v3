@@ -8,7 +8,7 @@ export const AuthContext = createContext<AppContextPropsInterface>({
         id: 0,
         loggedIn: false
     },
-    setAuthState : (auth: AppContextInterface) => {
+    setAuthState: (auth: AppContextInterface) => {
         console.log('Set auth state has not been set up yet.')
     }
 
@@ -17,8 +17,12 @@ export const AuthContext = createContext<AppContextPropsInterface>({
 export const TimerContext = createContext<any>({
     timeInSeconds: 0,
     timeString: "0:00",
-    timerOn: false,
-    setTimeInSeconds: (time: number) => {},
-    setTimeString: (time: string) => {},
-    setTimerOn: (isOn: boolean) => {},
+    triggerCountDown: false,
+    timerOptionChanged: false,
+    display: false,
+    setTimeInSeconds: (time: number) => { },
+    setTimeString: (time: string) => { },
+    setTriggerCountDown: (isOn: boolean) => { },
+    setTimerOptionChanged: (hasChanged: boolean) => { },
+    setDisplay: (displayOrNot: boolean) => {},
 })
