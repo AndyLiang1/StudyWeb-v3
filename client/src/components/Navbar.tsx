@@ -13,7 +13,7 @@ export interface IAppProps {
 export function NavigationBar({ loggedIn }: IAppProps) {
   const [isActive, setIsActive] = useState(false);
   let history = useHistory()
-  const { timeInSeconds, timeString, triggerCountDown, setTimeInSeconds,
+  const { studyTimeInSec, timeString, triggerCountDown, setStudyTimeInSec,
     setTimeString, setTriggerCountDown } = useContext(TimerContext)
 
 

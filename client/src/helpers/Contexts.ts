@@ -15,14 +15,20 @@ export const AuthContext = createContext<AppContextPropsInterface>({
 })
 
 export const TimerContext = createContext<any>({
-    timeInSeconds: 0,
+    studyTimeInSec: 0,
+    setStudyTimeInSec: (time: number) => { },
+    originalStudyTime: 0,
+    setOriginalStudyTime: (time: number) => { },
     timeString: "0:00",
-    triggerCountDown: false,
-    timerOptionChanged: false,
-    display: false,
-    setTimeInSeconds: (time: number) => { },
     setTimeString: (time: string) => { },
+    triggerCountDown: false,
     setTriggerCountDown: (isOn: boolean) => { },
+    timerOptionChanged: false,
     setTimerOptionChanged: (hasChanged: boolean) => { },
-    setDisplay: (displayOrNot: boolean) => {},
+    breakTimeInSec: false,
+    setBreakTimeInSec: (time: number) => { },
+    paused: false,
+    setPaused: (isPaused: boolean) => { },
+    reset: false,
+    setReset: (isReset: boolean) => { },
 })

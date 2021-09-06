@@ -22,17 +22,30 @@ const App: FC = () => {
     id: 0,
     loggedIn: false,
   })
-  const [timeInSeconds, setTimeInSeconds] = useState<number>(0)
+  const [studyTimeInSec, setStudyTimeInSec] = useState<number>(0)
+  const [originalStudyTime, setOriginalStudyTime] = useState<number>(0)
   const [timeString, setTimeString] = useState<string>("0:00")
   const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false)
-  return (  
+  const [breakTimeInSec, setBreakTimeInSec] = useState<number>(0)
+  const [paused, setPaused] = useState<boolean>(false)
+  const [reset, setReset] = useState<boolean>(false)
+  return (
     <TimerContext.Provider value={{
-      timeInSeconds: timeInSeconds,
+      studyTimeInSec: studyTimeInSec,
       timeString: timeString,
       triggerCountDown: triggerCountDown,
-      setTimeInSeconds: setTimeInSeconds,
+      setStudyTimeInSec: setStudyTimeInSec,
       setTimeString: setTimeString,
       setTriggerCountDown: setTriggerCountDown,
+      breakTimeInSec: breakTimeInSec,
+      setBreakTimeInSec: setBreakTimeInSec,
+      paused: paused,
+      setPaused: setPaused,
+      reset: reset,
+      setReset: setReset,
+      originalStudyTime: originalStudyTime, 
+      setOriginalStudyTime: setOriginalStudyTime,
+      
     }}>
       <AuthContext.Provider value={{
         authState: authState,

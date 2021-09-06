@@ -13,16 +13,16 @@ export interface AppContextPropsInterface {
 }
 
 export interface TimeContextInterface {
-    timeInSeconds: number;
+    studyTimeInSec: number;
     timeString: string;
     triggerCountDown: boolean;
 }
 
 export interface TimeContextPropsInterface {
-    timeInSeconds: number;
+    studyTimeInSec: number;
     timeString: string;
     triggerCountDown: boolean;
-    setTimeInSeconds: (time: number) => void;
+    setStudyTimeInSec: (time: number) => void;
     setTimeString: (time: string) => void;
     setTriggerCountDown: (isOn: boolean) => void;
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { NavigationBar } from "../components/Navbar"
 import { AddPopUp } from "../components/CRUD/AddPopUp"
 import { AuthContext, TimerContext } from '../helpers/Contexts';
@@ -16,7 +16,7 @@ import "./Css/User.css"
 import { AppContextInterface } from '../helpers/Interfaces';
 import { useHistory } from 'react-router-dom';
 import { RiStackFill } from 'react-icons/ri';
-import { AiOutlineFolder, AiOutlinePauseCircle } from 'react-icons/ai';
+import { AiOutlineFolder, AiOutlinePauseCircle, AiOutlinePlayCircle } from 'react-icons/ai';
 import { clear, time } from 'console';
 import { TimerPopUp } from '../components/Timer';
 
@@ -25,8 +25,9 @@ export interface IAppProps {
 
 export function User(props: IAppProps) {
   const { authState, setAuthState } = useContext(AuthContext);
-  const { timeInSeconds, timeString, triggerCountDown, setTimeInSeconds,
-    setTimeString, setTriggerCountDown,  } = useContext(TimerContext)
+  const { studyTimeInSec, timeString, triggerCountDown, setStudyTimeInSec,
+    setTimeString, setTriggerCountDown, paused, setPaused, originalStudyTime, 
+    setOriginalStudyTime, reset, setReset } = useContext(TimerContext)
   const [folders, setFolders] = useState<IFolder[]>([])
   const [sets, setSets] = useState<ISet[]>([])
   const [addFolderPopUpOpen, setAddFolderPopUpOpen] = useState<boolean>(false)
@@ -135,189 +136,211 @@ export function User(props: IAppProps) {
   // ===========================================================================
   // Timer
   // ===========================================================================
-
-  useEffect(() => {
-    console.log('calling');
-    if(timeInSeconds != 0) {
-      beginCountDown()
-    }
-  }, [timeInSeconds])
-
   
+    useEffect(() => {
+      localStorage.setItem("paused", paused)
+    }, [paused])
 
-  const beginCountDown = () => {
-    console.log(timeInSeconds);
-    let storageNum: string | null = localStorage.getItem("timeInSeconds")
-    if (storageNum === 'null') {
-      return
-    }
-    let storageNumInSec: number = parseInt(storageNum!)
+    useEffect(() => {
+      localStorage.setItem("reset", reset)
+    }, [reset])
 
-    const setIntervalId = setInterval(async () => {
-      // if(timerOptionChanged) {
-      //   clearInterval(setIntervalId)
-      // }
-      if (storageNumInSec === -1) {
-        console.log('hereInReset');
-        setTriggerCountDown(false)
-        setTimeInSeconds(0)
-        clearInterval(setIntervalId)
-        localStorage.removeItem("timeInSeconds");
-      } else {
-        console.log('executing');
-        setTimeString(convertTimeToString(storageNumInSec))
-        storageNumInSec = storageNumInSec -1
-        localStorage.setItem("timeInSeconds", (storageNumInSec).toString())
+    useEffect(() => {
+      console.log('calling');
+      if (studyTimeInSec != 0) {
+        beginCountDown()
       }
-    }, 1000)
-  }
+    }, [studyTimeInSec])
 
-  const convertTimeToString = (timeInSec: number): string => {
-    // Hours, minutes and seconds
-    let hrs = Math.floor(timeInSec / 3600);
-    let mins = Math.floor((timeInSec % 3600) / 60);
-    let secs = Math.floor(timeInSec % 60);
 
-    // Output like "1:01" or "4:03:59" or "123:03:59"
-    let ret = "";
 
-    if (hrs > 0) {
-      ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    const beginCountDown = () => {
+      console.log(studyTimeInSec);
+      let storageNum: string | null = localStorage.getItem("studyTimeInSec")
+      if (storageNum === 'null') {
+        return
+      }
+      let storageNumInSec: number = parseInt(storageNum!)
+
+      const setIntervalId = setInterval(async () => {
+        // if(timerOptionChanged) {
+        //   clearInterval(setIntervalId)
+        // }
+        if (storageNumInSec === -1) {
+          console.log('hereInReset');
+          setTriggerCountDown(false)
+          setStudyTimeInSec(0)
+          clearInterval(setIntervalId)
+          localStorage.removeItem("studyTimeInSec");
+        } else {
+
+          if(localStorage.getItem("reset")! === 'true') {
+            storageNumInSec = originalStudyTime
+            localStorage.setItem("reset", 'false')
+            setReset(false)
+          }
+          if(!(localStorage.getItem("paused") === 'true')){
+            console.log('executing');
+            setTimeString(convertTimeToString(storageNumInSec))
+            storageNumInSec = storageNumInSec - 1
+            localStorage.setItem("studyTimeInSec", (storageNumInSec).toString())
+          }
+          
+        }
+      }, 1000)
     }
 
-    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-    ret += "" + secs;
-    return ret;
-  }
+    const convertTimeToString = (timeInSec: number): string => {
+      // Hours, minutes and seconds
+      let hrs = Math.floor(timeInSec / 3600);
+      let mins = Math.floor((timeInSec % 3600) / 60);
+      let secs = Math.floor(timeInSec % 60);
 
-  return (
-    <div className="user_container">
+      // Output like "1:01" or "4:03:59" or "123:03:59"
+      let ret = "";
 
-      {addFolderPopUpOpen ? (
-        <div className="add_folder_pop_up">
-          <AddPopUp
-            setAddPopUpOpen={setAddFolderPopUpOpen}
-            itemToAdd="folder"
-          ></AddPopUp>
-        </div>
-      ) : null}
-      {addSetPopUpOpen ? (
-        <div className="add_set_pop_up">
-          <AddPopUp
-            setAddPopUpOpen={setAddSetPopUpOpen}
-            itemToAdd="set"
-          ></AddPopUp>
-        </div>
-      ) : null}
-      {timerPopUpOpen ? (
-        // <div className="timer_pop_up">
-        //   <h1>Time remaining: {timeString}</h1>
-        //   <button onClick={setTimer}> Start </button>
-        // </div>
-        <div className="timer_pop_up">
-          <TimerPopUp
-            setTimerPopUpOpen={setTimerPopUpOpen}
-            setTimeInSeconds={setTimeInSeconds}
-            setTriggerCountDown={setTriggerCountDown}
-            timeInSeconds={timeInSeconds}
-            setMultOptionErr = {setMultOptionErr}
-          ></TimerPopUp>
-        </div>
+      if (hrs > 0) {
+        ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+      }
 
-      ) : null}
-      <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
+      ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+      ret += "" + secs;
+      return ret;
+    }
 
-      <div className="user_content_container">
-        <div className="create_container">
-          <div onClick={openAddFolderPopUp} className="create_folder">
-            <h1 className="plus_btn">+</h1>
-            <AiOutlineFolder className="icons"></AiOutlineFolder>
-          </div>
+    return (
+      <div className="user_container">
 
-          <div onClick={openAddSetPopUp} className="create_set">
-            <h1 className="plus_btn">+</h1>
-            <RiStackFill className="icons"></RiStackFill>
-          </div>
-
-          <div className="timer">
-            <IoIosTimer onClick={openTimerPopUp} className="icons"></IoIosTimer>
-          </div>
-        </div>
-
-        {triggerCountDown ? (
-          <div className="time_remaining_container">
-            <div className="time_remaining_text">Time remaining: {timeString}</div>
-            <AiOutlinePauseCircle className="pauseplay_refresh_btn"></AiOutlinePauseCircle>
-            <IoRefreshOutline className="pauseplay_refresh_btn"></IoRefreshOutline>
+        {addFolderPopUpOpen ? (
+          <div className="add_folder_pop_up">
+            <AddPopUp
+              setAddPopUpOpen={setAddFolderPopUpOpen}
+              itemToAdd="folder"
+            ></AddPopUp>
           </div>
         ) : null}
-        {
-          multOptionErr ? (
-            <div className = "timer_option_err">Already have a timer, please stop this timer first!</div>
-          ) : null
-        }
-        <div className="folders_container">
-          <div className="folders_title_viewAll">
-            <h1 className="folders_container_title">Your folders</h1>
-            <a className="viewAll" onClick={() => { history.push("./listFolders") }}>View All &gt; </a>
+        {addSetPopUpOpen ? (
+          <div className="add_set_pop_up">
+            <AddPopUp
+              setAddPopUpOpen={setAddSetPopUpOpen}
+              itemToAdd="set"
+            ></AddPopUp>
+          </div>
+        ) : null}
+        {timerPopUpOpen ? (
+          // <div className="timer_pop_up">
+          //   <h1>Time remaining: {timeString}</h1>
+          //   <button onClick={setTimer}> Start </button>
+          // </div>
+          <div className="timer_pop_up">
+            <TimerPopUp
+              setTimerPopUpOpen={setTimerPopUpOpen}
+              setStudyTimeInSec={setStudyTimeInSec}
+              setTriggerCountDown={setTriggerCountDown}
+              studyTimeInSec={studyTimeInSec}
+              setMultOptionErr={setMultOptionErr}
+              setOriginalStudyTime = {setOriginalStudyTime}
+            ></TimerPopUp>
           </div>
 
-          <div className="user_list_of_folders">
-            {folders.slice(0, 8).map((oneFolder) => {
-              return (
-                <div className="user_one_item"
-                  key={oneFolder.id}
-                  onClick={goToSetsPage}
-                  data-folderid={oneFolder.id}
-                  data-foldername={oneFolder.name}>
+        ) : null}
+        <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
+
+        <div className="user_content_container">
+          <div className="create_container">
+            <div onClick={openAddFolderPopUp} className="create_folder">
+              <h1 className="plus_btn">+</h1>
+              <AiOutlineFolder className="icons"></AiOutlineFolder>
+            </div>
+
+            <div onClick={openAddSetPopUp} className="create_set">
+              <h1 className="plus_btn">+</h1>
+              <RiStackFill className="icons"></RiStackFill>
+            </div>
+
+            <div className="timer">
+              <IoIosTimer onClick={openTimerPopUp} className="icons"></IoIosTimer>
+            </div>
+          </div>
+
+          {triggerCountDown ? (
+            <div className="time_remaining_container">
+              <div className="time_remaining_text">Time remaining: {timeString}</div>
+              {!paused ? (
+                <AiOutlinePauseCircle onClick={() => setPaused(true)} className="pauseplay_refresh_btn"></AiOutlinePauseCircle>
+              ) : (
+                <AiOutlinePlayCircle onClick={() => setPaused(false)} className="pauseplay_refresh_btn"></AiOutlinePlayCircle>
+              )}
+              <IoRefreshOutline onClick={() => setReset(true)} className="pauseplay_refresh_btn"></IoRefreshOutline>
+            </div>
+          ) : null}
+          {
+            multOptionErr ? (
+              <div className="timer_option_err">Already have a timer, please stop this timer first!</div>
+            ) : null
+          }
+          <div className="folders_container">
+            <div className="folders_title_viewAll">
+              <h1 className="folders_container_title">Your folders</h1>
+              <a className="viewAll" onClick={() => { history.push("./listFolders") }}>View All &gt; </a>
+            </div>
+
+            <div className="user_list_of_folders">
+              {folders.slice(0, 8).map((oneFolder) => {
+                return (
+                  <div className="user_one_item"
+                    key={oneFolder.id}
+                    onClick={goToSetsPage}
+                    data-folderid={oneFolder.id}
+                    data-foldername={oneFolder.name}>
+                    <div
+                      className="user_one_item_title_container"
+                    >
+                      <div className="user_one_item_folderImg_container">
+                        <AiOutlineFolder className="user_one_item_folderIcon"></AiOutlineFolder>
+                      </div>
+                      <div className="user_one_item_name" >{oneFolder.name}</div>
+
+                    </div>
+
+                    <div className="user_one_item_numChild">Sets: {oneFolder.numSets}</div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          <div className="sets_container">
+            <div className="sets_title_viewAll">
+              <h1 className="sets_container_title">Your sets</h1>
+              <a className="viewAll" onClick={() => { history.push("./listSets") }}>View All &gt; </a>
+            </div>
+            <div className="user_list_of_sets">
+              {sets.slice(0, 8).map((oneSet) => {
+                return (
                   <div
-                    className="user_one_item_title_container"
+                    className="user_one_item"
+                    key={oneSet.id}
+                    onClick={goToCardsPage}
+                    data-setid={oneSet.id}
+                    data-setname={oneSet.name}
                   >
-                    <div className="user_one_item_folderImg_container">
-                      <AiOutlineFolder className="user_one_item_folderIcon"></AiOutlineFolder>
+                    <div className="user_one_item_title_container">
+                      <div className="user_one_item_folderImg_container">
+                        <RiStackFill className="user_one_item_folderIcon"></RiStackFill>
+                      </div>
+                      <div className="user_one_item_name">{oneSet.name}</div>
                     </div>
-                    <div className="user_one_item_name" >{oneFolder.name}</div>
-
+                    <div className="user_one_item_numChild">Cards: {oneSet.numCards}</div>
                   </div>
+                )
+              })}
+            </div>
 
-                  <div className="user_one_item_numChild">Sets: {oneFolder.numSets}</div>
-                </div>
-              )
-            })}
           </div>
         </div>
 
-        <div className="sets_container">
-          <div className="sets_title_viewAll">
-            <h1 className="sets_container_title">Your sets</h1>
-            <a className="viewAll" onClick={() => { history.push("./listSets") }}>View All &gt; </a>
-          </div>
-          <div className="user_list_of_sets">
-            {sets.slice(0, 8).map((oneSet) => {
-              return (
-                <div
-                  className="user_one_item"
-                  key={oneSet.id}
-                  onClick={goToCardsPage}
-                  data-setid={oneSet.id}
-                  data-setname={oneSet.name}
-                >
-                  <div className="user_one_item_title_container">
-                    <div className="user_one_item_folderImg_container">
-                      <RiStackFill className="user_one_item_folderIcon"></RiStackFill>
-                    </div>
-                    <div className="user_one_item_name">{oneSet.name}</div>
-                  </div>
-                  <div className="user_one_item_numChild">Cards: {oneSet.numCards}</div>
-                </div>
-              )
-            })}
-          </div>
 
-        </div>
       </div>
-
-
-    </div>
-  );
-}
+    );
+  }

@@ -8,27 +8,30 @@ import { useEffect, useState } from 'react';
 import { FaLessThan } from 'react-icons/fa';
 export interface ITimerPopUpProps {
     setTimerPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setTimeInSeconds: React.Dispatch<React.SetStateAction<number>>
+    setStudyTimeInSec: React.Dispatch<React.SetStateAction<number>>
     setTriggerCountDown: React.Dispatch<React.SetStateAction<boolean>>;
-    timeInSeconds: number;
+    studyTimeInSec: number;
     setMultOptionErr: React.Dispatch<React.SetStateAction<boolean>>;
+    setOriginalStudyTime: React.Dispatch<React.SetStateAction<number>>
 }
 
 export function TimerPopUp({
     setTimerPopUpOpen,
-    setTimeInSeconds,
+    setStudyTimeInSec,
     setTriggerCountDown,
-    timeInSeconds, 
-    setMultOptionErr
+    studyTimeInSec,
+    setMultOptionErr,
+    setOriginalStudyTime,
 }: ITimerPopUpProps) {
     const [customTimerPopUpOpen, setCustomTimerPopUpOpen] = useState<boolean>(false)
     // let studyLength = 0;
 
     const setTimer = (studyLength: number, breakLength: number) => {
-        if(!timeInSeconds) {
-            setTimeInSeconds(studyLength);
-            localStorage.setItem("timeInSeconds", studyLength.toString())
-            setTriggerCountDown(true)    
+        if (studyTimeInSec === 0) {
+            setStudyTimeInSec(studyLength);
+            localStorage.setItem("studyTimeInSec", studyLength.toString())
+            setTriggerCountDown(true)
+            setOriginalStudyTime(studyLength);
         } else {
             console.log('rej');
             setMultOptionErr(true)
@@ -38,6 +41,8 @@ export function TimerPopUp({
         }
         setTimerPopUpOpen(false)
     }
+
+    
 
 
 

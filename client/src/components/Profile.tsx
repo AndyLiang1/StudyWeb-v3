@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { AiOutlinePauseCircle, AiOutlinePlayCircle } from 'react-icons/ai';
+import { IoRefreshOutline } from 'react-icons/io5';
 import { useHistory } from 'react-router-dom';
 import { TimerContext } from '../helpers/Contexts';
 import "./Css/Profile.css"
@@ -11,19 +13,36 @@ export interface IProfileProps {
 }
 
 export function Profile({ name, numFolders, numSets }: IProfileProps) {
-    const { timeInSeconds, timeString, triggerCountDown, setTimeInSeconds,
-        setTimeString, setTriggerCountDown } = useContext(TimerContext)
+    const { studyTimeInSec, timeString, triggerCountDown, setStudyTimeInSec,
+        setTimeString, setTriggerCountDown, paused, reset, setPaused, setReset } = useContext(TimerContext)
     let history = useHistory()
+
+    useEffect(() => {
+        localStorage.setItem("paused", paused)
+    }, [paused])
+
+    useEffect(() => {
+        localStorage.setItem("reset", reset)
+    }, [reset])
     return (
         <div className="profile_container">
 
             <div className="profile_pic_and_info">
                 <div className="profile_pic"></div>
                 <div className="profile_info">
-                    <h1 className="profile_name">{name}</h1>
+                    <h3 className="profile_name">{name}</h3>
                     <div className="num_folders_and_num_sets">
-                        <h3 className="count">Folder count: {numFolders} | Set count: {numSets}</h3>
-                        <h3 className="count">Time remaining: {timeString}</h3>
+                        <div className="count">Folder count: {numFolders} | Set count: {numSets}</div>
+                        <div className="profile_timer_container">
+                            <div className="count">Time remaining: {timeString}</div>
+                            {!paused ? (
+                                <AiOutlinePauseCircle onClick={() => setPaused(true)} className="pauseplay_refresh_btn"></AiOutlinePauseCircle>
+                            ) : (
+                                    <AiOutlinePlayCircle onClick={() => setPaused(false)} className="pauseplay_refresh_btn"></AiOutlinePlayCircle>
+                                )}
+                            <IoRefreshOutline onClick={() => setReset(true)} className="pauseplay_refresh_btn"></IoRefreshOutline>
+                        </div>
+
                     </div>
                 </div>
             </div>

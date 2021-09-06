@@ -40,6 +40,16 @@
     display: inline-block;
     padding-right: 3rem;
   }
+.num_folders_and_num_sets {
+    width: 100%;
+}
+
+.profile_timer_container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
 
 .profile_info {
     padding-left: 3rem;
