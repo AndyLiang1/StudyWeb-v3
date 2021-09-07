@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useContext, useEffect } from 'react';
-import { AiOutlinePauseCircle, AiOutlinePlayCircle } from 'react-icons/ai';
+import { AiOutlineCloseCircle, AiOutlinePauseCircle, AiOutlinePlayCircle } from 'react-icons/ai';
 import { IoRefreshOutline } from 'react-icons/io5';
 import { useHistory } from 'react-router-dom';
 import { TimerContext } from '../helpers/Contexts';
@@ -14,7 +14,7 @@ export interface IProfileProps {
 
 export function Profile({ name, numFolders, numSets }: IProfileProps) {
     const { studyTimeInSec, timeString, triggerCountDown, setStudyTimeInSec,
-        setTimeString, setTriggerCountDown, paused, reset, setPaused, setReset } = useContext(TimerContext)
+        setTimeString, setTriggerCountDown, paused, reset, setPaused, setReset, setTimerStatus } = useContext(TimerContext)
     let history = useHistory()
 
     useEffect(() => {
@@ -41,6 +41,8 @@ export function Profile({ name, numFolders, numSets }: IProfileProps) {
                                     <AiOutlinePlayCircle onClick={() => setPaused(false)} className="pauseplay_refresh_btn"></AiOutlinePlayCircle>
                                 )}
                             <IoRefreshOutline onClick={() => setReset(true)} className="pauseplay_refresh_btn"></IoRefreshOutline>
+                            <AiOutlineCloseCircle className="custom_timer_close_btn" onClick={() => { setTimerStatus("killed") }}></AiOutlineCloseCircle>
+
                         </div>
 
                     </div>

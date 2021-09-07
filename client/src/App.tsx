@@ -29,6 +29,7 @@ const App: FC = () => {
   const [breakTimeInSec, setBreakTimeInSec] = useState<number>(0)
   const [paused, setPaused] = useState<boolean>(false)
   const [reset, setReset] = useState<boolean>(false)
+  const [timerStatus, setTimerStatus] = useState<string>("none")
   return (
     <TimerContext.Provider value={{
       studyTimeInSec: studyTimeInSec,
@@ -45,7 +46,8 @@ const App: FC = () => {
       setReset: setReset,
       originalStudyTime: originalStudyTime, 
       setOriginalStudyTime: setOriginalStudyTime,
-      
+      timerStatus: timerStatus,
+      setTimerStatus: setTimerStatus,
     }}>
       <AuthContext.Provider value={{
         authState: authState,

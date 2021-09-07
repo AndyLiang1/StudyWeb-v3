@@ -67,6 +67,9 @@ export interface ICard {
     setId: number;
 }
 
+// =============================================================================
+// Forms 
+// =============================================================================
 export interface IAddFormFolder {
     name: string;
 }
@@ -92,6 +95,11 @@ export interface IEditForm {
     newName: string;
     newQuestion: string;
     newAnswer: string;
+}
+
+export interface ICustomTimerForm {
+    studyDuration: string;
+    breakDuration: string;
 }
 
 

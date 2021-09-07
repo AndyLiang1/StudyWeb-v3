@@ -24,12 +24,11 @@
 
 .create_container {
   width: 100%;
-  height: 30%;
+  height: 33%;
   display: flex;
   justify-content: space-around;
   align-items: center;
   text-align: center;
-
 }
 
 .create_folder, .create_set, .timer {
@@ -76,13 +75,13 @@
   font-size: 2.1rem;
 }
 
-.pauseplay_refresh_btn {
+.pauseplay_refresh_close_btn {
   height: 2rem;
   width: 2rem;
   margin-left: 2rem;
 }
 
-.pauseplay_refresh_btn:hover {
+.pauseplay_refresh_close_btn:hover {
   transform: scale(1.2);
   cursor: pointer;
 }
@@ -93,18 +92,19 @@
   align-items: center;
   text-align: center;
   color: red;
-  
+
 }
 /* ========================================================================== */
 /* Folder List */
 /* ========================================================================== */
 
 .folders_container {
-  height: 30%;
+  height: 31%;
   width: 100%;
 
   flex-direction: column;
   display: flex;
+  overflow-y: auto;
 }
 
 .folders_title_viewAll {
@@ -137,7 +137,7 @@
 .user_one_item {
   height: 7rem;
   min-height: 7rem;
-  width: 20%;
+  width: 20rem;
   background: white;
   margin-left: 3rem;
   margin-bottom: 1.5rem;
@@ -198,19 +198,19 @@
 /* Set List */
 /* ========================================================================== */
 .sets_container {
-  height: 30%;
+  height: 31%;
   width: 100%;
 
   flex-direction: column;
   display: flex;
+  overflow-y: auto;
 }
 .sets_title_viewAll {
   display: flex;
   justify-content: space-between;
   text-align: center;
   padding-left: 3rem;
-  padding-right: 3rem;
-}
+  padding-right: 3rem;}
 
 .viewAll {
   font-size: 2rem;
@@ -234,7 +234,7 @@
 .add_folder_pop_up {
   height: 25rem;
   width: 50rem;
-  position: absolute;
+  position: fixed;
   /* margin-top: 5%;
   margin-left: 50%; */
 
@@ -247,7 +247,7 @@
 .add_set_pop_up {
   height: 25rem;
   width: 50rem;
-  position: absolute;
+  position: fixed;
   /* margin-top: 5%;
   margin-left: 50%; */
 
@@ -257,11 +257,10 @@
   z-index: 3;
 }
 
-
 .timer_pop_up {
   height: 50rem;
   width: 50rem;
-  position: absolute;
+  position: fixed;
   /* margin-top: 5%;
   margin-left: 50%; */
 
@@ -269,4 +268,17 @@
   left:50%;
   transform: translate(-50%, -50%);
   z-index: 3;
+}
+
+.custom_timer_pop_up {
+  height: 35rem;
+  width: 50rem;
+  position: fixed;
+  /* margin-top: 5%;
+  margin-left: 50%;
+  transform: translateX(-50%); */
+  z-index: 3; 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

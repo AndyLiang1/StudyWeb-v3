@@ -10,7 +10,9 @@ router.get("/:userId", validateToken, async (req, res) => {
     console.log('in here')
     const {userId} = req.params;
     await sequelize
-        .query("SELECT * FROM folders where userId = ?", {
+        // Don't limit 10 because the function that fetches this end point
+        // is passed to other components
+        .query("SELECT * FROM folders WHERE userId = ?", { 
             replacements: [userId],
             type: QueryTypes.SELECT,
 

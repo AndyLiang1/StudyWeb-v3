@@ -137,7 +137,7 @@ html {
 .list_page_edit_container, .list_page_delete_container {
   height: 25rem;
   width: 50rem;
-  position: absolute;
+  position: fixed;
   /* margin-top: 5%;
   margin-left: 50%;
   transform: translateX(-50%);
@@ -150,7 +150,7 @@ html {
 .list_page_add_container {
   height: 35rem;
   width: 50rem;
-  position: absolute;
+  position: fixed;
   /* margin-top: 5%;
   margin-left: 50%;
   transform: translateX(-50%);
@@ -163,7 +163,7 @@ html {
 .list_page_edit_CARD_container {
   height: 35rem;
   width: 50rem;
-  position: absolute;
+  position: fixed;
   /* margin-top: 5%;
   margin-left: 50%;
   transform: translateX(-50%);

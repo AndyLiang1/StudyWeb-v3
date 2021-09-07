@@ -64,6 +64,7 @@
 
 .navbar_links li:hover, .nav_logout:hover{
     background-color: #555;
+    cursor: pointer;
 }
 
 .nav_folder_and_sets {

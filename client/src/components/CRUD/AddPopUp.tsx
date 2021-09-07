@@ -12,7 +12,7 @@ export interface IAppProps {
     itemToAdd: string;
     folderId?: number; // for adding a set to a known folder 
     setId?: number; // for adding a card to a set
-    getFolderOrSetOrCardList?: () => Promise<void>;
+    getFolderOrSetOrCardList: () => Promise<void>;
     listFolders?: IFolder[];
     addingLoneSet?: boolean;
     addingCard?: boolean;
@@ -39,6 +39,7 @@ export function AddPopUp({ setAddPopUpOpen, getFolderOrSetOrCardList, itemToAdd,
         let body
         console.log(`data`, submittedData)
         if (itemToAdd === 'folder') {
+            console.log('detected properly');
             url = `http://localhost:3000/api/v1/folders`
             body = JSON.stringify({
                 folderName: submittedData.name,

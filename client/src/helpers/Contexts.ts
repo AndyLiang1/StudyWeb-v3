@@ -31,4 +31,6 @@ export const TimerContext = createContext<any>({
     setPaused: (isPaused: boolean) => { },
     reset: false,
     setReset: (isReset: boolean) => { },
+    timerStatus: "none",
+    setTimerStatus: (staus: string) => { },
 })
