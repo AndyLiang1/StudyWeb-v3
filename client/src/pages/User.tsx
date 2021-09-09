@@ -28,7 +28,7 @@ export function User(props: IAppProps) {
   const { authState, setAuthState } = useContext(AuthContext);
   const { studyTimeInSec, timeString, triggerCountDown, setStudyTimeInSec,
     setTimeString, setTriggerCountDown, paused, setPaused, originalStudyTime,
-    setOriginalStudyTime, reset, setReset, timerStatus, setTimerStatus } = useContext(TimerContext)
+    setOriginalStudyTime, originalBreakTime, setOriginalBreakTime, reset, setReset, timerStatus, setTimerStatus } = useContext(TimerContext)
   const [folders, setFolders] = useState<IFolder[]>([])
   const [sets, setSets] = useState<ISet[]>([])
   const [addFolderPopUpOpen, setAddFolderPopUpOpen] = useState<boolean>(false)
@@ -169,13 +169,15 @@ export function User(props: IAppProps) {
 
 
   const setTimer = (studyLength: number, breakLength: number) => {
-    const studyLengthInSec = studyLength * 60
-    const breakLengthInSec = breakLength * 60
+    const studyLengthInSec = studyLength 
+    const breakLengthInSec = breakLength 
     if (studyTimeInSec === 0) {
       setStudyTimeInSec(studyLengthInSec);
       localStorage.setItem("studyTimeInSec", studyLengthInSec.toString())
       setTriggerCountDown(true)
       setOriginalStudyTime(studyLengthInSec);
+      setOriginalBreakTime(breakLengthInSec);
+      localStorage.setItem("breakTimeInSec", breakLengthInSec.toString())
       setTimerStatus("study")
     } else {
       console.log('rej');
@@ -190,10 +192,13 @@ export function User(props: IAppProps) {
 
   // if false, then means break 
   const beginCountDown = (study: boolean) => {
-    console.log(studyTimeInSec);
+    console.log(study);
     let storageNum: string | null = localStorage.getItem("studyTimeInSec")
     if (storageNum === 'null') {
       return
+    }
+    if(timerStatus === 'break') {
+      storageNum = localStorage.getItem("breakTimeInSec")
     }
     let storageNumInSec: number = parseInt(storageNum!)
 
@@ -202,13 +207,17 @@ export function User(props: IAppProps) {
       //   clearInterval(setIntervalId)
       // }
       if (storageNumInSec === -1) {
-        console.log('hereInReset');
-        setTriggerCountDown(false)
+        if(timerStatus != 'study') {
+          setTriggerCountDown(false)
+          setTimerStatus("none")
+
+        } else {
+          setTimerStatus("break")
+        }
         setStudyTimeInSec(0)
-        setTimerStatus("break")
         setTimeString("0:00")
         clearInterval(setIntervalId)
-        localStorage.removeItem("studyTimeInSec");
+        
         localStorage.removeItem("paused");
         localStorage.removeItem("reset");
         localStorage.removeItem("status");
@@ -219,7 +228,11 @@ export function User(props: IAppProps) {
           setTimerStatus("none")
           setTimeString("0:00")
           localStorage.setItem("status", "none")
-          localStorage.removeItem("studyTimeInSec");
+          if( timerStatus === 'study') {
+            localStorage.removeItem("studyTimeInSec");
+          } else if (timerStatus === 'break') {
+            localStorage.removeItem("breakTimeInSec");
+          }          
           localStorage.removeItem("paused");
           localStorage.removeItem("reset");
           localStorage.removeItem("status");
@@ -227,7 +240,13 @@ export function User(props: IAppProps) {
           return
         }
         if (localStorage.getItem("reset")! === 'true') {
-          storageNumInSec = originalStudyTime
+          if(timerStatus === 'study') {
+            storageNumInSec = originalStudyTime
+
+          } else if (timerStatus === 'break') {
+            storageNumInSec = originalBreakTime
+
+          }
           localStorage.setItem("reset", 'false')
           setReset(false)
         }
@@ -235,7 +254,11 @@ export function User(props: IAppProps) {
           console.log('executing');
           setTimeString(convertTimeToString(storageNumInSec))
           storageNumInSec = storageNumInSec - 1
-          localStorage.setItem("studyTimeInSec", (storageNumInSec).toString())
+          if( timerStatus === 'study') {
+            localStorage.setItem("studyTimeInSec", (storageNumInSec).toString())
+          } else if (timerStatus === 'break') {
+            localStorage.setItem("breakTimeInSec", (storageNumInSec).toString())
+          }
         }
 
       }

@@ -19,6 +19,8 @@ export const TimerContext = createContext<any>({
     setStudyTimeInSec: (time: number) => { },
     originalStudyTime: 0,
     setOriginalStudyTime: (time: number) => { },
+    originalBreakTime: 0,
+    setOriginalBreakTime: (time: number) => { },
     timeString: "0:00",
     setTimeString: (time: string) => { },
     triggerCountDown: false,
