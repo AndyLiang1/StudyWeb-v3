@@ -113,6 +113,7 @@ export function ListFolders(props: IListFoldersProps) {
                     name={authState.name}
                     numFolders={numFolders}
                     numSets={numSets}
+                    
                 />
             </div>
             <h1 className="description">Your folders</h1>

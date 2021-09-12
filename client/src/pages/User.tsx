@@ -155,7 +155,7 @@ export function User(props: IAppProps) {
 
   useEffect(() => {
     localStorage.setItem("status", timerStatus)
-    if(timerStatus === 'break') {
+    if (timerStatus === 'break') {
       beginCountDown(false)
     }
   }, [timerStatus])
@@ -169,8 +169,8 @@ export function User(props: IAppProps) {
 
 
   const setTimer = (studyLength: number, breakLength: number) => {
-    const studyLengthInSec = studyLength 
-    const breakLengthInSec = breakLength 
+    const studyLengthInSec = studyLength
+    const breakLengthInSec = breakLength
     if (studyTimeInSec === 0) {
       setStudyTimeInSec(studyLengthInSec);
       localStorage.setItem("studyTimeInSec", studyLengthInSec.toString())
@@ -197,7 +197,7 @@ export function User(props: IAppProps) {
     if (storageNum === 'null') {
       return
     }
-    if(timerStatus === 'break') {
+    if (timerStatus === 'break') {
       storageNum = localStorage.getItem("breakTimeInSec")
     }
     let storageNumInSec: number = parseInt(storageNum!)
@@ -207,7 +207,7 @@ export function User(props: IAppProps) {
       //   clearInterval(setIntervalId)
       // }
       if (storageNumInSec === -1) {
-        if(timerStatus != 'study') {
+        if (timerStatus != 'study') {
           setTriggerCountDown(false)
           setTimerStatus("none")
 
@@ -217,7 +217,7 @@ export function User(props: IAppProps) {
         setStudyTimeInSec(0)
         setTimeString("0:00")
         clearInterval(setIntervalId)
-        
+
         localStorage.removeItem("paused");
         localStorage.removeItem("reset");
         localStorage.removeItem("status");
@@ -228,11 +228,11 @@ export function User(props: IAppProps) {
           setTimerStatus("none")
           setTimeString("0:00")
           localStorage.setItem("status", "none")
-          if( timerStatus === 'study') {
+          if (timerStatus === 'study') {
             localStorage.removeItem("studyTimeInSec");
           } else if (timerStatus === 'break') {
             localStorage.removeItem("breakTimeInSec");
-          }          
+          }
           localStorage.removeItem("paused");
           localStorage.removeItem("reset");
           localStorage.removeItem("status");
@@ -240,7 +240,7 @@ export function User(props: IAppProps) {
           return
         }
         if (localStorage.getItem("reset")! === 'true') {
-          if(timerStatus === 'study') {
+          if (timerStatus === 'study') {
             storageNumInSec = originalStudyTime
 
           } else if (timerStatus === 'break') {
@@ -254,7 +254,7 @@ export function User(props: IAppProps) {
           console.log('executing');
           setTimeString(convertTimeToString(storageNumInSec))
           storageNumInSec = storageNumInSec - 1
-          if( timerStatus === 'study') {
+          if (timerStatus === 'study') {
             localStorage.setItem("studyTimeInSec", (storageNumInSec).toString())
           } else if (timerStatus === 'break') {
             localStorage.setItem("breakTimeInSec", (storageNumInSec).toString())
@@ -336,23 +336,28 @@ export function User(props: IAppProps) {
       <div className="user_content_container">
         <div className="create_container">
           <div className="create_folder">
-            <h1 className="plus_btn">+</h1>
+            <h1 onClick={openAddFolderPopUp} className="plus_btn">+</h1>
             <AiOutlineFolder onClick={openAddFolderPopUp} className="icons"></AiOutlineFolder>
           </div>
 
           <div className="create_set">
-            <h1 className="plus_btn">+</h1>
+            <h1 onClick={openAddSetPopUp} className="plus_btn">+</h1>
             <RiStackFill onClick={openAddSetPopUp} className="icons"></RiStackFill>
           </div>
 
-          <div className="timer">
+          <div onClick={openTimerPopUp} className="timer">
             <IoIosTimer onClick={openTimerPopUp} className="icons"></IoIosTimer>
           </div>
         </div>
 
         {triggerCountDown ? (
           <div className="time_remaining_container">
-            <div className="time_remaining_text">Time remaining: {timeString}</div>
+            {timerStatus === 'study' ? (
+              <div className="time_remaining_text">Study time remaining: {timeString}</div>
+            ) : null}
+            {timerStatus === 'break' ? (
+              <div className="time_remaining_text">Break time remaining: {timeString}</div>
+            ) : null}
             {!paused ? (
               <AiOutlinePauseCircle onClick={() => setPaused(true)} className="pauseplay_refresh_close_btn"></AiOutlinePauseCircle>
             ) : (

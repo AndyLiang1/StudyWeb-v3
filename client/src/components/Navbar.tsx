@@ -27,6 +27,8 @@ export function NavigationBar({ loggedIn }: IAppProps) {
     localStorage.removeItem("name");
     localStorage.removeItem("id");
     localStorage.removeItem("loggedIn");
+    localStorage.removeItem("studyTimeInSec");
+    localStorage.removeItem("breakTimeInSec");
     history.push("./")
   }
 

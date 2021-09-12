@@ -116,7 +116,7 @@
 }
 
 .viewAll {
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-decoration: none;
   color: black;
   font-weight: 600;
@@ -178,6 +178,7 @@
 }
 
 .user_one_item_name {
+  font-weight: 600;
   font-size: 1.5rem;
   display: flex;
   text-align: center;
@@ -213,7 +214,7 @@
   padding-right: 3rem;}
 
 .viewAll {
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-decoration: none;
   color: black;
   font-weight: 600;

@@ -14,5 +14,6 @@ html {
 :root {
   --grey: rgba(59, 59, 59);
   --lightgrey: rgb(189, 189, 189);
+  --verylightgrey: rgb(246, 246, 246);
 }
 

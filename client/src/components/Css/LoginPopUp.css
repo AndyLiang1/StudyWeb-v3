@@ -19,7 +19,6 @@
 .image_side {
     height: 100%;
     width:40%;
-    background-color: red;
 }
 
 .sign_in_close_btn {
@@ -31,7 +30,6 @@
 .sign_in_close_btn:hover {
     cursor: pointer;
     transform: scale(4.5);
-
 }
 
 /* ========================================================================== */
@@ -86,6 +84,16 @@
 .sign_in_field{
     width: 100%;
     margin-bottom: 1rem;
+    border: 0.1rem solid black;
+}
+
+.sign_in_field_errors {
+    color: red;
+}
+
+.sign_in_message_red {
+    font-size: 1.5rem;
+    color: red;
 }
 
 .sign_in_button {

@@ -7,17 +7,17 @@ import "./Css/LoginPopUp.css"
 
 import { ILoginForm } from "../helpers/Interfaces"
 import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { useHistory} from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { AuthContext } from '../helpers/Contexts';
 
 
-interface Props{
+interface Props {
     loginPopUpOpen: boolean;
     setLoginPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
-} 
-export function LoginPopUp({loginPopUpOpen, setLoginPopUpOpen}: Props) {
-    const { authState, setAuthState } = React.useContext(AuthContext);
+}
+export function LoginPopUp({ loginPopUpOpen, setLoginPopUpOpen }: Props) {
     const [badLogin, setBadLogin] = useState<boolean>(false)
+    const [loginMsg, setLoginMsg] = useState<string>("")
     let history = useHistory()
     const initialValues = {
         email: "",
@@ -28,9 +28,9 @@ export function LoginPopUp({loginPopUpOpen, setLoginPopUpOpen}: Props) {
         email: Yup.string().email('Invalid email').required(),
         password: Yup.string().max(50).required(),
     })
-    
+
     const signIn = (submittedData: ILoginForm) => {
-        const { email, password  } = submittedData
+        const { email, password } = submittedData
         fetch("http://localhost:3000/api/v1/users/signin", {
             mode: 'cors',
             headers: {
@@ -45,25 +45,21 @@ export function LoginPopUp({loginPopUpOpen, setLoginPopUpOpen}: Props) {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    console.log('Error with loggin in.')
-                    console.log(data.error)
+                    setBadLogin(true)
+                    setLoginMsg(data.error)
                 } else {
-                    
                     // console.log(`Success! Data is: `, data)
                     localStorage.setItem("accessToken", data.token)
                     localStorage.setItem("name", data.name)
                     localStorage.setItem("id", data.id)
                     localStorage.setItem("loggedIn", "true")
                     history.push("./user")
-           
-                    
-                    
                 }
             })
             .catch((error) => {
                 console.log(error)
             })
-            
+
     }
 
     const googleSuccess = async (res: any) => {
@@ -86,9 +82,13 @@ export function LoginPopUp({loginPopUpOpen, setLoginPopUpOpen}: Props) {
         }).then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    console.log(data.error)
+                    setBadLogin(true)
+                    setLoginMsg(data.error)
                 } else {
-                    console.log(`Success! data: ${data}`)
+                    localStorage.setItem("accessToken", data.token)
+                    localStorage.setItem("name", data.name)
+                    localStorage.setItem("id", data.id)
+                    localStorage.setItem("loggedIn", "true")
                     history.push("../user")
 
                 }
@@ -103,7 +103,7 @@ export function LoginPopUp({loginPopUpOpen, setLoginPopUpOpen}: Props) {
         console.log('Google success failed.')
     }
 
-    const closeLoginPopUp = ():void => {
+    const closeLoginPopUp = (): void => {
         setLoginPopUpOpen(false)
     }
 
@@ -113,8 +113,8 @@ export function LoginPopUp({loginPopUpOpen, setLoginPopUpOpen}: Props) {
 
             </div>
             <div className="sign_in_side">
-            <AiOutlineCloseCircle className = "sign_in_close_btn" onClick = {closeLoginPopUp}></AiOutlineCloseCircle>
-                        <Formik
+                <AiOutlineCloseCircle className="sign_in_close_btn" onClick={closeLoginPopUp}></AiOutlineCloseCircle>
+                <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={signIn}
@@ -137,9 +137,7 @@ export function LoginPopUp({loginPopUpOpen, setLoginPopUpOpen}: Props) {
                             </div>
 
                             {badLogin ? (
-                                <div>
-                                    <h1 className="sign_in_message" id="sign_in_message_id">{ }</h1>
-                                </div>
+                                <div className="sign_in_message_red">{loginMsg}</div>
                             ) : null}
 
                             <button className="sign_in_button" type="submit">Log in</button>

@@ -10,15 +10,16 @@ html {
     "Lucida Sans", Arial, sans-serif;
 }
 .list_page {
-  height: 90vh;
   width: 100vw;
   position: relative;
+  background: var(--verylightgrey);
 }
 
 .description {
   padding-left: 3rem;
   margin-top: 1rem;
   font-size: 2rem;
+  height: 5%;
 }
 
 .profile_section_container {
@@ -29,9 +30,7 @@ html {
 /* List of sets  */
 /* ========================================================================== */
 .list_page_content {
-  height: 78%;
   width: 100%;
-
   display: flex;
   flex-direction: column;   
 }
@@ -46,7 +45,9 @@ html {
 
   flex-direction: column;
   display: flex;
-  justify-self: start;
+  justify-content: center;
+  text-align: center;
+  
 
   padding-left: 3rem;
 
@@ -55,7 +56,7 @@ html {
 }
 
 .add_item {
-  background: lightgrey;
+  background: rgb(170, 221, 238);
 }
 
 .add_item:hover {

@@ -15,11 +15,31 @@
     width:100%;
     display: flex;
 }
+
 .image_side {
     height: 100%;
-    width:40%;
-    background-color: red;
+    width: 40%; 
+
+    background: lightblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
+
+.image_container {
+    height: 50%;
+    width: 40rem;
+    position: relative;
+    left: 0;
+}
+
+.image_for_side { 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);    
+    position: absolute;
+} 
 
 .sign_up_close_btn {
     position: absolute;
@@ -30,7 +50,6 @@
 .sign_up_close_btn:hover {
     cursor: pointer;
     transform: scale(4.5);
-
 }
 
 /* ========================================================================== */
@@ -38,11 +57,10 @@
 /* ========================================================================== */
 .sign_up_side {
     height: 100%;
-    width:60%;
+    width: 60%;
     background-color: white;
-    padding: 2.5rem 3rem;
-    
-
+    padding: 2.5rem 3rem;    
+    z-index: 2;
 }
 .sign_up_title {
     position: relative;
@@ -84,7 +102,21 @@
 .sign_up_field{
     width: 100%;
     margin-bottom: 1rem;
+    border: 0.1rem solid black;
 
+}
+
+.sign_up_field_errors {
+    color: red;
+}
+
+.sign_up_message_red {
+    font-size: 1.5rem;
+    color: red;
+}
+
+.sign_up_message_normal {
+    font-size: 1.5rem;
 }
 
 .sign_up_button {

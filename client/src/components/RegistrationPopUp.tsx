@@ -5,17 +5,20 @@ import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import "./Css/RegistrationPopUp.css"
 import { AiOutlineCloseCircle } from "react-icons/ai";
-
-
 import { IRegistrationForm } from '../helpers/Interfaces'
 import { Dispatch, SetStateAction } from 'react';
+import { useHistory } from 'react-router-dom';
+import image_for_side from '../img/image_side2.png'
 
-interface Props{
+interface Props {
     regPopUpOpen: boolean;
     setRegPopUpOpen: Dispatch<SetStateAction<boolean>>;
 }
-export function RegistrationPopUp({regPopUpOpen, setRegPopUpOpen}: Props) {
-    const [badLogin, setBadLogin] = useState<boolean>(false)
+export function RegistrationPopUp({ regPopUpOpen, setRegPopUpOpen }: Props) {
+    const [badReg, setBadReg] = useState<boolean>(false)
+    const [regMsg, setRegMsg] = useState<string>("")
+    let history = useHistory()
+
     const initialValues: IRegistrationForm = {
         name: "",
         email: "",
@@ -37,6 +40,7 @@ export function RegistrationPopUp({regPopUpOpen, setRegPopUpOpen}: Props) {
     const signUp = (submittedData: IRegistrationForm) => {
         const { name, email, password, passwordConfirmation } = submittedData
         const emailLowerCase = email.toLowerCase()
+
         fetch("http://localhost:3000/api/v1/users/signup", {
             mode: 'cors',
             headers: {
@@ -52,9 +56,13 @@ export function RegistrationPopUp({regPopUpOpen, setRegPopUpOpen}: Props) {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    
+                    setBadReg(true)
+                    setRegMsg(data.error)
+                    console.log(`Error with signing up`, data.error);
                 } else {
-                    
+                    console.log(data);
+                    setBadReg(false)
+                    setRegMsg('Please confirm your account in your email!')
                 }
             })
             .catch((error) => {
@@ -82,9 +90,14 @@ export function RegistrationPopUp({regPopUpOpen, setRegPopUpOpen}: Props) {
         }).then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    console.log(data.error)
+                    setBadReg(true)
+                    setRegMsg(data.error)
                 } else {
-                    console.log('success!', data)
+                    localStorage.setItem("accessToken", data.token)
+                    localStorage.setItem("name", data.name)
+                    localStorage.setItem("id", data.id)
+                    localStorage.setItem("loggedIn", "true")
+                    history.push("../user")
                 }
             })
             .catch((error) => {
@@ -97,16 +110,18 @@ export function RegistrationPopUp({regPopUpOpen, setRegPopUpOpen}: Props) {
         console.log('Google success failed.')
     }
 
-    const closeRegPopUp = ():void => {
+    const closeRegPopUp = (): void => {
         setRegPopUpOpen(false)
     }
     return (
         <div className="sign_up_page">
             <div className="image_side">
-
+                <div className="image_container">
+                    <img className="image_for_side" src={image_for_side}></img>
+                </div>
             </div>
             <div className="sign_up_side">
-                <AiOutlineCloseCircle className = "sign_up_close_btn" onClick = {closeRegPopUp}></AiOutlineCloseCircle>
+                <AiOutlineCloseCircle className="sign_up_close_btn" onClick={closeRegPopUp}></AiOutlineCloseCircle>
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
@@ -142,11 +157,11 @@ export function RegistrationPopUp({regPopUpOpen, setRegPopUpOpen}: Props) {
                                 ) : null}
                             </div>
 
-                            {badLogin ? (
-                                <div>
-                                    <h1 className="sign_up_message" id="sign_up_message_id">{ }</h1>
-                                </div>
-                            ) : null}
+                            {badReg ? (
+                                <div className="sign_up_message_red">{regMsg}</div>
+                            ) : (
+                                    <div className="sign_up_message_normal">{regMsg}</div>
+                                )}
 
                             <button className="sign_up_button" type="submit">Sign up</button>
 

@@ -199,7 +199,7 @@ router.post("/signin", async (req, res) => {
                 if (!match) {
                     res.json({
                         status: 'fail',
-                        error: "Wrong user and pass combo"
+                        error: "Wrong username and password combination!"
                     });
                 } else {
                     const accessToken = jwt.sign(

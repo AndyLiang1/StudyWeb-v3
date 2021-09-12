@@ -13,7 +13,7 @@
 .profile_container {
     height: 100%;
     width: 100%;
-    background: grey;
+    background: white;
     padding-left: 5rem;
     position: relative;
 }
@@ -22,53 +22,74 @@
     display: flex;
     justify-content: left;
     padding-top: 1rem;
-}
-
-.profile_icon {
-    display: flex;
-    flex-direction: column
+    height: 80%;
 }
 
 .profile_name {
     font-size: 3.5rem;
 }
+
 .profile_pic{
     height: 9rem;
     width: 9rem;
-    background-color: #bbb;
+    background: var(--lightgrey);
     border-radius: 50%;
     display: inline-block;
     padding-right: 3rem;
-  }
+    position: relative;
+}
+
+.profile_icon {
+    height: 90%;
+    width: 90%;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);    
+    position: absolute;
+
+    color: black;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    
+
+}
 .num_folders_and_num_sets {
     width: 100%;
 }
 
 .profile_timer_container {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
 }
 
 .profile_info {
     padding-left: 3rem;
+    width: 50%;
 }
 .count {
     font-size: 1.5rem;
 }
 
 .folder_sets_options_container {
-    position: absolute;
-    bottom: 0;
+    margin-top: 1rem;
 }
 
 .folders_link, .sets_link{
     padding-right: 5rem;
     text-decoration: none;
     font-size: 2rem;
-    color: white;
+    color: black;
 }
 .folders_link:hover, .sets_link:hover{
     cursor: pointer;
+}
+
+.pauseplay_refresh_btn {
+    margin-left: 1rem;
+    height: 1.5rem;
+    width: 1.5rem;
 }
