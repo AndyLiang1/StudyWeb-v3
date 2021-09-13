@@ -34,5 +34,17 @@ export const TimerContext = createContext<any>({
     reset: false,
     setReset: (isReset: boolean) => { },
     timerStatus: "none",
-    setTimerStatus: (staus: string) => { },
+    setTimerStatus: (status: string) => { },
+
+    multOptionErr: false,
+    setMultOptionErr:(isOn: boolean) => { },
+    timerPopUpOpen: false,
+    setTimerPopUpOpen: (isOn: boolean) => { },
+
+    // =========================================================================
+    // Functions
+    // =========================================================================
+    setTimer: (studyLength: number, breakLength: number) => { },
+    beginCountDown :(study: boolean) => { },
+    convertTimeToString :(timeInSec: number) => { },
 })

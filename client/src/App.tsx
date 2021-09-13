@@ -31,6 +31,123 @@ const App: FC = () => {
   const [paused, setPaused] = useState<boolean>(false)
   const [reset, setReset] = useState<boolean>(false)
   const [timerStatus, setTimerStatus] = useState<string>("none")
+  const [multOptionErr, setMultOptionErr] = useState<boolean>(false)
+  const [timerPopUpOpen, setTimerPopUpOpen] = useState<boolean>(false)
+
+  const setTimer = (studyLength: number, breakLength: number) => {
+    const studyLengthInSec = studyLength
+    const breakLengthInSec = breakLength
+    if (studyTimeInSec === 0) {
+      setStudyTimeInSec(studyLengthInSec);
+      localStorage.setItem("studyTimeInSec", studyLengthInSec.toString())
+      setTriggerCountDown(true)
+      setOriginalStudyTime(studyLengthInSec);
+      setOriginalBreakTime(breakLengthInSec);
+      localStorage.setItem("breakTimeInSec", breakLengthInSec.toString())
+      setTimerStatus("study")
+    } else {
+      console.log('rej');
+      setMultOptionErr(true)
+      setTimeout(() => {
+        setMultOptionErr(false)
+      }, 5000)
+    }
+    setTimerPopUpOpen(false)
+  }
+
+
+  // if false, then means break 
+  const beginCountDown = (study: boolean) => {
+    console.log(study);
+    let storageNum: string | null = localStorage.getItem("studyTimeInSec")
+    if (storageNum === 'null') {
+      return
+    }
+    if (timerStatus === 'break') {
+      storageNum = localStorage.getItem("breakTimeInSec")
+    }
+    let storageNumInSec: number = parseInt(storageNum!)
+
+    const setIntervalId = setInterval(async () => {
+      // if(timerOptionChanged) {
+      //   clearInterval(setIntervalId)
+      // }
+      if (storageNumInSec === -1) {
+        if (timerStatus != 'study') {
+          setTriggerCountDown(false)
+          setTimerStatus("none")
+
+        } else {
+          setTimerStatus("break")
+        }
+        setStudyTimeInSec(0)
+        setTimeString("0:00")
+        clearInterval(setIntervalId)
+
+        localStorage.removeItem("paused");
+        localStorage.removeItem("reset");
+        localStorage.removeItem("status");
+      } else {
+        if (localStorage.getItem("status")! === 'killed') {
+          setTriggerCountDown(false)
+          setStudyTimeInSec(0)
+          setTimerStatus("none")
+          setTimeString("0:00")
+          localStorage.setItem("status", "none")
+          if (timerStatus === 'study') {
+            localStorage.removeItem("studyTimeInSec");
+          } else if (timerStatus === 'break') {
+            localStorage.removeItem("breakTimeInSec");
+          }
+          localStorage.removeItem("paused");
+          localStorage.removeItem("reset");
+          localStorage.removeItem("status");
+          clearInterval(setIntervalId)
+          return
+        }
+        if (localStorage.getItem("reset")! === 'true') {
+          if (timerStatus === 'study') {
+            storageNumInSec = originalStudyTime
+
+          } else if (timerStatus === 'break') {
+            storageNumInSec = originalBreakTime
+
+          }
+          localStorage.setItem("reset", 'false')
+          setReset(false)
+        }
+        if (!(localStorage.getItem("paused") === 'true')) {
+          console.log('executing');
+          setTimeString(convertTimeToString(storageNumInSec))
+          storageNumInSec = storageNumInSec - 1
+          if (timerStatus === 'study') {
+            localStorage.setItem("studyTimeInSec", (storageNumInSec).toString())
+          } else if (timerStatus === 'break') {
+            localStorage.setItem("breakTimeInSec", (storageNumInSec).toString())
+          }
+        }
+
+      }
+    }, 1000)
+  }
+
+  const convertTimeToString = (timeInSec: number): string => {
+    // Hours, minutes and seconds
+    let hrs = Math.floor(timeInSec / 3600);
+    let mins = Math.floor((timeInSec % 3600) / 60);
+    let secs = Math.floor(timeInSec % 60);
+
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    let ret = "";
+
+    if (hrs > 0) {
+      ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    }
+
+    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+    ret += "" + secs;
+    return ret;
+  }
 
   return (
     <TimerContext.Provider value={{
@@ -52,6 +169,14 @@ const App: FC = () => {
       setOriginalBreakTime: setOriginalBreakTime,
       timerStatus: timerStatus,
       setTimerStatus: setTimerStatus,
+      multOptionErr: multOptionErr,
+      setMultOptionErr: setMultOptionErr,
+      timerPopUpOpen: timerPopUpOpen,
+      setTimerPopUpOpen: setTimerPopUpOpen,
+
+      setTimer: setTimer,
+      beginCountDown: beginCountDown,
+      convertTimeToString: convertTimeToString,
     }}>
       <AuthContext.Provider value={{
         authState: authState,

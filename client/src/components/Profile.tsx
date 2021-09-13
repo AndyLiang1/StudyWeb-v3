@@ -15,7 +15,7 @@ export interface IProfileProps {
 
 export function Profile({ name, numFolders, numSets }: IProfileProps) {
     const { studyTimeInSec, timeString, triggerCountDown, setStudyTimeInSec,
-        setTimeString, setTriggerCountDown, timerStatus, paused, reset, setPaused, setReset, setTimerStatus } = useContext(TimerContext)
+        setTimeString, setTriggerCountDown, timerStatus, paused, reset, setPaused, setReset, setTimerStatus, beginCountDown } = useContext(TimerContext)
     let history = useHistory()
 
     useEffect(() => {
@@ -26,12 +26,12 @@ export function Profile({ name, numFolders, numSets }: IProfileProps) {
         localStorage.setItem("reset", reset)
     }, [reset])
 
-    // useEffect(() => {
-    //     localStorage.setItem("status", timerStatus)
-    //     if (timerStatus === 'break') {
-    //         beginCountDown(false)
-    //     }
-    // }, [timerStatus])
+    useEffect(() => {
+        localStorage.setItem("status", timerStatus)
+        if (timerStatus === 'break') {
+            beginCountDown(false)
+        }
+    }, [timerStatus])
     return (
         <div className="profile_container">
 
