@@ -26,11 +26,8 @@ export interface IAppProps {
 
 export function User(props: IAppProps) {
   const { authState, setAuthState } = useContext(AuthContext);
-  const { studyTimeInSec, timeString, triggerCountDown, setStudyTimeInSec,
-    setTimeString, setTriggerCountDown, paused, setPaused, originalStudyTime,
-    setOriginalStudyTime, originalBreakTime, setOriginalBreakTime, 
-    reset, setReset, timerStatus, setTimerStatus,multOptionErr, setMultOptionErr,
-    timerPopUpOpen, setTimerPopUpOpen, setTimer, beginCountDown, convertTimeToString} = useContext(TimerContext)
+  const {timerStatus, setTimerStatus, timeString,} = useContext(TimerContext)
+  const [timerPopUpOpen, setTimerPopUpOpen] = useState<boolean>(false)
   const [folders, setFolders] = useState<IFolder[]>([])
   const [sets, setSets] = useState<ISet[]>([])
   const [addFolderPopUpOpen, setAddFolderPopUpOpen] = useState<boolean>(false)
@@ -140,30 +137,6 @@ export function User(props: IAppProps) {
     })
   })
 
-  // ===========================================================================
-  // Timer
-  // ===========================================================================
-
-  useEffect(() => {
-    localStorage.setItem("paused", paused)
-  }, [paused])
-
-  useEffect(() => {
-    localStorage.setItem("reset", reset)
-  }, [reset])
-
-  useEffect(() => {
-    localStorage.setItem("timerStatus", timerStatus)
-    if (timerStatus === 'break') {
-console.log('setting false');      beginCountDown(false)
-    }
-  }, [timerStatus])
-
-  useEffect(() => {
-    if (studyTimeInSec != 0) {
-      beginCountDown(true)
-    }
-  }, [studyTimeInSec])
 
 
 
@@ -198,11 +171,7 @@ console.log('setting false');      beginCountDown(false)
         <div className="timer_pop_up">
           <TimerPopUp
             setTimerPopUpOpen={setTimerPopUpOpen}
-            setStudyTimeInSec={setStudyTimeInSec}
-            studyTimeInSec={studyTimeInSec}
-            setMultOptionErr={setMultOptionErr}
-            setOriginalStudyTime={setOriginalStudyTime}
-            setTimer={setTimer}
+            
           ></TimerPopUp>
         </div>
 
@@ -227,7 +196,7 @@ console.log('setting false');      beginCountDown(false)
           </div>
         </div>
 
-        {triggerCountDown ? (
+        {timerStatus === 'study' || timerStatus === 'break' ? (
           <div className="time_remaining_container">
             {timerStatus === 'study' ? (
               <div className="time_remaining_text">Study time remaining: {timeString}</div>
@@ -235,20 +204,21 @@ console.log('setting false');      beginCountDown(false)
             {timerStatus === 'break' ? (
               <div className="time_remaining_text">Break time remaining: {timeString}</div>
             ) : null}
-            {!paused ? (
-              <AiOutlinePauseCircle onClick={() => setPaused(true)} className="pauseplay_refresh_close_btn"></AiOutlinePauseCircle>
+             <AiOutlinePauseCircle onClick={() => setTimerStatus('paused')} className="pauseplay_refresh_close_btn"></AiOutlinePauseCircle>
+
+            {/* {!timerStatus === 'paused' ? (
             ) : (
                 <AiOutlinePlayCircle onClick={() => setPaused(false)} className="pauseplay_refresh_close_btn"></AiOutlinePlayCircle>
-              )}
-            <IoRefreshOutline onClick={() => setReset(true)} className="pauseplay_refresh_close_btn"></IoRefreshOutline>
+              )} */}
+            <IoRefreshOutline onClick={() => setTimerStatus('reset')} className="pauseplay_refresh_close_btn"></IoRefreshOutline>
             <AiOutlineCloseCircle className="pauseplay_refresh_close_btn" onClick={() => { setTimerStatus("killed") }}></AiOutlineCloseCircle>
           </div>
         ) : null}
-        {
+        {/* {
           multOptionErr ? (
             <div className="timer_option_err">Already have a timer, please stop this timer first!</div>
           ) : null
-        }
+        } */}
         <div className="folders_container">
           <div className="folders_title_viewAll">
             <h1 className="folders_container_title">Your folders</h1>

@@ -31,7 +31,7 @@ export function CustomTimerPopUp({setCustomTimerPopUpOpen }: ICustomTimerPopUpPr
     //     const func = () => setTimer(20,5)
     //     func()
     // }
-    const submit = () => setTimer(10,2)
+    const submit = ({studyDuration, breakDuration}:ICustomTimerForm) => setTimer(studyDuration, breakDuration)
 
     return (
         <div className="custom_timer_container">

@@ -12,19 +12,41 @@ export interface AppContextPropsInterface {
     setAuthState: (auth: AppContextInterface) => void
 }
 
+// export interface TimeContextInterface {
+//     studyTimeInSec: number;
+//     timeString: string;
+//     triggerCountDown: boolean;
+// }
+
+// export interface TimeContextPropsInterface {
+//     studyTimeInSec: number;
+//     timeString: string;
+//     triggerCountDown: boolean;
+//     setStudyTimeInSec: (time: number) => void;
+//     setTimeString: (time: string) => void;
+//     setTriggerCountDown: (isOn: boolean) => void;
+// }
+
 export interface TimeContextInterface {
-    studyTimeInSec: number;
+    studyTime: number;
+    breakTime: number;
     timeString: string;
-    triggerCountDown: boolean;
+    timerStatus: string;
 }
 
 export interface TimeContextPropsInterface {
-    studyTimeInSec: number;
+    studyTime: number;
+    breakTime: number;
     timeString: string;
-    triggerCountDown: boolean;
-    setStudyTimeInSec: (time: number) => void;
+    timerStatus: string;
+
+    setStudyTime: (time: number) => void;
+    setBreakTime: (time: number) => void;
     setTimeString: (time: string) => void;
-    setTriggerCountDown: (isOn: boolean) => void;
+    setTimerStatus: (status: string) => void;
+
+    setTimer: (studyDur: number, breakDur: number) => void;
+    countDown: () => void;
 }
 // =============================================================================
 // Other interfaces 
