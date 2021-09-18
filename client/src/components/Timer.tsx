@@ -7,32 +7,62 @@ import breakImg from "../img/break_icon.png"
 import { useEffect, useState } from 'react';
 import { FaLessThan } from 'react-icons/fa';
 import { CustomTimerPopUp } from './CRUD/CustomTimerPopUp';
+import { TimerContext } from '../helpers/Contexts';
 export interface ITimerPopUpProps {
     setTimerPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setStudyTimeInSec: React.Dispatch<React.SetStateAction<number>>
-    setTriggerCountDown: React.Dispatch<React.SetStateAction<boolean>>;
     studyTimeInSec: number;
     setMultOptionErr: React.Dispatch<React.SetStateAction<boolean>>;
     setOriginalStudyTime: React.Dispatch<React.SetStateAction<number>>
-    setCustomTimerPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setTimer: (studyLength: number, breakLength: number) => void
 }
 
 export function TimerPopUp({
     setTimerPopUpOpen,
     setStudyTimeInSec,
-    setTriggerCountDown,
     studyTimeInSec,
     setMultOptionErr,
     setOriginalStudyTime,
-    setCustomTimerPopUpOpen,
     setTimer,
 }: ITimerPopUpProps) {
     // let studyLength = 0;
 
+
+
+
+    const {timerStatus, beginCountDown, reset, paused} = React.useContext(TimerContext)
+    const [customTimerPopUpOpen, setCustomTimerPopUpOpen] = useState<boolean>(false)
+//     useEffect(() => {
+//     localStorage.setItem("paused", paused)
+//   }, [paused])
+
+//   useEffect(() => {
+//     localStorage.setItem("reset", reset)
+//   }, [reset])
+
+//   useEffect(() => {
+//       console.log('hereeeee');
+//     localStorage.setItem("timerStatus", timerStatus)
+//     if (timerStatus === 'break') {
+//       beginCountDown(false)
+//     }
+//   }, [timerStatus])
+
+//   useEffect(() => {
+//     if (studyTimeInSec != 0) {
+//       beginCountDown(true)
+//     }
+//   }, [studyTimeInSec])
+    
     return (
         <div className="timer_container">
-            
+            {customTimerPopUpOpen ? (
+                <div className="custom_timer_pop_up">
+                    <CustomTimerPopUp
+                        setCustomTimerPopUpOpen={setCustomTimerPopUpOpen}
+                    ></CustomTimerPopUp>
+                </div>
+            ) : null}
 
             <div className="timer_title_container">
                 <div className="timer_title">
@@ -69,7 +99,7 @@ export function TimerPopUp({
                 </div>
                 <div onClick={() => {
                     setCustomTimerPopUpOpen(true)
-                    setTimerPopUpOpen(false)
+                    // setTimerPopUpOpen(false)
                 }} className="option3_container">
                     <div className="option3_study">
                         <h1 className="option_plus_btn">+</h1>

@@ -46,7 +46,6 @@ const App: FC = () => {
       localStorage.setItem("breakTimeInSec", breakLengthInSec.toString())
       setTimerStatus("study")
     } else {
-      console.log('rej');
       setMultOptionErr(true)
       setTimeout(() => {
         setMultOptionErr(false)
@@ -58,26 +57,25 @@ const App: FC = () => {
 
   // if false, then means break 
   const beginCountDown = (study: boolean) => {
-    console.log(study);
     let storageNum: string | null = localStorage.getItem("studyTimeInSec")
     if (storageNum === 'null') {
       return
     }
-    if (timerStatus === 'break') {
+    if (localStorage.getItem("timerStatus") === 'break') {
       storageNum = localStorage.getItem("breakTimeInSec")
     }
     let storageNumInSec: number = parseInt(storageNum!)
 
     const setIntervalId = setInterval(async () => {
-      // if(timerOptionChanged) {
-      //   clearInterval(setIntervalId)
-      // }
       if (storageNumInSec === -1) {
-        if (timerStatus != 'study') {
+        if (localStorage.getItem("timerStatus") != 'study') {
+          console.log('notstudy ');
+          console.log(localStorage.getItem("timerStatus"));
           setTriggerCountDown(false)
           setTimerStatus("none")
 
         } else {
+          console.log('t', timerStatus);
           setTimerStatus("break")
         }
         setStudyTimeInSec(0)
@@ -86,30 +84,30 @@ const App: FC = () => {
 
         localStorage.removeItem("paused");
         localStorage.removeItem("reset");
-        localStorage.removeItem("status");
+        // localStorage.removeItem("timerStatus");
       } else {
-        if (localStorage.getItem("status")! === 'killed') {
+        if (localStorage.getItem("timerStatus")! === 'killed') {
           setTriggerCountDown(false)
           setStudyTimeInSec(0)
           setTimerStatus("none")
           setTimeString("0:00")
-          localStorage.setItem("status", "none")
-          if (timerStatus === 'study') {
+          localStorage.setItem("timerStatus", "none")
+          if (localStorage.getItem("timerStatus") === 'study') {
             localStorage.removeItem("studyTimeInSec");
-          } else if (timerStatus === 'break') {
+          } else if (localStorage.getItem("timerStatus") === 'break') {
             localStorage.removeItem("breakTimeInSec");
           }
           localStorage.removeItem("paused");
           localStorage.removeItem("reset");
-          localStorage.removeItem("status");
+          localStorage.removeItem("timerStatus");
           clearInterval(setIntervalId)
           return
         }
         if (localStorage.getItem("reset")! === 'true') {
-          if (timerStatus === 'study') {
+          if (localStorage.getItem("timerStatus") === 'study') {
             storageNumInSec = originalStudyTime
 
-          } else if (timerStatus === 'break') {
+          } else if (localStorage.getItem("timerStatus") === 'break') {
             storageNumInSec = originalBreakTime
 
           }
@@ -120,9 +118,10 @@ const App: FC = () => {
           console.log('executing');
           setTimeString(convertTimeToString(storageNumInSec))
           storageNumInSec = storageNumInSec - 1
-          if (timerStatus === 'study') {
+          console.log(localStorage.getItem("timerStatus"));
+          if (localStorage.getItem("timerStatus") === 'study') {
             localStorage.setItem("studyTimeInSec", (storageNumInSec).toString())
-          } else if (timerStatus === 'break') {
+          } else if (localStorage.getItem("timerStatus") === 'break') {
             localStorage.setItem("breakTimeInSec", (storageNumInSec).toString())
           }
         }
@@ -163,9 +162,9 @@ const App: FC = () => {
       setPaused: setPaused,
       reset: reset,
       setReset: setReset,
-      originalStudyTime: originalStudyTime, 
+      originalStudyTime: originalStudyTime,
       setOriginalStudyTime: setOriginalStudyTime,
-      originalBreakTime: originalBreakTime, 
+      originalBreakTime: originalBreakTime,
       setOriginalBreakTime: setOriginalBreakTime,
       timerStatus: timerStatus,
       setTimerStatus: setTimerStatus,

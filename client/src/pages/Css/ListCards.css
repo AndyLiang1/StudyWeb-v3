@@ -13,27 +13,44 @@
 .list_cards_page {
     height: 100vh;
     width: 100vw;
+    background: var(--verylightgrey)
 }
 
 .list_cards_page_content {
-    height: 90%;
+    height: 90vh;
     width: 100%;
     display: grid;
-    grid-template-columns: 8fr 2fr;
+    grid-template-columns: 6fr 4fr;
     grid-template-rows: 1fr 9fr;
     grid-template-areas: 
     "title card_CRUD"
     "card_section card_CRUD"
     ;
 }
+.list_cards_title_container {
+    grid-area: title;
+    margin-top: 1rem;
+
+    flex-direction: column;
+    display: flex;
+}
 
 .list_cards_set_title { 
-    grid-area: title;
 
     font-size: 3rem;
+    font-weight: 500;
     padding-left: 3rem;
     display: flex;
-    align-items: center;}
+    align-items: center;
+}
+
+.list_cards_timer {
+    
+    font-size: 1.5rem;
+    padding-left: 3rem;
+    display: flex;
+    align-items: center;
+}
 
 .list_cards_card_section{
     height: 100%;
@@ -42,15 +59,20 @@
 
     flex-direction: column;
     display: flex;
+    margin-left: 5rem;
 }
 
 .list_cards_card_container {
     height: 100%;
     width: 100%;
     position: relative;
+
 }
 
 .list_cards_card {
+    height: 100%;
+    width: 100%;
+
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -59,16 +81,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    border-radius: 2rem;
 }
 
 .list_cards_card_front, .list_cards_card_back {
-    height: 50rem;
-    width: 75rem;
-    background: white;
-    box-shadow: 0.5rem 0.5rem 0.5rem 0.5rem;
+    height: 100%;
+    width: 100%;
+    box-shadow: 0.3rem 0.3rem 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    
+    font-size: 2.5rem;
+
+    border-radius: 2rem;
+    background: white;
+}
+.list_cards_card_front {
+    background: rgb(168, 230, 255);
 }
 
 .list_cards_card_front:hover, .list_cards_card_back:hover {
@@ -83,6 +114,8 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+
+    margin-bottom: 3rem;
 }
 
 .list_cards_display_index {
@@ -110,8 +143,9 @@
 }
 
 .list_cards_add_btn, .list_cards_edit_btn, .list_cards_delete_btn {
-    width:30%;
-    height:30%;
+    width:20%;
+    height:20%;
+    color: var(--grey)
 }
 
 .list_cards_add_btn:hover, .list_cards_edit_btn:hover, 

@@ -43,23 +43,26 @@ export function Profile({ name, numFolders, numSets }: IProfileProps) {
                     <h3 className="profile_name">{name}</h3>
                     <div className="num_folders_and_num_sets">
                         <div className="count">Folder count: {numFolders} | Set count: {numSets}</div>
-                        <div className="profile_timer_container">
-                            {timerStatus === 'study' ? (
-                                <div className="count">Study time remaining: {timeString}</div>
-                            ) : null}
-                            {timerStatus === 'break' ? (
-                                <div className="count">Break time remaining: {timeString}</div>
-                            ) : null}
-                            {!paused ? (
-                                <AiOutlinePauseCircle onClick={() => setPaused(true)} className="pauseplay_refresh_btn"></AiOutlinePauseCircle>
-                            ) : (
-                                    <AiOutlinePlayCircle onClick={() => setPaused(false)} className="pauseplay_refresh_btn"></AiOutlinePlayCircle>
-                                )}
-                            <IoRefreshOutline onClick={() => setReset(true)} className="pauseplay_refresh_btn"></IoRefreshOutline>
-                            <AiOutlineCloseCircle className="pauseplay_refresh_btn" onClick={() => { setTimerStatus("killed") }}></AiOutlineCloseCircle>
+                        {triggerCountDown ? (
+                            <div className="profile_timer_container">
+                                {timerStatus === 'study' ? (
+                                    <div className="count">Study time remaining: {timeString}</div>
+                                ) : null}
+                                {timerStatus === 'break' ? (
+                                    <div className="count">Break time remaining: {timeString}</div>
+                                ) : null}
+                                {!paused ? (
+                                    <AiOutlinePauseCircle onClick={() => setPaused(true)} className="pauseplay_refresh_btn"></AiOutlinePauseCircle>
+                                ) : (
+                                        <AiOutlinePlayCircle onClick={() => setPaused(false)} className="pauseplay_refresh_btn"></AiOutlinePlayCircle>
+                                    )}
+                                <IoRefreshOutline onClick={() => setReset(true)} className="pauseplay_refresh_btn"></IoRefreshOutline>
+                                <AiOutlineCloseCircle className="pauseplay_refresh_btn" onClick={() => { setTimerStatus("killed") }}></AiOutlineCloseCircle>
 
-                        </div>
-
+                            </div>
+                        ) : (
+                                <div className="count">Time Remaining: No Timer Set</div>
+                            )}
                     </div>
                 </div>
             </div>

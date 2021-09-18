@@ -56,7 +56,7 @@ html {
 }
 
 .add_item {
-  background: rgb(170, 221, 238);
+  background: rgb(215, 245, 255);
 }
 
 .add_item:hover {
@@ -71,6 +71,8 @@ html {
   left: 50%;
   transform: translate(-50%, -50%);
   position: absolute;
+
+  color: var(--grey)
 }
 
 .one_item:hover {

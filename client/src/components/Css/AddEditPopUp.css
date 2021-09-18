@@ -78,6 +78,10 @@
     border: 0.1rem black solid;
 }
 
+.add_field_errors, .edit_field_errors {
+    color: red;
+}
+
 .add_button, .edit_button {
     /* to get rid of the default button look */
     padding: 0;

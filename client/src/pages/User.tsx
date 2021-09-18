@@ -35,9 +35,6 @@ export function User(props: IAppProps) {
   const [sets, setSets] = useState<ISet[]>([])
   const [addFolderPopUpOpen, setAddFolderPopUpOpen] = useState<boolean>(false)
   const [addSetPopUpOpen, setAddSetPopUpOpen] = useState<boolean>(false)
-  // const [timerPopUpOpen, setTimerPopUpOpen] = useState<boolean>(false)
-  const [customTimerPopUpOpen, setCustomTimerPopUpOpen] = useState<boolean>(false)
-  // const [multOptionErr, setMultOptionErr] = useState<boolean>(false)
   let history = useHistory()
 
   const getFolderList = async () => {
@@ -156,9 +153,9 @@ export function User(props: IAppProps) {
   }, [reset])
 
   useEffect(() => {
-    localStorage.setItem("status", timerStatus)
+    localStorage.setItem("timerStatus", timerStatus)
     if (timerStatus === 'break') {
-      beginCountDown(false)
+console.log('setting false');      beginCountDown(false)
     }
   }, [timerStatus])
 
@@ -202,24 +199,15 @@ export function User(props: IAppProps) {
           <TimerPopUp
             setTimerPopUpOpen={setTimerPopUpOpen}
             setStudyTimeInSec={setStudyTimeInSec}
-            setTriggerCountDown={setTriggerCountDown}
             studyTimeInSec={studyTimeInSec}
             setMultOptionErr={setMultOptionErr}
             setOriginalStudyTime={setOriginalStudyTime}
-            setCustomTimerPopUpOpen={setCustomTimerPopUpOpen}
             setTimer={setTimer}
           ></TimerPopUp>
         </div>
 
       ) : null}
-      {customTimerPopUpOpen ? (
-        <div className="custom_timer_pop_up">
-          <CustomTimerPopUp
-            setCustomTimerPopUpOpen={setCustomTimerPopUpOpen}
-            setTimer={setTimer}
-          ></CustomTimerPopUp>
-        </div>
-      ) : null}
+      
       <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
 
       <div className="user_content_container">

@@ -78,6 +78,10 @@
     border: 0.1rem black solid;
 }
 
+.custom_timer_field_errors {
+    color: red;
+}
+
 .custom_timer_button {
     /* to get rid of the default button look */
     padding: 0;

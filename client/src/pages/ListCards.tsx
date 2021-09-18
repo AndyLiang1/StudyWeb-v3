@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
-import { AuthContext } from '../helpers/Contexts';
+import { AuthContext, TimerContext } from '../helpers/Contexts';
 import { ICard, ISet } from '../helpers/Interfaces';
 import "./Css/ListCards.css"
 import ReactCardFlip from 'react-card-flip';
@@ -14,6 +14,8 @@ import { AddPopUp } from '../components/CRUD/AddPopUp';
 import { DeletePopUp } from '../components/CRUD/DeletePopUp';
 import { EditPopUp } from '../components/CRUD/EditPopUp';
 import { setNestedObjectValues } from 'formik';
+import { AiOutlinePauseCircle, AiOutlinePlayCircle, AiOutlineCloseCircle } from 'react-icons/ai';
+import { IoRefreshOutline } from 'react-icons/io5';
 export interface IListCardsProps {
 }
 
@@ -29,6 +31,8 @@ export function ListCards(props: IListCardsProps) {
     const [cardId, setCardId] = useState<number>(0)
     const [displayedIndex, setDisplayedIndex] = useState<number>(1) // this is one higher than array index
     const [isFlipped, setIsFlipped] = React.useState<boolean>(false);
+    const { studyTimeInSec, timeString, triggerCountDown, setStudyTimeInSec,
+        setTimeString, setTriggerCountDown, timerStatus, paused, reset, setPaused, setReset, setTimerStatus, beginCountDown } = useContext(TimerContext)
 
 
     const getCardList = async () => {
@@ -76,9 +80,11 @@ export function ListCards(props: IListCardsProps) {
         let index;
         if (direction == "neg") {
             index = displayedIndex - 1;
+            setIsFlipped(false)
             setDisplayedIndex(index)
         } else {
             index = displayedIndex + 1;
+            setIsFlipped(false)
             setDisplayedIndex(index)
         }
     }
@@ -92,24 +98,72 @@ export function ListCards(props: IListCardsProps) {
     const deleteBtnOnClick = () => {
         setDeletePopUpOpen(true)
     }
+
     return (
         <div className="list_cards_page">
             <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
 
             <div className="list_cards_page_content">
-                <div className="list_cards_set_title">
-                    {setName}
-                </div>
+
+
+                {triggerCountDown ? (
+                    <div className="profile_timer_container">
+                        {timerStatus === 'study' ? (
+                            <div className="list_cards_title_container">
+                                <div className="list_cards_set_title">
+                                    {setName}
+                                </div>
+                                <div className="list_cards_timer">
+                                    Study Time Remaining: {timeString}
+                                </div>
+                            </div>
+                        ) : null}
+                        {timerStatus === 'break' ? (
+                            <div className="list_cards_title_container">
+                                <div className="list_cards_set_title">
+                                    {setName}
+                                </div>
+                                <div className="list_cards_timer">
+                                    Break Time Remaining: {timeString}
+                                </div>
+                            </div>
+                        ) : null}
+
+                        {!paused ? (
+                            <AiOutlinePauseCircle onClick={() => setPaused(true)} className="pauseplay_refresh_btn"></AiOutlinePauseCircle>
+                        ) : (
+                                <AiOutlinePlayCircle onClick={() => setPaused(false)} className="pauseplay_refresh_btn"></AiOutlinePlayCircle>
+                            )}
+                        <IoRefreshOutline onClick={() => setReset(true)} className="pauseplay_refresh_btn"></IoRefreshOutline>
+                        <AiOutlineCloseCircle className="pauseplay_refresh_btn" onClick={() => { setTimerStatus("killed") }}></AiOutlineCloseCircle>
+
+                    </div>
+                ) : (
+                        <div className="list_cards_title_container">
+                            <div className="list_cards_set_title">
+                                {setName}
+                            </div>
+                            <div className="list_cards_timer">
+                                Time Remaining: No Timer Set
+                            </div>
+                        </div>
+                    )}
                 <div className="list_cards_card_section">
                     <div className="list_cards_card_container">
                         <div className="list_cards_card">
 
-                            <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
+                            <ReactCardFlip
+                                containerStyle={{
+                                    height: "70%",
+                                    width: "60%",
+
+                                }}
+                                isFlipped={isFlipped} flipDirection="vertical">
                                 <div onClick={handleFlip} className="list_cards_card_front">
-                                    <h1>{cards[displayedIndex-1] ? cards[displayedIndex-1].question : ""}</h1>
+                                    {cards[displayedIndex - 1] ? cards[displayedIndex - 1].question : ""}
                                 </div>
                                 <div onClick={handleFlip} className="list_cards_card_back">
-                                    <h1>{cards[displayedIndex-1] ? cards[displayedIndex-1].answer : ""}</h1>
+                                    {cards[displayedIndex - 1] ? cards[displayedIndex - 1].answer : ""}
                                 </div>
                             </ReactCardFlip>
 
@@ -128,15 +182,15 @@ export function ListCards(props: IListCardsProps) {
                 </div>
 
                 <div className="list_cards_card_CRUD">
-                    <FiPlusSquare 
-                    onClick = {addBtnOnClick}
-                    className="list_cards_add_btn"></FiPlusSquare>
-                    <FiEdit 
-                    onClick = {editBtnOnClick}
-                    className="list_cards_edit_btn"></FiEdit>
-                    <FiTrash2 
-                    onClick = {deleteBtnOnClick}
-                    className="list_cards_delete_btn"></FiTrash2>
+                    <FiPlusSquare
+                        onClick={addBtnOnClick}
+                        className="list_cards_add_btn"></FiPlusSquare>
+                    <FiEdit
+                        onClick={editBtnOnClick}
+                        className="list_cards_edit_btn"></FiEdit>
+                    <FiTrash2
+                        onClick={deleteBtnOnClick}
+                        className="list_cards_delete_btn"></FiTrash2>
                 </div>
 
 
@@ -151,7 +205,7 @@ export function ListCards(props: IListCardsProps) {
                         getFolderOrSetOrCardList={getCardList}
                         setId={setId}
                         itemToAdd="card"
-                        addingCard = {true}
+                        addingCard={true}
                     ></AddPopUp>
                 </div>
             ) : null}
@@ -160,9 +214,9 @@ export function ListCards(props: IListCardsProps) {
                     <EditPopUp
                         setEditPopUpOpen={setEditPopUpOpen}
                         getFolderOrSetOrCardList={getCardList}
-                        cardId={cards[displayedIndex-1].id}
+                        cardId={cards[displayedIndex - 1].id}
                         itemToEdit="card"
-                        editCard = {true}
+                        editCard={true}
                     ></EditPopUp>
                 </div>
             ) : null}
@@ -172,10 +226,10 @@ export function ListCards(props: IListCardsProps) {
                         setDeletePopUpOpen={setDeletePopUpOpen}
                         getFolderOrSetOrCardList={getCardList}
                         setId={setId}
-                        cardId={cards[displayedIndex-1].id}
+                        cardId={cards[displayedIndex - 1].id}
                         itemToDelete="card"
-                        displayedIndex = {displayedIndex}
-                        setDisplayedIndex = {setDisplayedIndex}
+                        displayedIndex={displayedIndex}
+                        setDisplayedIndex={setDisplayedIndex}
                     ></DeletePopUp>
                 </div>
             ) : null}

@@ -5,14 +5,14 @@ import * as Yup from 'yup'
 import "../Css/CustomTimerPopUp.css"
 import { IAddForm, IAddFormCard, IAddFormFolder, IAddFormSet, ICustomTimerForm, IFolder } from "../../helpers/Interfaces"
 import { useContext } from 'react';
-import { AuthContext } from '../../helpers/Contexts';
+import { AuthContext, TimerContext } from '../../helpers/Contexts';
 export interface ICustomTimerPopUpProps {
     setCustomTimerPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setTimer: (studyLength: number, breakLength: number) => void;
 }
 
-export function CustomTimerPopUp({setCustomTimerPopUpOpen, setTimer}: ICustomTimerPopUpProps) {
-    const { authState } = useContext(AuthContext)
+export function CustomTimerPopUp({setCustomTimerPopUpOpen }: ICustomTimerPopUpProps) {
+    
+    const { setTimer } = useContext(TimerContext)
     const initialValues = {
         studyDuration: "",
         breakDuration: ""
@@ -23,10 +23,15 @@ export function CustomTimerPopUp({setCustomTimerPopUpOpen, setTimer}: ICustomTim
         breakDuration: Yup.number().required(),
     })
 
-    const submit = (submittedData: ICustomTimerForm) => {
-        const { studyDuration, breakDuration } = submittedData
-        setTimer(parseInt(studyDuration), parseInt(breakDuration))
-    }
+    // const submit = (submittedData: ICustomTimerForm) => {
+    //     // const { studyDuration, breakDuration } = submittedData
+    //     // setTimer(20,10)
+    //     // setCustomTimerPopUpOpen(false)
+    //     // // setTimer(parseInt(studyDuration), parseInt(breakDuration))
+    //     const func = () => setTimer(20,5)
+    //     func()
+    // }
+    const submit = () => setTimer(10,2)
 
     return (
         <div className="custom_timer_container">
@@ -55,7 +60,10 @@ export function CustomTimerPopUp({setCustomTimerPopUpOpen, setTimer}: ICustomTim
                                 <Field className="custom_timer_field" name="breakDuration" type="text" />
                                 {errors.breakDuration && touched.breakDuration ? <div className="custom_timer_field_errors">{errors.breakDuration}</div> : null}
                             </div>
-                            <button className="custom_timer_button" type="submit">Add</button>
+                            <button className="custom_timer_button" 
+                            // onClick = {() => setTimer(20,10)}
+                            type = "submit"
+                            >Add</button>
                         </div>
                     </Form>
                 )}
