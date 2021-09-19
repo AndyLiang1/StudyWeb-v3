@@ -27,17 +27,28 @@ const App: FC = () => {
   const [breakTime, setBreakTime] = useState<number>(0)
   const [timeString, setTimeString] = useState<string>("0:00")
   const [timerStatus, setTimerStatus] = useState<string>("none")
+  const [multOptionErr, setMultOptionErr] = useState<boolean>(false)
 
   useEffect(() => {
     localStorage.setItem("timerStatus", timerStatus)
     if (timerStatus === 'study' || timerStatus === 'break') {
       countDown()
-    } else {
-      return
+    }
+    if (timerStatus === 'none') {
+      localStorage.removeItem('studyTimeOrig')
+      localStorage.removeItem('breakTimeOrig')
+      localStorage.removeItem('studyTime')
+      localStorage.removeItem('breakTime')
+      setTimeout(() => {
+        setTimeString('0:00')
+      }, 200)
     }
   }, [timerStatus])
 
   const setTimer = (studyDur: number, breakDur: number) => {
+    if (localStorage.getItem("timerStatus") !== 'none') {
+      setMultOptionErr(true)
+    }
     setTimerStatus("study")
     localStorage.setItem("studyTimeOrig", studyDur.toString())
     localStorage.setItem("breakTimeOrig", breakDur.toString())
@@ -47,9 +58,26 @@ const App: FC = () => {
 
   const countDown = () => {
     const intervalId = setInterval(() => {
-      const timerStatuss = localStorage.getItem("timerStatus")
-      console.log(timerStatuss);
-      if (timerStatuss === 'study') {
+      const timerStatus_C = localStorage.getItem("timerStatus")
+      console.log(timerStatus_C);
+      if (timerStatus_C === 'killed') {
+        setTimerStatus('none')
+        clearInterval(intervalId)
+        localStorage.removeItem('studyTimeOrig')
+        localStorage.removeItem('breakTimeOrig')
+        localStorage.removeItem('studyTime')
+        localStorage.removeItem('breakTime')
+        setTimeout(() => {
+          setTimeString('0:00')
+        }, 200)
+      }
+      if (timerStatus_C === 'studyPause') {
+        clearInterval(intervalId)
+      }
+      if (timerStatus_C === 'breakPause') {
+        clearInterval(intervalId)
+      }
+      if (timerStatus_C === 'study') {
         const timeRemain: string = localStorage.getItem("studyTime")!
         if (timeRemain === '0') {
           setTimeout(() => {
@@ -61,7 +89,7 @@ const App: FC = () => {
         setTimeString(convertTimeToString(parseInt(timeRemain)))
         localStorage.setItem("studyTime", (parseInt(timeRemain) - 1).toString())
       }
-      if (timerStatuss === 'break') {
+      if (timerStatus_C === 'break') {
         const timeRemain: string = localStorage.getItem("breakTime")!
         if (timeRemain === '-1') {
           setTimerStatus('none')
@@ -72,7 +100,8 @@ const App: FC = () => {
           localStorage.removeItem('breakTime')
           setTimeout(() => {
             setTimeString('0:00')
-          }, 200)        }
+          }, 200)
+        }
         console.log(timeRemain);
         setTimeString(convertTimeToString(parseInt(timeRemain)))
         localStorage.setItem("breakTime", (parseInt(timeRemain) - 1).toString())
@@ -99,20 +128,52 @@ const App: FC = () => {
     return ret;
   }
 
+  const reset = () => {
+    const timerStatus_C = localStorage.getItem("timerStatus")
+    if (timerStatus_C === 'study' || timerStatus_C === 'studyPause') {
+      const timeOrig: string = localStorage.getItem("studyTimeOrig")!
+      localStorage.setItem("studyTime", timeOrig)
+    }
+
+    if (timerStatus_C === 'break' || timerStatus_C === 'breakPause') {
+      const timeOrig: string = localStorage.getItem("breakTimeOrig")!
+      localStorage.setItem("breakTime", timeOrig)
+    }
+  }
+
+  const pause = () => {
+    const timerStatus_C = localStorage.getItem("timerStatus")
+    if (timerStatus_C === 'study') {
+      setTimerStatus('studyPause')
+    } else if (timerStatus_C === 'break') {
+      setTimerStatus('breakPause')
+    } else if (timerStatus_C === 'studyPause') {
+      setTimerStatus('study')
+    } else if (timerStatus_C === 'breakPause') {
+      setTimerStatus('break')
+    }
+
+
+  }
+
   return (
     <TimerContext.Provider value={{
       studyTime: studyTime,
       breakTime: breakTime,
       timeString: timeString,
       timerStatus: timerStatus,
+      multOptionErr: multOptionErr,
 
       setStudyTime: setStudyTime,
       setBreakTime: setBreakTime,
       setTimeString: setTimeString,
       setTimerStatus: setTimerStatus,
+      setMultOptionErr: setMultOptionErr,
 
       setTimer: setTimer,
       countDown: countDown,
+      pause: pause,
+      reset: reset,
     }}>
       <AuthContext.Provider value={{
         authState: authState,

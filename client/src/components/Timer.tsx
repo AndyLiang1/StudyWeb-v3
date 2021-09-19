@@ -22,6 +22,7 @@ export function TimerPopUp({ setTimerPopUpOpen }: ITimerPopUpProps) {
                 <div className="custom_timer_pop_up">
                     <CustomTimerPopUp
                         setCustomTimerPopUpOpen={setCustomTimerPopUpOpen}
+                        setTimerPopUpOpen={setTimerPopUpOpen}
                     ></CustomTimerPopUp>
                 </div>
             ) : null}
@@ -55,7 +56,7 @@ export function TimerPopUp({ setTimerPopUpOpen }: ITimerPopUpProps) {
                     </div>
                 </div>
                 <div onClick={
-                     () => {
+                    () => {
                         setTimer(20, 10)
                         setTimerPopUpOpen(false)
                     }

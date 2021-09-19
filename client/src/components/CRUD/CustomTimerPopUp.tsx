@@ -8,9 +8,10 @@ import { useContext } from 'react';
 import { AuthContext, TimerContext } from '../../helpers/Contexts';
 export interface ICustomTimerPopUpProps {
     setCustomTimerPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setTimerPopUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function CustomTimerPopUp({setCustomTimerPopUpOpen }: ICustomTimerPopUpProps) {
+export function CustomTimerPopUp({setCustomTimerPopUpOpen, setTimerPopUpOpen}: ICustomTimerPopUpProps) {
     
     const { setTimer } = useContext(TimerContext)
     const initialValues = {
@@ -31,7 +32,11 @@ export function CustomTimerPopUp({setCustomTimerPopUpOpen }: ICustomTimerPopUpPr
     //     const func = () => setTimer(20,5)
     //     func()
     // }
-    const submit = ({studyDuration, breakDuration}:ICustomTimerForm) => setTimer(studyDuration, breakDuration)
+    const submit = ({studyDuration, breakDuration}:ICustomTimerForm) => {
+        setTimer(parseInt(studyDuration), parseInt(breakDuration))
+        setCustomTimerPopUpOpen(false)
+        setTimerPopUpOpen(false)
+    }
 
     return (
         <div className="custom_timer_container">

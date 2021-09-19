@@ -39,14 +39,21 @@ export interface TimeContextPropsInterface {
     breakTime: number;
     timeString: string;
     timerStatus: string;
+    multOptionErr: boolean,
+
 
     setStudyTime: (time: number) => void;
     setBreakTime: (time: number) => void;
     setTimeString: (time: string) => void;
     setTimerStatus: (status: string) => void;
+    setMultOptionErr: (err: boolean) => void,
+
 
     setTimer: (studyDur: number, breakDur: number) => void;
     countDown: () => void;
+    pause: () => void,
+    reset: () => void,
+
 }
 // =============================================================================
 // Other interfaces 

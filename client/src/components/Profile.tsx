@@ -14,7 +14,7 @@ export interface IProfileProps {
 }
 
 export function Profile({ name, numFolders, numSets }: IProfileProps) {
-    const { timerStatus, setTimerStatus, timeString } = useContext(TimerContext)
+    const { timerStatus, setTimerStatus, timeString, pause, reset } = useContext(TimerContext)
     let history = useHistory()
 
     return (
@@ -28,26 +28,24 @@ export function Profile({ name, numFolders, numSets }: IProfileProps) {
                     <h3 className="profile_name">{name}</h3>
                     <div className="num_folders_and_num_sets">
                         <div className="count">Folder count: {numFolders} | Set count: {numSets}</div>
-                        {timerStatus === 'study' || timerStatus === 'break' ? (
-                            <div className="profile_timer_container">
-                                {timerStatus === 'study' ? (
+                        {timerStatus === 'study' || timerStatus === 'break'
+                            || timerStatus === 'studyPause' || timerStatus === 'breakPause' ? (<div className="profile_timer_container">
+                                {timerStatus === 'study' || timerStatus === 'studyPause' ? (
                                     <div className="count">Study time remaining: {timeString}</div>
                                 ) : null}
-                                {timerStatus === 'break' ? (
+                                {timerStatus === 'break' || timerStatus === 'breakPause' ? (
                                     <div className="count">Break time remaining: {timeString}</div>
                                 ) : null}
-                                <AiOutlinePauseCircle onClick={() => setTimerStatus('reset')} className="pauseplay_refresh_btn"></AiOutlinePauseCircle>
-
-                                {/* {timerStatus === 'paused' ? (
-                                    <AiOutlinePauseCircle onClick={() => setPaused(true)} className="pauseplay_refresh_btn"></AiOutlinePauseCircle>
+                                {!(timerStatus === 'studyPause') ? (
+                                    <AiOutlinePauseCircle onClick={() => pause()} className="profile_pauseplay_refresh_close_btn"></AiOutlinePauseCircle>
                                 ) : (
-                                        <AiOutlinePlayCircle onClick={() => setPaused(false)} className="pauseplay_refresh_btn"></AiOutlinePlayCircle>
-                                    )} */}
-                                <IoRefreshOutline onClick={() => setTimerStatus('paused')} className="pauseplay_refresh_btn"></IoRefreshOutline>
-                                <AiOutlineCloseCircle className="pauseplay_refresh_btn" onClick={() => { setTimerStatus("killed") }}></AiOutlineCloseCircle>
+                                        <AiOutlinePlayCircle onClick={() => pause()} className="profile_pauseplay_refresh_close_btn"></AiOutlinePlayCircle>
+                                    )}
+                                <IoRefreshOutline onClick={() => reset()} className="profile_pauseplay_refresh_close_btn"></IoRefreshOutline>
+                                <AiOutlineCloseCircle className="profile_pauseplay_refresh_close_btn" onClick={() => { setTimerStatus("killed") }}></AiOutlineCloseCircle>
 
                             </div>
-                        ) : (
+                            ) : (
                                 <div className="count">Time Remaining: No Timer Set</div>
                             )}
                     </div>

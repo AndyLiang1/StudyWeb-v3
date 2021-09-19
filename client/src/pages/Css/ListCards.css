@@ -27,6 +27,13 @@
     "card_section card_CRUD"
     ;
 }
+
+.list_cards_timer_container {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+}
 .list_cards_title_container {
     grid-area: title;
     margin-top: 1rem;
@@ -46,7 +53,7 @@
 
 .list_cards_timer {
     
-    font-size: 1.5rem;
+    font-size: 2rem;
     padding-left: 3rem;
     display: flex;
     align-items: center;
@@ -154,3 +161,14 @@
     transform: scale(1.1);
 }
 
+.list_cards_pauseplay_refresh_close_btn {
+    height: 2rem;
+    width: 2rem;
+    margin-left: 2rem;
+}
+
+.list_cards_pauseplay_refresh_close_btn:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+  

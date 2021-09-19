@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 import { number } from 'yup/lib/locale'
-import { AppContextInterface, AppContextPropsInterface } from './Interfaces'
+import { AppContextInterface, AppContextPropsInterface, TimeContextPropsInterface } from './Interfaces'
 
 
 export const AuthContext = createContext<AppContextPropsInterface>({
@@ -54,12 +54,16 @@ export const TimerContext = createContext<any>({
     breakTime: 0,
     timeString: "0:00",
     timerStatus: "none",
+    multOptionErr: false,
 
     setStudyTime: (time: number) => {},
     setBreakTime: (time: number) => {},
     setTimeString: (time: string) => {},
     setTimerStatus: (status: string) => {},
+    setMultOptionErr: (err: boolean) => {},
 
     setTimer: (studyDur: number, breakDur: number) => {},
     countDown: () => {},
+    pause: () => {},
+    reset: () => {},
 })

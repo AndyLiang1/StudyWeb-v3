@@ -31,8 +31,7 @@ export function ListCards(props: IListCardsProps) {
     const [cardId, setCardId] = useState<number>(0)
     const [displayedIndex, setDisplayedIndex] = useState<number>(1) // this is one higher than array index
     const [isFlipped, setIsFlipped] = React.useState<boolean>(false);
-    const { studyTimeInSec, timeString, triggerCountDown, setStudyTimeInSec,
-        setTimeString, setTriggerCountDown, timerStatus, paused, reset, setPaused, setReset, setTimerStatus, beginCountDown } = useContext(TimerContext)
+    const { timeString, timerStatus, pause, reset, setTimerStatus } = useContext(TimerContext)
 
 
     const getCardList = async () => {
@@ -102,43 +101,34 @@ export function ListCards(props: IListCardsProps) {
     return (
         <div className="list_cards_page">
             <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
-
             <div className="list_cards_page_content">
-
-
-                {triggerCountDown ? (
-                    <div className="profile_timer_container">
-                        {timerStatus === 'study' ? (
-                            <div className="list_cards_title_container">
-                                <div className="list_cards_set_title">
-                                    {setName}
-                                </div>
-                                <div className="list_cards_timer">
-                                    Study Time Remaining: {timeString}
-                                </div>
+                {timerStatus === 'study' || timerStatus === 'break'
+                    || timerStatus === 'studyPause' || timerStatus === 'breakPause' ? (
+                        <div className="list_cards_title_container">
+                            <div className="list_cards_set_title">
+                                {setName}
                             </div>
-                        ) : null}
-                        {timerStatus === 'break' ? (
-                            <div className="list_cards_title_container">
-                                <div className="list_cards_set_title">
-                                    {setName}
-                                </div>
-                                <div className="list_cards_timer">
-                                    Break Time Remaining: {timeString}
-                                </div>
+                            <div className="list_cards_timer_container">
+                                {timerStatus === 'study' || timerStatus === 'studyPause' ? (
+                                    <div className="list_cards_timer">
+                                        Study Time Remaining: {timeString}
+                                    </div>
+                                ) : null}
+                                {timerStatus === 'break' || timerStatus === 'breakPause' ? (
+                                    <div className="list_cards_timer">
+                                        Break Time Remaining: {timeString}
+                                    </div>
+                                ) : null}
+                                {!(timerStatus === 'studyPause') ? (
+                                    <AiOutlinePauseCircle onClick={() => pause()} className="list_cards_pauseplay_refresh_close_btn"></AiOutlinePauseCircle>
+                                ) : (
+                                        <AiOutlinePlayCircle onClick={() => pause()} className="list_cards_pauseplay_refresh_close_btn"></AiOutlinePlayCircle>
+                                    )}
+                                <IoRefreshOutline onClick={() => reset()} className="list_cards_pauseplay_refresh_close_btn"></IoRefreshOutline>
+                                <AiOutlineCloseCircle className="list_cards_pauseplay_refresh_close_btn" onClick={() => { setTimerStatus("killed") }}></AiOutlineCloseCircle>
                             </div>
-                        ) : null}
-
-                        {!paused ? (
-                            <AiOutlinePauseCircle onClick={() => setPaused(true)} className="pauseplay_refresh_btn"></AiOutlinePauseCircle>
-                        ) : (
-                                <AiOutlinePlayCircle onClick={() => setPaused(false)} className="pauseplay_refresh_btn"></AiOutlinePlayCircle>
-                            )}
-                        <IoRefreshOutline onClick={() => setReset(true)} className="pauseplay_refresh_btn"></IoRefreshOutline>
-                        <AiOutlineCloseCircle className="pauseplay_refresh_btn" onClick={() => { setTimerStatus("killed") }}></AiOutlineCloseCircle>
-
-                    </div>
-                ) : (
+                        </div>
+                    ) : (
                         <div className="list_cards_title_container">
                             <div className="list_cards_set_title">
                                 {setName}
@@ -148,15 +138,14 @@ export function ListCards(props: IListCardsProps) {
                             </div>
                         </div>
                     )}
+
                 <div className="list_cards_card_section">
                     <div className="list_cards_card_container">
                         <div className="list_cards_card">
-
                             <ReactCardFlip
                                 containerStyle={{
                                     height: "70%",
                                     width: "60%",
-
                                 }}
                                 isFlipped={isFlipped} flipDirection="vertical">
                                 <div onClick={handleFlip} className="list_cards_card_front">
@@ -166,7 +155,6 @@ export function ListCards(props: IListCardsProps) {
                                     {cards[displayedIndex - 1] ? cards[displayedIndex - 1].answer : ""}
                                 </div>
                             </ReactCardFlip>
-
                         </div>
                     </div>
 
@@ -192,49 +180,52 @@ export function ListCards(props: IListCardsProps) {
                         onClick={deleteBtnOnClick}
                         className="list_cards_delete_btn"></FiTrash2>
                 </div>
-
-
-
             </div>
 
-
-            {addPopUpOpen ? (
-                <div className="list_page_add_container">
-                    <AddPopUp
-                        setAddPopUpOpen={setAddPopUpOpen}
-                        getFolderOrSetOrCardList={getCardList}
-                        setId={setId}
-                        itemToAdd="card"
-                        addingCard={true}
-                    ></AddPopUp>
-                </div>
-            ) : null}
-            {editPopUpOpen ? (
-                <div className="list_page_edit_CARD_container">
-                    <EditPopUp
-                        setEditPopUpOpen={setEditPopUpOpen}
-                        getFolderOrSetOrCardList={getCardList}
-                        cardId={cards[displayedIndex - 1].id}
-                        itemToEdit="card"
-                        editCard={true}
-                    ></EditPopUp>
-                </div>
-            ) : null}
-            {deletePopUpOpen ? (
-                <div className="list_page_delete_container">
-                    <DeletePopUp
-                        setDeletePopUpOpen={setDeletePopUpOpen}
-                        getFolderOrSetOrCardList={getCardList}
-                        setId={setId}
-                        cardId={cards[displayedIndex - 1].id}
-                        itemToDelete="card"
-                        displayedIndex={displayedIndex}
-                        setDisplayedIndex={setDisplayedIndex}
-                    ></DeletePopUp>
-                </div>
-            ) : null}
-
-
+            {
+                addPopUpOpen ? (
+                    <div className="list_page_add_container">
+                        <AddPopUp
+                            setAddPopUpOpen={setAddPopUpOpen}
+                            getFolderOrSetOrCardList={getCardList}
+                            setId={setId}
+                            itemToAdd="card"
+                            addingCard={true}
+                        ></AddPopUp>
+                    </div>
+                ) : null
+            }
+            {
+                editPopUpOpen ? (
+                    <div className="list_page_edit_CARD_container">
+                        <EditPopUp
+                            setEditPopUpOpen={setEditPopUpOpen}
+                            getFolderOrSetOrCardList={getCardList}
+                            cardId={cards[displayedIndex - 1].id}
+                            itemToEdit="card"
+                            editCard={true}
+                        ></EditPopUp>
+                    </div>
+                ) : null
+            }
+            {
+                deletePopUpOpen ? (
+                    <div className="list_page_delete_container">
+                        <DeletePopUp
+                            setDeletePopUpOpen={setDeletePopUpOpen}
+                            getFolderOrSetOrCardList={getCardList}
+                            setId={setId}
+                            cardId={cards[displayedIndex - 1].id}
+                            itemToDelete="card"
+                            displayedIndex={displayedIndex}
+                            setDisplayedIndex={setDisplayedIndex}
+                        ></DeletePopUp>
+                    </div>
+                ) : null
+            }
         </div>
+
+
+
     );
 }

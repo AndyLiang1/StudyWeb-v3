@@ -26,7 +26,7 @@ export interface IAppProps {
 
 export function User(props: IAppProps) {
   const { authState, setAuthState } = useContext(AuthContext);
-  const {timerStatus, setTimerStatus, timeString,} = useContext(TimerContext)
+  const { timerStatus, setTimerStatus, timeString, pause, reset, } = useContext(TimerContext)
   const [timerPopUpOpen, setTimerPopUpOpen] = useState<boolean>(false)
   const [folders, setFolders] = useState<IFolder[]>([])
   const [sets, setSets] = useState<ISet[]>([])
@@ -103,13 +103,6 @@ export function User(props: IAppProps) {
     )
   }, [])
 
-  useEffect(() => {
-    getFolderList()
-    getSetList()
-  }, [authState])
-
-
-
   const goToSetsPage = async (event: React.MouseEvent<HTMLElement>) => {
     const folderId: number = parseInt(event.currentTarget.getAttribute("data-folderid")!)
     const folderName: string = event.currentTarget.getAttribute("data-foldername")!
@@ -137,10 +130,19 @@ export function User(props: IAppProps) {
     })
   })
 
+  // =============================================================================
+  // Timer
+  // =============================================================================
+
+  useEffect(() => {
+    getFolderList()
+    getSetList()
+  }, [authState])
 
 
 
-  
+
+
 
   return (
     <div className="user_container">
@@ -171,12 +173,11 @@ export function User(props: IAppProps) {
         <div className="timer_pop_up">
           <TimerPopUp
             setTimerPopUpOpen={setTimerPopUpOpen}
-            
           ></TimerPopUp>
         </div>
 
       ) : null}
-      
+
       <NavigationBar loggedIn={authState.loggedIn}></NavigationBar>
 
       <div className="user_content_container">
@@ -196,24 +197,25 @@ export function User(props: IAppProps) {
           </div>
         </div>
 
-        {timerStatus === 'study' || timerStatus === 'break' ? (
-          <div className="time_remaining_container">
-            {timerStatus === 'study' ? (
-              <div className="time_remaining_text">Study time remaining: {timeString}</div>
-            ) : null}
-            {timerStatus === 'break' ? (
-              <div className="time_remaining_text">Break time remaining: {timeString}</div>
-            ) : null}
-             <AiOutlinePauseCircle onClick={() => setTimerStatus('paused')} className="pauseplay_refresh_close_btn"></AiOutlinePauseCircle>
+        {timerStatus === 'study' || timerStatus === 'break'
+          || timerStatus === 'studyPause' || timerStatus === 'breakPause' ? (
+            <div className="time_remaining_container">
+              {timerStatus === 'study' || timerStatus === 'studyPause' ? (
+                <div className="time_remaining_text">Study time remaining: {timeString}</div>
+              ) : null}
+              {timerStatus === 'break' || timerStatus === 'breakPause' ? (
+                <div className="time_remaining_text">Break time remaining: {timeString}</div>
+              ) : null}
 
-            {/* {!timerStatus === 'paused' ? (
-            ) : (
-                <AiOutlinePlayCircle onClick={() => setPaused(false)} className="pauseplay_refresh_close_btn"></AiOutlinePlayCircle>
-              )} */}
-            <IoRefreshOutline onClick={() => setTimerStatus('reset')} className="pauseplay_refresh_close_btn"></IoRefreshOutline>
-            <AiOutlineCloseCircle className="pauseplay_refresh_close_btn" onClick={() => { setTimerStatus("killed") }}></AiOutlineCloseCircle>
-          </div>
-        ) : null}
+              {!(timerStatus === 'studyPause') ? (
+                <AiOutlinePauseCircle onClick={() => pause()} className="user_pauseplay_refresh_close_btn"></AiOutlinePauseCircle>
+              ) : (
+                  <AiOutlinePlayCircle onClick={() => pause()} className="user_pauseplay_refresh_close_btn"></AiOutlinePlayCircle>
+                )}
+              <IoRefreshOutline onClick={() => reset()} className="user_pauseplay_refresh_close_btn"></IoRefreshOutline>
+              <AiOutlineCloseCircle className="user_pauseplay_refresh_close_btn" onClick={() => { setTimerStatus("killed") }}></AiOutlineCloseCircle>
+            </div>
+          ) : null}
         {/* {
           multOptionErr ? (
             <div className="timer_option_err">Already have a timer, please stop this timer first!</div>
