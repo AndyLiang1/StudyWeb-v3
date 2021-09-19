@@ -36,7 +36,7 @@ export function Profile({ name, numFolders, numSets }: IProfileProps) {
                                 {timerStatus === 'break' || timerStatus === 'breakPause' ? (
                                     <div className="count">Break time remaining: {timeString}</div>
                                 ) : null}
-                                {!(timerStatus === 'studyPause') ? (
+                                {!(timerStatus === 'studyPause' || timerStatus === 'breakPause') ? (
                                     <AiOutlinePauseCircle onClick={() => pause()} className="profile_pauseplay_refresh_close_btn"></AiOutlinePauseCircle>
                                 ) : (
                                         <AiOutlinePlayCircle onClick={() => pause()} className="profile_pauseplay_refresh_close_btn"></AiOutlinePlayCircle>

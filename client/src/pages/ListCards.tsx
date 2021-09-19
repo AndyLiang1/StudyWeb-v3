@@ -119,7 +119,7 @@ export function ListCards(props: IListCardsProps) {
                                         Break Time Remaining: {timeString}
                                     </div>
                                 ) : null}
-                                {!(timerStatus === 'studyPause') ? (
+                                {!(timerStatus === 'studyPause' || timerStatus === 'breakPause') ? (
                                     <AiOutlinePauseCircle onClick={() => pause()} className="list_cards_pauseplay_refresh_close_btn"></AiOutlinePauseCircle>
                                 ) : (
                                         <AiOutlinePlayCircle onClick={() => pause()} className="list_cards_pauseplay_refresh_close_btn"></AiOutlinePlayCircle>

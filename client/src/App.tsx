@@ -31,7 +31,7 @@ const App: FC = () => {
 
   useEffect(() => {
     localStorage.setItem("timerStatus", timerStatus)
-    if (timerStatus === 'study' || timerStatus === 'break') {
+    if ((timerStatus === 'study' || timerStatus === 'break') && timeString === '0:00') {
       countDown()
     }
     if (timerStatus === 'none') {
@@ -59,8 +59,12 @@ const App: FC = () => {
   const countDown = () => {
     const intervalId = setInterval(() => {
       const timerStatus_C = localStorage.getItem("timerStatus")
-      console.log(timerStatus_C);
-      if (timerStatus_C === 'killed') {
+      if (timerStatus_C === 'studyPause') {
+        return;
+      } else if (timerStatus_C === 'breakPause') {
+        return;
+      }
+      else if (timerStatus_C === 'killed') {
         setTimerStatus('none')
         clearInterval(intervalId)
         localStorage.removeItem('studyTimeOrig')
@@ -70,14 +74,7 @@ const App: FC = () => {
         setTimeout(() => {
           setTimeString('0:00')
         }, 200)
-      }
-      if (timerStatus_C === 'studyPause') {
-        clearInterval(intervalId)
-      }
-      if (timerStatus_C === 'breakPause') {
-        clearInterval(intervalId)
-      }
-      if (timerStatus_C === 'study') {
+      } else if (timerStatus_C === 'study') {
         const timeRemain: string = localStorage.getItem("studyTime")!
         if (timeRemain === '0') {
           setTimeout(() => {
@@ -89,7 +86,7 @@ const App: FC = () => {
         setTimeString(convertTimeToString(parseInt(timeRemain)))
         localStorage.setItem("studyTime", (parseInt(timeRemain) - 1).toString())
       }
-      if (timerStatus_C === 'break') {
+      else if (timerStatus_C === 'break') {
         const timeRemain: string = localStorage.getItem("breakTime")!
         if (timeRemain === '-1') {
           setTimerStatus('none')
