@@ -13,7 +13,7 @@
 .profile_container {
     height: 100%;
     width: 100%;
-    background: white;
+    background:white;
     padding-left: 5rem;
     position: relative;
 }
@@ -97,4 +97,26 @@
 .profile_pauseplay_refresh_close_btn:hover {
     cursor: pointer;
     transform: scale(1.05);
+}
+
+@media (max-width: 414px) {
+    .profile_container {
+        padding-left: 3rem;
+    }
+    .profile_info {
+        width: 80%;
+    }
+    .profile_name {
+        font-size: 3rem;
+    }
+
+    .count {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 361px) {
+    .count {
+        font-size: 1.4rem;
+    }
 }

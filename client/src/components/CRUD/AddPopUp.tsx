@@ -30,8 +30,8 @@ export function AddPopUp({ setAddPopUpOpen, getFolderOrSetOrCardList, itemToAdd,
     const validationSchema = Yup.object().shape({
         name: Yup.string().max(50),
         folderToAddToId: Yup.number(),
-        question: Yup.string().max(50),
-        answer: Yup.string().max(50),
+        question: Yup.string(),
+        answer: Yup.string(),
     })
 
     const submit = (submittedData: IAddForm) => {

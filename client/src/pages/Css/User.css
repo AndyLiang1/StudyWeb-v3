@@ -246,7 +246,7 @@
 }
 
 .add_set_pop_up {
-  height: 25rem;
+  height: 35rem;
   width: 50rem;
   position: fixed;
   /* margin-top: 5%;
@@ -282,4 +282,246 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+/* ========================================================================== */
+/* Different dimensions */
+/* ========================================================================== */
+@media (max-width: 1920px) {
+  .user_one_item {
+    height: 10rem;
+    min-height: 10rem;
+    width: 34rem
+  }
+
+  .user_one_item_folderIcon {
+    height: 4.5rem;
+    width: 4.5rem;
+  }
+
+  .user_one_item_name {
+    font-weight: 600;
+    font-size: 2.5rem;
+    padding-left: 1rem;
+  }
+  
+  .user_one_item_numChild {
+    font-size: 2.25rem;
+  }
+}
+
+@media (max-width: 1536px) {
+  .plus_btn {
+    padding-bottom: 0.5rem;
+  }
+
+  .user_one_item {
+    height: 8rem;
+    min-height: 8rem;
+    width: 27rem
+  }
+
+  .user_one_item_folderIcon {
+    height: 4rem;
+    width: 4rem;
+  }
+
+  .user_one_item_name {
+    font-weight: 600;
+    font-size: 2rem;
+    padding-left: 1rem;
+  }
+  
+  .user_one_item_numChild {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 1366px) {
+  .user_one_item {
+    height: 8rem;
+    min-height: 8rem;
+    width: 23rem;
+  }
+
+  .user_one_item_folderIcon {
+    height: 3.25rem;
+    width: 3.25rem;
+  }
+
+  .user_one_item_name {
+    font-weight: 600;
+    font-size: 2rem;
+    padding-left: 1rem;
+  }
+  
+  .user_one_item_numChild {
+    font-size: 1.75rem;
+  }
+}
+@media (max-width: 500px) {
+  .add_folder_pop_up {
+    height: 25rem;
+    width: 35rem;
+    position: fixed;
+    /* margin-top: 5%;
+    margin-left: 50%; */
+  
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+  
+  .add_set_pop_up {
+    height: 35rem;
+    width: 35rem;
+    position: fixed;
+    /* margin-top: 5%;
+    margin-left: 50%; */
+  
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+  
+  .timer_pop_up {
+    height: 50rem;
+    width: 35rem;
+    position: fixed;
+    /* margin-top: 5%;
+    margin-left: 50%; */
+  
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+  
+  .custom_timer_pop_up {
+    height: 35rem;
+    width: 35rem;
+    position: fixed;
+    /* margin-top: 5%;
+    margin-left: 50%;
+    transform: translateX(-50%); */
+    z-index: 3; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+@media (max-width: 414px) {
+  .create_container{
+    height: 20%;
+}
+
+  .user_one_item {
+    height: 5.5rem;
+    min-height: 5.5rem;
+    width: 35rem;
+  }
+
+  .user_one_item_folderIcon {
+    height: 3rem;
+    width: 3rem;
+  }
+
+  .user_one_item_name {
+    font-weight: 600;
+    font-size: 1.7rem;
+    padding-left: 1rem;
+  }
+  
+  .user_one_item_numChild {
+    font-size: 1.5rem;
+  }
+
+  .folders_container {
+    height: 38%;
+  }
+
+  .sets_container {
+    height: 38%;
+  }
+}
+
+@media (max-width: 414px) {
+  .create_container{
+    height: 20%;
+}
+  .plus_btn {
+    font-size: 3rem;
+    padding-bottom: 0.8rem;
+  }
+
+  .user_one_item {
+    height: 5.5rem;
+    min-height: 5.5rem;
+    width: 32rem;
+  }
+
+  .user_one_item_folderIcon {
+    height: 3rem;
+    width: 3rem;
+  }
+
+  .user_one_item_name {
+    font-weight: 600;
+    font-size: 1.7rem;
+    padding-left: 1rem;
+  }
+  
+  .user_one_item_numChild {
+    font-size: 1.5rem;
+  }
+
+  .folders_container {
+    height: 38%;
+  }
+
+  .sets_container {
+    height: 38%;
+  }
+}
+
+
+@media (max-width: 360px) {
+  .create_container{
+    height: 20%;
+}
+  .plus_btn {
+    font-size: 3rem;
+    padding-bottom: 0.8rem;
+  }
+
+  .user_one_item {
+    height: 5.25rem;
+    min-height: 5.25rem;
+    width: 30rem;
+  }
+
+  .user_one_item_folderIcon {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+
+  .user_one_item_name {
+    font-weight: 600;
+    font-size: 1.4rem;
+    padding-left: 1rem;
+  }
+  
+  .user_one_item_numChild {
+    font-size: 1.2rem;
+  }
+
+  .folders_container {
+    height: 40%;
+  }
+
+  .sets_container {
+    height: 40%;
+  }
 }

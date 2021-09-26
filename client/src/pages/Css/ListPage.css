@@ -175,3 +175,30 @@ html {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+/* ========================================================================== */
+/* Different dimensions */
+/* ========================================================================== */
+@media (max-width: 414px) {
+  .one_item, .add_item {
+    width: 85%;
+    height: 7.5rem;
+    min-height: 7.5rem;
+  }
+}
+
+@media (max-width: 376px) {
+  .one_item, .add_item {
+    width: 85%;
+    height: 7rem;
+    min-height: 7rem;
+  }
+}
+
+@media (max-width: 361px) {
+  .one_item, .add_item {
+    width: 85%;
+    height: 8.5rem;
+    min-height: 8.5rem;
+  }
+}

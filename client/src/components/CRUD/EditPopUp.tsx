@@ -26,8 +26,8 @@ export function EditPopUp({ setEditPopUpOpen, getFolderOrSetOrCardList, setId, f
 
     const validationSchema = Yup.object().shape({
         newName: Yup.string().max(50),
-        newQuestion: Yup.string().max(50),
-        newAnswer: Yup.string().max(50),
+        newQuestion: Yup.string(),
+        newAnswer: Yup.string(),
     })
 
     const submit = (submittedData: IEditForm) => {

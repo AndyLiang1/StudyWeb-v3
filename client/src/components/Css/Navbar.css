@@ -190,3 +190,72 @@
         background-color: #555;
     }    
 }
+
+/* ========================================================================== */
+/* Different dimensions */
+/* ========================================================================== */
+@media (max-width: 1920px) {
+    .brand_title {
+        padding-left: 0;
+        width: 30rem;
+    }
+
+    .navbar_links {
+        width: calc(100% - 30rem);
+    }
+
+    .brand_title {
+        font-size: 3.5rem;
+    }
+    
+    .navbar_links li a {
+        font-size: 2.8rem;
+    }
+  }
+
+  @media (max-width: 1536px) {
+    .brand_title {
+        width: 25rem;
+    }
+
+    .navbar_links {
+        width: calc(100% - 25rem);
+    }
+
+    .brand_title {
+        font-size: 3rem;
+    }
+    
+    .navbar_links li a {
+        font-size: 2.2rem;
+    }
+  }
+
+  @media (max-width: 1366px) {
+    .brand_title {
+        display: flex;
+        justify-content: start;
+        padding-left: 3rem;
+    }
+
+    .navbar_links {
+        width: calc(100% - 27rem);
+    }
+
+    .brand_title {
+        font-size: 3rem;
+    }
+    
+    .navbar_links li a {
+        font-size: 2.3rem;
+    }
+  }
+
+  @media (max-width: 414px) {
+    .brand_title {
+        width: 80%;
+    }
+    .toggle_wrapper {
+        width: 20%;
+    }
+  }

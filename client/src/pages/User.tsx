@@ -162,6 +162,8 @@ export function User(props: IAppProps) {
             setAddPopUpOpen={setAddSetPopUpOpen}
             itemToAdd="set"
             getFolderOrSetOrCardList={getSetList}
+            addingLoneSet={true}
+            listFolders={folders}
           ></AddPopUp>
         </div>
       ) : null}
@@ -193,6 +195,7 @@ export function User(props: IAppProps) {
           </div>
 
           <div onClick={openTimerPopUp} className="timer">
+            <h1 onClick={openAddSetPopUp} className="plus_btn">+</h1>
             <IoIosTimer onClick={openTimerPopUp} className="icons"></IoIosTimer>
           </div>
         </div>
