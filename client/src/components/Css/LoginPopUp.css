@@ -184,3 +184,20 @@
     font-size: 2rem;
     height: 3.5rem;
 }
+
+
+/* ========================================================================== */
+/* Different dimensions */
+/* ========================================================================== */
+
+@media (max-width: 415px) {
+   .image_side, .image_container, .image_for_side {
+       display: none;
+       width: 0%;
+   }
+
+   .sign_in_side {
+       width: 100%;
+       background: var(--verylightgrey)
+   }
+}

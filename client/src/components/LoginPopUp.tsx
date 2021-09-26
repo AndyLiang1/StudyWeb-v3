@@ -9,6 +9,8 @@ import { ILoginForm } from "../helpers/Interfaces"
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useHistory } from "react-router-dom"
 import { AuthContext } from '../helpers/Contexts';
+import image_for_side from '../img/login_icon.png'
+
 
 
 interface Props {
@@ -110,7 +112,9 @@ export function LoginPopUp({ loginPopUpOpen, setLoginPopUpOpen }: Props) {
     return (
         <div className="sign_in_page">
             <div className="image_side">
-
+            <div className="image_container">
+                    <img className="image_for_side" src={image_for_side}></img>
+                </div>
             </div>
             <div className="sign_in_side">
                 <AiOutlineCloseCircle className="sign_in_close_btn" onClick={closeLoginPopUp}></AiOutlineCloseCircle>

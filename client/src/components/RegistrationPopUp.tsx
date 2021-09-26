@@ -8,7 +8,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { IRegistrationForm } from '../helpers/Interfaces'
 import { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router-dom';
-import image_for_side from '../img/image_side2.png'
+import image_for_side from '../img/reg_icon.png'
 
 interface Props {
     regPopUpOpen: boolean;
