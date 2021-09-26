@@ -92,9 +92,15 @@ export function ListCards(props: IListCardsProps) {
         setAddPopUpOpen(true)
     }
     const editBtnOnClick = () => {
+        if (cards.length === 0) {
+            return;
+        }
         setEditPopUpOpen(true)
     }
     const deleteBtnOnClick = () => {
+        if (cards.length === 0) {
+            return;
+        }
         setDeletePopUpOpen(true)
     }
 
@@ -149,10 +155,10 @@ export function ListCards(props: IListCardsProps) {
                                 }}
                                 isFlipped={isFlipped} flipDirection="vertical">
                                 <div onClick={handleFlip} className="list_cards_card_front">
-                                    {cards[displayedIndex - 1] ? cards[displayedIndex - 1].question : ""}
+                                    {cards[displayedIndex - 1] ? cards[displayedIndex - 1].question : "You have no cards in this set. Create a card with the plus button!"}
                                 </div>
                                 <div onClick={handleFlip} className="list_cards_card_back">
-                                    {cards[displayedIndex - 1] ? cards[displayedIndex - 1].answer : ""}
+                                    {cards[displayedIndex - 1] ? cards[displayedIndex - 1].answer : "You have no cards in this set. Create a card with the plus button!"}
                                 </div>
                             </ReactCardFlip>
                         </div>
