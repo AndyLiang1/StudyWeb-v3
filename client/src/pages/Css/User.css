@@ -310,14 +310,14 @@
   }
 }
 
-@media (max-width: 1536px) {
+@media (max-width: 1537px) {
   .plus_btn {
     padding-bottom: 0.5rem;
   }
 
   .user_one_item {
-    height: 8rem;
-    min-height: 8rem;
+    height: 7.5rem;
+    min-height: 7.5rem;
     width: 27rem
   }
 
@@ -337,7 +337,7 @@
   }
 }
 
-@media (max-width: 1366px) {
+@media (max-width: 1367px) {
   .user_one_item {
     height: 8rem;
     min-height: 8rem;
@@ -357,6 +357,28 @@
   
   .user_one_item_numChild {
     font-size: 1.75rem;
+  }
+}
+@media (max-width: 1285px) {
+  .user_one_item {
+    height: 5.5rem;
+    min-height: 5.5rem;
+    width: 21rem;
+  }
+
+  .user_one_item_folderIcon {
+    height: 3rem;
+    width: 3rem;
+  }
+
+  .user_one_item_name {
+    font-weight: 600;
+    font-size: 1.5rem;
+    padding-left: 1rem;
+  }
+  
+  .user_one_item_numChild {
+    font-size: 1.3rem;
   }
 }
 @media (max-width: 500px) {
