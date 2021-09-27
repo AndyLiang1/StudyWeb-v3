@@ -308,8 +308,28 @@
         font-size: 4rem;
     }
 
-    .list_cards_timer {
+    .list_cards_card_front, .list_cards_card_back {
         font-size: 2rem;
+    }
+
+    .list_cards_display_index {
+        font-size: 1.7rem;
+    }
+
+    .list_cards_timer {
+        font-size: 1.7rem;
+    }
+
+    .list_cards_pauseplay_refresh_close_btn {
+        height: 1.7rem;
+        width: 1.7rem;    
+        margin-left: 1.5rem;
+    }
+  }
+
+@media (max-width: 361px) {
+    .list_cards_set_title {
+        font-size: 3.5rem;
     }
 
     .list_cards_card_front, .list_cards_card_back {
@@ -317,11 +337,17 @@
     }
 
     .list_cards_display_index {
-        font-size: 2rem;
+        font-size: 1.7rem;
+    }
+
+    .list_cards_timer {
+        font-size: 1.8rem;
     }
 
     .list_cards_pauseplay_refresh_close_btn {
-        font-size: 1.9rem;
+        height: 1.7rem;
+        width: 1.7rem;    
+        margin-left: 1rem;
     }
   }
 
