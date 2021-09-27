@@ -21,8 +21,20 @@ export interface IListCardsProps {
 
 export function ListCards(props: IListCardsProps) {
     const { authState, setAuthState } = useContext(AuthContext);
-    const location = useLocation<{ setId: number, setName: string, numFolders: number, numSets: number }>()
-    const { setId, setName, numFolders, numSets } = location.state
+    /**
+     * This section is needed because clicking on the hamburger icon, this
+     * component is re-rendered and it's location no longer has a location.state.
+     */
+    const [setId, setSetId] = useState<number>(0)
+    const [setName, setSetName] = useState<string>("def_setName")
+    const location = useLocation<{ setId: number, setName: string }>()
+    if (location.state != undefined && setName === "def_setName" && setId === 0) {
+        setSetId(location.state.setId)
+        setSetName(location.state.setName)
+        localStorage.setItem("setId", location.state.setId.toString())
+        localStorage.setItem("setName", location.state.setName)
+    }
+
     const [addPopUpOpen, setAddPopUpOpen] = useState<boolean>(false)
     const [editPopUpOpen, setEditPopUpOpen] = useState<boolean>(false)
     const [deletePopUpOpen, setDeletePopUpOpen] = useState<boolean>(false)
@@ -32,7 +44,6 @@ export function ListCards(props: IListCardsProps) {
     const [displayedIndex, setDisplayedIndex] = useState<number>(1) // this is one higher than array index
     const [isFlipped, setIsFlipped] = React.useState<boolean>(false);
     const { timeString, timerStatus, pause, reset, setTimerStatus } = useContext(TimerContext)
-
 
     const getCardList = async () => {
         fetch(`http://localhost:3000/api/v1/cards/${setId}`, {
@@ -57,6 +68,8 @@ export function ListCards(props: IListCardsProps) {
                 loggedIn: true
             }
         )
+        setSetId(parseInt(localStorage.getItem("setId")!))
+        setSetName(localStorage.getItem("setName")!)
     }, [])
 
     useEffect(() => {

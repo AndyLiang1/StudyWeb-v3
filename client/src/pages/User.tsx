@@ -78,6 +78,7 @@ export function User(props: IAppProps) {
   }
 
   const openAddSetPopUp = () => {
+    console.log('Opening set.', addSetPopUpOpen);
     setAddSetPopUpOpen(true)
     if (addFolderPopUpOpen || timerPopUpOpen) {
       setAddFolderPopUpOpen(false)
@@ -86,6 +87,7 @@ export function User(props: IAppProps) {
   }
 
   const openTimerPopUp = () => {
+    console.log('Opening timer.', timerPopUpOpen);
     setTimerPopUpOpen(true)
     if (addFolderPopUpOpen || addSetPopUpOpen) {
       setAddFolderPopUpOpen(false)
@@ -101,6 +103,11 @@ export function User(props: IAppProps) {
         loggedIn: true
       }
     )
+    localStorage.removeItem("folderIdFromURL")
+    localStorage.removeItem("numFolders")
+    localStorage.removeItem("folderName")
+    localStorage.removeItem("setId")
+    localStorage.removeItem("setName")
   }, [])
 
   const goToSetsPage = async (event: React.MouseEvent<HTMLElement>) => {
@@ -146,7 +153,6 @@ export function User(props: IAppProps) {
 
   return (
     <div className="user_container">
-
       {addFolderPopUpOpen ? (
         <div className="add_folder_pop_up">
           <AddPopUp
@@ -195,7 +201,7 @@ export function User(props: IAppProps) {
           </div>
 
           <div onClick={openTimerPopUp} className="timer">
-            <h1 onClick={openAddSetPopUp} className="plus_btn">+</h1>
+            <h1 onClick={openTimerPopUp} className="plus_btn">+</h1>
             <IoIosTimer onClick={openTimerPopUp} className="icons"></IoIosTimer>
           </div>
         </div>

@@ -79,6 +79,11 @@ export function ListFolders(props: IListFoldersProps) {
                 loggedIn: true
             }
         )
+        localStorage.removeItem("folderIdFromURL")
+        localStorage.removeItem("numFolders")
+        localStorage.removeItem("folderName")
+        localStorage.removeItem("setId")
+        localStorage.removeItem("setName")
     }, [])
 
     useEffect(() => {

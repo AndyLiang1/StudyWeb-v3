@@ -12,7 +12,7 @@ html {
 .list_page {
   width: 100vw;
   position: relative;
-  background: var(--verylightgrey);
+  background: white;
 }
 
 .description {
@@ -176,14 +176,32 @@ html {
   transform: translate(-50%, -50%);
 }
 
+@media (max-width: 500px) {
+  .list_page_edit_container, .list_page_delete_container, .list_page_add_container {
+    height: 30rem;
+    width: 35rem;
+    position: fixed;
+    /* margin-top: 5%;
+    margin-left: 50%; */
+  
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+}
 /* ========================================================================== */
 /* Different dimensions */
 /* ========================================================================== */
-@media (max-width: 414px) {
+@media (max-width: 415px) {
   .one_item, .add_item {
     width: 85%;
     height: 7.5rem;
     min-height: 7.5rem;
+  }
+
+  .profile_container {
+    padding-left: 3rem;
   }
 }
 

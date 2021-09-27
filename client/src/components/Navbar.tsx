@@ -28,6 +28,11 @@ export function NavigationBar({ loggedIn }: IAppProps) {
     localStorage.removeItem("loggedIn");
     localStorage.removeItem("studyTimeInSec");
     localStorage.removeItem("breakTimeInSec");
+    localStorage.removeItem("folderIdFromURL")
+    localStorage.removeItem("numFolders")
+    localStorage.removeItem("folderName")
+    localStorage.removeItem("setId")
+    localStorage.removeItem("setName")
     history.push("./")
   }
 
@@ -35,6 +40,9 @@ export function NavigationBar({ loggedIn }: IAppProps) {
   return (
     <nav className="navbar">
       <div className="brand_title">
+        STUDYWEB
+      </div>
+      <div className="brand_title_C">
         STUDYWEB
       </div>
 

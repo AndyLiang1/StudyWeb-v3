@@ -28,10 +28,23 @@ export function ListOneFolder(props: IListOneFolderProps) {
     const [folderId, setFolderId] = useState<number>(0)
     const [sets, setSets] = useState<ISet[]>([])
     const history = useHistory()
+    /**
+     * This section is needed because clicking on the hamburger icon, this
+     * component is re-rendered and it's location no longer has a location.state.
+     */
     const location = useLocation<{ folderIdFromURL: number, numFolders: number, folderName: string }>()
-    const { folderIdFromURL, numFolders, folderName } = location.state
-
-
+    const [folderIdFromURL, setFolderIdFromURL] = useState<number>(0)
+    const [numFolders, setNumFolders] = useState<number>(0)
+    const [folderName, setFolderName] = useState<string>("def_folderName")
+    if (location.state != undefined && folderName === "def_folderName") {
+        localStorage.setItem("folderIdFromURL", location.state.folderIdFromURL.toString())
+        localStorage.setItem("numFolders", location.state.numFolders.toString())
+        localStorage.setItem("folderName", location.state.folderName)
+        setFolderIdFromURL(location.state.folderIdFromURL)
+        setNumFolders(location.state.numFolders)
+        setFolderName(location.state.folderName)
+    }
+    
     const getSetList = async () => {
         fetch(`http://localhost:3000/api/v1/sets/all/${authState.id}`, {
             headers: {
@@ -64,6 +77,9 @@ export function ListOneFolder(props: IListOneFolderProps) {
                 loggedIn: true
             }
         )
+        setFolderIdFromURL(parseInt(localStorage.getItem("folderIdFromURL")!))
+        setNumFolders(parseInt(localStorage.getItem("numFolders")!))
+        setFolderName(localStorage.getItem("folderName")!)
     }, [])
 
     useEffect(() => {
@@ -94,9 +110,15 @@ export function ListOneFolder(props: IListOneFolderProps) {
         setAddSetPopUpOpen(true)
     }
 
+    const cleanLocalStorage = () => {
+        localStorage.removeItem("folderIdFromURL")
+        localStorage.removeItem("numFolders")
+        localStorage.removeItem("folderName")
+    }
     const goToCardsPage = ((event: React.MouseEvent<HTMLElement>) => {
         const setId: number = parseInt(event.currentTarget.getAttribute("data-setid")!)
         const setName: string = event.currentTarget.getAttribute("data-setname")!
+        cleanLocalStorage()
         history.push({
             pathname: "/listCards",
             state: {

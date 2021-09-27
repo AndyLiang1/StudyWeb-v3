@@ -13,7 +13,7 @@
 .profile_container {
     height: 100%;
     width: 100%;
-    background:white;
+    background:var(--verylightgrey);
     padding-left: 5rem;
     position: relative;
 }
@@ -114,9 +114,42 @@
         font-size: 1.5rem;
     }
 }
+@media (max-width: 376px) {
+    .profile_container {
+        padding-left: 3rem;
+    }
+    .profile_info {
+        width: 80%;
+        padding-left: 1.5rem;
+    }
+    .profile_name {
+        font-size: 3rem;
+    }
+
+    .count {
+        font-size: 1.3rem;
+    }
+
+    .profile_pauseplay_refresh_close_btn {
+        margin-left: 0.7rem;
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+}
 
 @media (max-width: 361px) {
+    .profile_info {
+        width: 80%;
+        padding-left: 1.3rem;
+    }
+
     .count {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
+    }
+
+    .profile_pauseplay_refresh_close_btn {
+        margin-left: 0.7rem;
+        height: 1.3rem;
+        width: 1.3rem;
     }
 }

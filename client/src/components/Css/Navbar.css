@@ -109,8 +109,11 @@
     font-size: 1.3rem;
     padding: 1rem 0.5rem;
 }
-@media(max-width: 600px){
 
+.brand_title_C {
+    display: none; 
+ }
+@media(max-width: 600px){
     /* ========================================================================== */
     /* toggle button */
     /* ========================================================================== */
@@ -142,9 +145,12 @@
     }
 
     .brand_title {
-        height: 100%;
-        width: 21rem;
-        margin-left: 0;   
+        display: none; 
+    }
+    .brand_title_C {
+        display: flex;
+        font-size: 3rem;
+        margin-left: 3rem;
     }
 
     .navbar {
@@ -266,7 +272,7 @@
     }
   }
 
-  @media (max-width: 414px) {
+  @media (max-width: 415px) {
     .brand_title {
         width: 80%;
     }
