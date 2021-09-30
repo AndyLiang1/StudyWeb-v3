@@ -20,11 +20,11 @@ export function DeletePopUp({ setDeletePopUpOpen, getFolderOrSetOrCardList, setI
     const deleteOnClick = () => {
         let url
         if (itemToDelete === 'folder') {
-            url = `http://157.245.244.111:3000/api/v1/folders/${folderId}`
+            url = `https://157.245.244.111:3000/api/v1/folders/${folderId}`
         } else if (itemToDelete === 'set') {
-            url = `http://157.245.244.111:3000/api/v1/sets/${setId}/${folderId}`
+            url = `https://157.245.244.111:3000/api/v1/sets/${setId}/${folderId}`
         } else {
-            url = `http://157.245.244.111:3000/api/v1/cards/${cardId}/${setId}`
+            url = `https://157.245.244.111:3000/api/v1/cards/${cardId}/${setId}`
         }
 
         fetch(url, {

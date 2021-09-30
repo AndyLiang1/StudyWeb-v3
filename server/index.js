@@ -45,7 +45,7 @@ app.use("/api/v1/cards", cardRouter)
 
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://157.245.244.111:${port}`)
+    console.log(`Example app listening at https://157.245.244.111:${port}`)
 })
 
 

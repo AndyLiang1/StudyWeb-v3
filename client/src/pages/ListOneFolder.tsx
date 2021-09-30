@@ -46,7 +46,7 @@ export function ListOneFolder(props: IListOneFolderProps) {
     }
 
     const getSetList = async () => {
-        fetch(`http://157.245.244.111:3000/api/v1/sets/all/${authState.id}`, {
+        fetch(`https://157.245.244.111:3000/api/v1/sets/all/${authState.id}`, {
             headers: {
                 accessToken: localStorage.getItem("accessToken")!,
             },
