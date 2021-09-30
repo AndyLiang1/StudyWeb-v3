@@ -10,7 +10,7 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=production
-      - PORT= 3000
+      - PORT=3000
       - DB_ROOT_USER=${DB_ROOT_USER}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
