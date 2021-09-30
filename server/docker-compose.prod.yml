@@ -5,9 +5,6 @@ services:
       context: .
       args: 
         NODE_ENV: production
-    volumes: 
-      - ./:/app:ro 
-      - /app/node_modules
     environment:
       - NODE_ENV=production
       - PORT=3000
