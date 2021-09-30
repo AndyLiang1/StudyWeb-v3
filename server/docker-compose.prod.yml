@@ -18,7 +18,7 @@ services:
       - SECRET_EMAIL=${SECRET_EMAIL}
     depends_on:
       - mysql
-    command: npm run start
+    command: node index.js
     networks:
       - docker_net
     ports: 
