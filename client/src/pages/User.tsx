@@ -167,7 +167,10 @@ export function User(props: IAppProps) {
           <AddPopUp
             setAddPopUpOpen={setAddSetPopUpOpen}
             itemToAdd="set"
-            getFolderOrSetOrCardList={getSetList}
+            getFolderOrSetOrCardList={() => {
+              getSetList()
+              getFolderList()
+            }}
             addingLoneSet={true}
             listFolders={folders}
           ></AddPopUp>
@@ -267,7 +270,7 @@ export function User(props: IAppProps) {
             <a className="viewAll" onClick={() => { history.push("./listSets") }}>View All &gt; </a>
           </div>
           <div className="user_list_of_sets">
-            {sets.slice(0, 8).map((oneSet) => {
+            {sets.slice(0, 10).map((oneSet) => {
               return (
                 <div
                   className="user_one_item"

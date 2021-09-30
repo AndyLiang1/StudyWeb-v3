@@ -12,7 +12,7 @@ export interface IAppProps {
     itemToAdd: string;
     folderId?: number; // for adding a set to a known folder 
     setId?: number; // for adding a card to a set
-    getFolderOrSetOrCardList: () => Promise<void>;
+    getFolderOrSetOrCardList:any;
     listFolders?: IFolder[];
     addingLoneSet?: boolean;
     addingCard?: boolean;
