@@ -11,12 +11,12 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=3000
-      - DEV_DB_ROOT_USER=root
-      - DEV_DB_USERNAME=user
-      - DEV_DB_PASSWORD=password
-      - DEV_DB_ROOT_PASSWORD=password
-      - DEV_DB_DATABASE=studyweb_db
-      - DEV_DB_HOST=mysql
+      - DB_ROOT_USER=root
+      - DB_USERNAME=user
+      - DB_PASSWORD=password
+      - DB_ROOT_PASSWORD=password
+      - DB_DATABASE=studyweb_db
+      - DB_HOST=mysql
       - SECRET_JWT=secretjwt
       - SECRET_EMAIL=secretemail
     depends_on:
