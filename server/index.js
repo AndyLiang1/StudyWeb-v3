@@ -31,7 +31,7 @@ const initializeDbWithRetry = async () => {
 
 initializeDbWithRetry()
 
-app.get('/', async (req, res) => {
+app.get('/api/v1', async (req, res) => {
     res.send('Hello World!!!')
 })
 // =============================================================================
@@ -45,7 +45,7 @@ app.use("/api/v1/cards", cardRouter)
 
 
 app.listen(port, () => {
-    console.log(`Example app listening at https://157.245.244.111:${port}`)
+    console.log(`Example app listening at http://157.245.244.111:${port}`)
 })
 
 

@@ -35,7 +35,7 @@ export function ListSets({ }: IListSetProps) {
 
     const getSetList = async () => {
         console.log(authState.id)
-        fetch(`https://157.245.244.111:3000/api/v1/sets/all/${authState.id}`, {
+        fetch(`http://157.245.244.111:3000/api/v1/sets/all/${authState.id}`, {
             headers: {
                 accessToken: localStorage.getItem("accessToken")!,
             },
@@ -48,7 +48,7 @@ export function ListSets({ }: IListSetProps) {
             .catch((error) => {
                 console.log(error);
             })
-        fetch(`https://157.245.244.111:3000/api/v1/folders/${authState.id}`, {
+        fetch(`http://157.245.244.111:3000/api/v1/folders/${authState.id}`, {
             headers: {
                 accessToken: localStorage.getItem("accessToken")!,
             },
