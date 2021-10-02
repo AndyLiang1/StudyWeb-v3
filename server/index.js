@@ -31,6 +31,8 @@ const initializeDbWithRetry = async () => {
 
 initializeDbWithRetry()
 
+app.enable("trust proxy")
+
 app.get('/api/v1', async (req, res) => {
     res.send('Hello World!!!')
 })
