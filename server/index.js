@@ -31,11 +31,8 @@ const initializeDbWithRetry = async () => {
 
 initializeDbWithRetry()
 
-app.enable("trust proxy")
-
-app.get('/api/v1', async (req, res) => {
+app.get('/', async(req, res) => {
     res.send('Hello World!!!')
-    console.log('yah it ran ')
 })
 // =============================================================================
 // Routes
@@ -48,7 +45,7 @@ app.use("/api/v1/cards", cardRouter)
 
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://157.245.244.111:${port}`)
+    console.log(`Example app listening at http://localhost:${port}`)
 })
 
 

@@ -44,9 +44,9 @@ export function ListOneFolder(props: IListOneFolderProps) {
         setNumFolders(location.state.numFolders)
         setFolderName(location.state.folderName)
     }
-
+    
     const getSetList = async () => {
-        fetch(`http://157.245.244.111:3000/api/v1/sets/all/${authState.id}`, {
+        fetch(`http://localhost:3000/api/v1/sets/all/${authState.id}`, {
             headers: {
                 accessToken: localStorage.getItem("accessToken")!,
             },

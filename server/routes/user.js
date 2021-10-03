@@ -83,14 +83,14 @@ router.get('/confirmation/:token', async (req, res) => {
             res.json({
                 message: 'Email successfully confirmed. You may log into your account now!'
             })
-            // res.redirect('http://157.245.244.111:3001/')
+            // res.redirect('http://localhost:3001/')
         }
     });
 })
 
 async function sendEmail(email, token) {
     try {
-        const url = `http://157.245.244.111:3000/api/v1/users/confirmation/${token}`;
+        const url = `http://localhost:3000/api/v1/users/confirmation/${token}`;
         await transporter.sendMail({
             from: transporter.options.auth.user,
             to: email,
@@ -191,7 +191,7 @@ router.post("/signin", async (req, res) => {
             status: 'fail',
             error: "There are no users with this email who have confirmed their account yet!"
         });
-
+        
     } else {
         bcrypt
             .compare(password, users[0].password)
