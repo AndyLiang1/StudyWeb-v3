@@ -208,11 +208,11 @@
     }
 
     .list_cards_card_front, .list_cards_card_back {
-        font-size: 3rem;
+        font-size: 3.3rem;
     }
 
     .list_cards_display_index {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
     }
 
     .list_cards_pauseplay_refresh_close_btn {
