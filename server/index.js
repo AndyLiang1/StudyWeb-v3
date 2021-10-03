@@ -15,6 +15,8 @@ const { validateToken } = require("./middlewares/authenticateUser")
 
 const port = 3000
 
+app.enable("trust proxy")
+
 // =============================================================================
 // Db Initialization
 // =============================================================================
@@ -31,8 +33,9 @@ const initializeDbWithRetry = async () => {
 
 initializeDbWithRetry()
 
-app.get('/', async(req, res) => {
+app.get('/api/v1', async(req, res) => {
     res.send('Hello World!!!')
+    console.log('Default get request is working!')
 })
 // =============================================================================
 // Routes
