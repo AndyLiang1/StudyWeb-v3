@@ -15,7 +15,7 @@ const { validateToken } = require("./middlewares/authenticateUser")
 
 const port = 3000
 
-app.enable("trust proxy")
+// app.enable("trust proxy")
 
 // =============================================================================
 // Db Initialization
