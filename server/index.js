@@ -13,9 +13,9 @@ const cardRouter = require("./routes/cards")
 const { validateToken } = require("./middlewares/authenticateUser")
 
 
-const port = process.env.PORT || 3000
+const port = 3000
 
-// app.enable("trust proxy")
+app.enable("trust proxy")
 
 // =============================================================================
 // Db Initialization
